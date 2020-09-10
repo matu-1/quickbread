@@ -106,7 +106,7 @@ class ProductoDetallePage extends StatelessWidget {
               ChipCustom(
                 value: producto.categoria.nombre,
                 color: Theme.of(context).accentColor,
-              ) 
+              )
             ],
           ),
         ],

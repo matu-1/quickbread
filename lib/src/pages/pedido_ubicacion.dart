@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:latlong/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickbread/src/constants/pages.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/pedido_create_page.dart';
-import 'package:quickbread/src/widgets/TextFormFieldSample.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
+import 'package:quickbread/src/widgets/mapa_custom.dart';
 
 class PedidoUbicacion extends StatefulWidget {
   static final routeName = 'pedidoUbicacion';
@@ -17,8 +14,7 @@ class PedidoUbicacion extends StatefulWidget {
 }
 
 class _PedidoUbicacionState extends State<PedidoUbicacion> {
-  LatLng _latlng = LatLng(-17.846783, -63.112505);
-  MapController _mapController = MapController();
+  LatLng _miUbicacion = LatLng(-17.846783, -63.112505);
   final styleTitulo = TextStyle(fontSize: 20, fontWeight: FontWeight.w600);
   final formKey = GlobalKey<FormState>();
   PedidoModel _pedido;
@@ -100,90 +96,14 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
 
   Widget _contenedorMapa() {
     final size = MediaQuery.of(context).size;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          children: [
-            Container(
-              height: size.height * 0.35,
-              child: FlutterMap(
-                mapController: _mapController,
-                options: MapOptions(
-                  center: _latlng,
-                  zoom: 16.0,
-                  onPositionChanged: (position, hasGesture) {
-                    if (_latlng != position.center)
-                      setState(() => _latlng = position.center);
-                  },
-                ),
-                layers: [
-                  _crearMapa(),
-                  _crearMarcadores(),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 10,
-              right: 10,
-              child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(25)),
-                  child: IconButton(
-                      icon: Icon(Icons.my_location), onPressed: _myLocation)),
-            )
-          ],
-        ),
-      ],
+    return Container(
+      height: size.height * 0.35,
+      child: MapCustom(
+        onMove: (latlng) {
+          _miUbicacion = latlng;
+        },
+      ),
     );
-  }
-
-  TileLayerOptions _crearMapa() {
-    return TileLayerOptions(
-      urlTemplate: "https://api.tiles.mapbox.com/v4/"
-          "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
-      additionalOptions: {
-        'accessToken':
-            'pk.eyJ1IjoibWF0dW0iLCJhIjoiY2s3bnJmYWhlMDEybTNrcDllcTMyem90byJ9.EP7KiAaMljtFfCHAq6hiIg',
-        'id': 'mapbox.streets',
-      },
-    );
-  }
-
-  MarkerLayerOptions _crearMarcadores() {
-    return MarkerLayerOptions(
-      markers: [
-        Marker(
-          width: 80.0,
-          height: 80.0,
-          point: _latlng,
-          builder: (BuildContext context) => Container(
-            child: Icon(
-              Icons.place,
-              size: 50,
-              color: Theme.of(context).accentColor,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _myLocation() async {
-    try {
-      Position position =
-          await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      setState(() {
-        _latlng = LatLng(position.latitude, position.longitude);
-      });
-      print(_latlng);
-      _mapController.move(_latlng, 16);
-    } catch (e) {
-      print('Ups ocurrio un error');
-    }
   }
 
   void _siguiente(BuildContext context) async {
