@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickbread/src/constants/pages.dart';
+import 'package:quickbread/src/icons/my_icon_icons.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/pedido_ubicacion.dart';
 
@@ -40,6 +41,15 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
 
   Widget _productoList(BuildContext context) {
     final detalles = Provider.of<PedidoModel>(context).detalles;
+    if (detalles.length == 0) return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(MyIcon.carritatriste, size: 120,),
+          Text('No tienes panes', style: TextStyle(fontSize: 16),)
+        ],
+      ),
+    );
 
     return ListView(
       children: [
@@ -171,6 +181,8 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
                 : () =>
                     Navigator.of(context).pushNamed(PedidoUbicacion.routeName),
             child: Text('SIGUIENTE'),
+            disabledColor: Theme.of(context).primaryColor.withOpacity(0.4),
+            disabledTextColor: Colors.white,
           )),
         ],
       ),

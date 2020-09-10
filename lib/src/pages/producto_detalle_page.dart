@@ -11,12 +11,14 @@ import 'package:quickbread/src/widgets/chip_custom.dart';
 class ProductoDetallePage extends StatelessWidget {
   static final routeName = 'productoDetalle';
   final formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     final ProductoModel producto = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(''),
@@ -138,6 +140,8 @@ class ProductoDetallePage extends StatelessWidget {
   }
 
   void _cantidadModalBottom(BuildContext context, ProductoModel producto) {
+    final pedido = Provider.of<PedidoModel>(context, listen: false);
+    if (pedido.existProducto(producto)) return showMessage('Ya se agrego !!');
     String cantidad;
 
     showDialog(
@@ -203,5 +207,12 @@ class ProductoDetallePage extends StatelessWidget {
         producto: producto,
         subtotal: producto.precio * newCantidad));
     Navigator.of(context).pushNamed(PedidoResumenPage.routeName);
+  }
+
+  void showMessage(String message) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2),
+    ));
   }
 }

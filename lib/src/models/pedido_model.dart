@@ -69,6 +69,12 @@ class PedidoModel with ChangeNotifier {
     notifyListeners();
   }
 
+  bool existProducto(ProductoModel producto) {
+    final productoFinded = this.detalles.where((x) => x.producto.id == producto.id);
+    print(productoFinded.length);
+    return productoFinded.length > 0;
+  }
+
   String getFechaHora() {
     return '${getFecha(DateTime.parse(this.fecha))} a las ${this.hora.substring(0, 5)}';
   }

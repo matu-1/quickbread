@@ -8,7 +8,7 @@ import 'package:quickbread/src/pages/producto_page.dart';
 class HomePage extends StatelessWidget {
   static final routeName = 'home';
   final TextStyle styleText =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.w600, height: 1.3);
+      TextStyle(fontSize: 20, height: 1.3);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'assets/images/icon3.png',
+              'assets/images/logo.png',
               width: 200,
               height: 200,
             ),

@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Image(
               height: 200,
               width: 200,
-              image: AssetImage('assets/images/icon3.png')),
+              image: AssetImage('assets/images/logo.png')),
         ),
       ),
     );
