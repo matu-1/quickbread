@@ -119,6 +119,8 @@ class PedidoNuevoDetallePage extends StatelessWidget {
             height: 10,
           ),
           BotonCustom(
+            elevation: 0,
+            outline: true,
             titulo: 'VER MAPA',
             onPressed: () => _verMapa(pedido, context),
           )

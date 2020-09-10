@@ -62,41 +62,30 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
         key: formKey,
         child: Column(
           children: <Widget>[
-            // TextFormFieldSample(
-            //   icon: Icon(Icons.directions),
-            //   hintText: 'Calle y numero',
-            //   onSaved: (value) => _pedido.direccion = value,
-            //   validator: (value) {
-            //     if (value.length > 0) return null;
-            //     return 'Es obligatorio';
-            //   },
-            // ),
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Calle y numero *',
                 fillColor: Colors.grey[100],
-                // contentPadding: EdgeInsets.zero,
                 filled: true,
               ),
+              onSaved: (value) => _pedido.direccion = value,
+              validator: (value) {
+                if (value.length > 0) return null;
+                return 'Es obligatorio';
+              },
             ),
             SizedBox(height: 20),
-            // TextFormFieldSample(
-            //   textCapitalization: TextCapitalization.words,
-            //   icon: Icon(Icons.accessibility_new),
-            //   hintText: 'Referencia',
-            //   onSaved: (value) => _pedido.referencia = value,
-            //   validator: (value) {
-            //     if (value.length > 0) return null;
-            //     return 'Es obligatorio';
-            //   },
-            // ),
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Referencia *',
                 fillColor: Colors.grey[100],
-                // contentPadding: EdgeInsets.zero,
                 filled: true,
               ),
+              onSaved: (value) => _pedido.referencia = value,
+              validator: (value) {
+                if (value.length > 0) return null;
+                return 'Es obligatorio';
+              },
             ),
             SizedBox(height: 40),
             BotonCustom(

@@ -3,7 +3,7 @@ import 'package:quickbread/src/widgets/boton_custom.dart';
 
 class PedidoCreatePage extends StatefulWidget {
   static final routeName = 'pedidoCreate';
-  
+
   @override
   _PedidoCreatePageState createState() => _PedidoCreatePageState();
 }
@@ -41,11 +41,11 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
                   ),
                   _selectTipo(),
                   SizedBox(
-                    height: 20,
+                    height: 40,
                   ),
                   BotonCustom(
                       titulo: 'ENVIAR PEDIDO',
-                      onPressed: _tipoId != null ? _registrarPedido : null)
+                      onPressed: _registrarPedido)
                 ],
               ),
             )),
@@ -58,8 +58,7 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
       controller: _textFieldFecha,
       enableInteractiveSelection: false,
       decoration: InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-        labelText: 'Fecha',
+        labelText: 'Fecha *',
         icon: Icon(Icons.calendar_today),
       ),
       onTap: () {
@@ -78,8 +77,7 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
     return TextFormField(
       controller: _textFieldHora,
       decoration: InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-        labelText: 'Hora',
+        labelText: 'Hora *',
         icon: Icon(Icons.timer),
       ),
       onTap: () {
@@ -95,46 +93,28 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
   }
 
   Widget _selectTipo() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Tipo entrega',
-          style: styleTitulo,
+    return DropdownButtonFormField(
+      value: _tipoId,
+      decoration: InputDecoration(
+        labelText: 'Tipo entrega *',
+        icon: Icon(Icons.directions_car)
+      ),
+      items: [
+        DropdownMenuItem(
+          child: Text('A domicilio'),
+          value: 1,
         ),
-        Row(
-          children: [
-            Icon(
-              Icons.directions_car,
-              color: Colors.grey,
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: DropdownButton(
-                isExpanded: true,
-                value: _tipoId,
-                items: [
-                  DropdownMenuItem(
-                    child: Text('Seleccione'),
-                    value: null,
-                  ),
-                  DropdownMenuItem(
-                    child: Text('A domicilio'),
-                    value: 1,
-                  ),
-                  DropdownMenuItem(
-                    child: Text('Recoger al local'),
-                    value: 2,
-                  ),
-                ],
-                onChanged: (value) => setState(() => _tipoId = value),
-              ),
-            ),
-          ],
+        DropdownMenuItem(
+          child: Text('Recoger al local'),
+          value: 2,
         ),
       ],
+      onSaved: (value) => setState(() => _tipoId = value),
+      onChanged: (value) => setState(() => _tipoId = value),
+      validator: (value) {
+        if (value == null) return 'El tipo es obligatoria';
+        return null;
+      }
     );
   }
 
@@ -181,5 +161,4 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
     else
       return false;
   }
-
 }

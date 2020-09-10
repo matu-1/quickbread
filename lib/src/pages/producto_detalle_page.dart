@@ -37,37 +37,46 @@ class ProductoDetallePage extends StatelessWidget {
 
   Widget _contenido(ProductoModel producto, BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(padding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Hero(
-              tag: producto.id,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: FadeInImage(
-                  placeholder: AssetImage(pathLoadingLong),
-                  image: NetworkImage(producto.foto),
-                  height: 280,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            _tituloContainer(producto, context),
-            SizedBox(
-              height: 15,
-            ),
-            _descripcion(producto),
-            SizedBox(
-              height: 20,
-            ),
-          ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _imagen(producto),
+          _tituloContainer(producto, context),
+          _divider(),
+          _descripcion(producto),
+          SizedBox(
+            height: 20,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _imagen(ProductoModel producto) {
+    return Padding(
+      padding: EdgeInsets.only(left: padding, right: padding, top: padding),
+      child: Hero(
+        tag: producto.id,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: FadeInImage(
+            placeholder: AssetImage(pathLoadingLong),
+            image: NetworkImage(producto.foto),
+            height: 280,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
+      ),
+    );
+  }
+
+  Padding _divider() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: padding),
+      child: Divider(
+        height: 1,
+        color: Colors.grey[350],
       ),
     );
   }
@@ -77,29 +86,32 @@ class ProductoDetallePage extends StatelessWidget {
         TextStyle(fontSize: 30, fontWeight: FontWeight.w600, height: 1.3);
     final stylePrecio = TextStyle(fontSize: 20, height: 1.3);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          producto.nombre,
-          style: styleTitulo,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              producto.getPrecio(),
-              style: stylePrecio,
-            ),
-            Chip(
-                label: Text(
-                  producto.categoria.nombre,
-                  style: TextStyle(color: Colors.white),
-                ),
-                backgroundColor: Theme.of(context).accentColor)
-          ],
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.all(padding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            producto.nombre,
+            style: styleTitulo,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                producto.getPrecio(),
+                style: stylePrecio,
+              ),
+              Chip(
+                  label: Text(
+                    producto.categoria.nombre,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: Theme.of(context).accentColor)
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -108,18 +120,21 @@ class ProductoDetallePage extends StatelessWidget {
         TextStyle(fontSize: 20, fontWeight: FontWeight.w600, height: 1.3);
     final styleBody = TextStyle(height: 1.3);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Descripcion',
-          style: styleTitulo,
-        ),
-        Text(
-          producto.descripcion,
-          style: styleBody,
-        )
-      ],
+    return Padding(
+      padding: EdgeInsets.all(padding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Descripcion',
+            style: styleTitulo,
+          ),
+          Text(
+            producto.descripcion,
+            style: styleBody,
+          )
+        ],
+      ),
     );
   }
 
@@ -144,8 +159,10 @@ class ProductoDetallePage extends StatelessWidget {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            labelText: 'Cantidad',
-                            border: OutlineInputBorder(),
+                            labelText: 'Cantidad *',
+                            // border: OutlineInputBorder(),
+                            fillColor: Colors.grey[100],
+                            filled: true,
                           ),
                           onSaved: (value) => cantidad = value,
                           validator: (value) {
