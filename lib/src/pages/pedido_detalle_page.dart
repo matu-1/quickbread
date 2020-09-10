@@ -31,12 +31,12 @@ class PedidoDetallePage extends StatelessWidget {
 
   Padding _divider() {
     return Padding(
-          padding: EdgeInsets.symmetric(horizontal: padding),
-          child: Divider(
-            height: 1,
-            color: Colors.grey[400],
-          ),
-        );
+      padding: EdgeInsets.symmetric(horizontal: padding),
+      child: Divider(
+        height: 1,
+        color: Colors.grey[350],
+      ),
+    );
   }
 
   Widget _contenido(PedidoModel pedido) {

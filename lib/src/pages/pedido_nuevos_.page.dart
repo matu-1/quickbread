@@ -87,6 +87,9 @@ class PedidoNuevoPage extends StatelessWidget {
                     pedido.getTotal(),
                     style: stylePrecio,
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ChipCustom(
                       value: 'En espera', color: Theme.of(context).accentColor),
                   Container(

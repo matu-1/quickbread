@@ -23,7 +23,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
         title: Text('Panes agregados'),
         actions: [
           IconButton(
-              icon: Icon(!_isDelete?Icons.delete: Icons.close),
+              icon: Icon(!_isDelete ? Icons.delete : Icons.close),
               onPressed: () => setState(() => _isDelete = !_isDelete))
         ],
       ),
@@ -139,6 +139,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
         children: [
           Expanded(
               child: RaisedButton(
+            elevation: 1,
             padding: EdgeInsets.symmetric(vertical: 15),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -160,6 +161,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
           ),
           Expanded(
               child: RaisedButton(
+            elevation: 1,
             shape: StadiumBorder(),
             padding: EdgeInsets.symmetric(vertical: 15),
             textColor: Colors.white,

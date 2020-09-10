@@ -20,10 +20,11 @@ class PedidoPage extends StatelessWidget {
       itemCount: pedidos.length,
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
-          onTap: () => Navigator.of(context).pushNamed(PedidoDetallePage.routeName, arguments: pedidos[index] ),
-          onLongPress: () => showAnularDialog(context),
-          child: _pedidoBox(pedidos[index], context)
-        );
+            onTap: () => Navigator.of(context).pushNamed(
+                PedidoDetallePage.routeName,
+                arguments: pedidos[index]),
+            onLongPress: () => showAnularDialog(context),
+            child: _pedidoBox(pedidos[index], context));
       },
     );
   }
@@ -64,16 +65,33 @@ class PedidoPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(pedido.getFechaHora(), style: styleTitulo,),
-                  Text(pedido.tipoEntrega, style: styleTexto,),
-                  Text(pedido.getTotal(), style: stylePrecio,),
-                  ChipCustom(value: pedido.estado, color: Theme.of(context).accentColor),
+                  Text(
+                    pedido.getFechaHora(),
+                    style: styleTitulo,
+                  ),
+                  Text(
+                    pedido.tipoEntrega,
+                    style: styleTexto,
+                  ),
+                  Text(
+                    pedido.getTotal(),
+                    style: stylePrecio,
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ChipCustom(
+                      value: pedido.estado,
+                      color: Theme.of(context).accentColor),
                   Container(
                     alignment: Alignment.topRight,
                     child: Text(
                       pedido.fechaHora,
                       style: TextStyle(
-                          height: 1.3, color: Colors.grey, fontSize: 12, ),
+                        height: 1.3,
+                        color: Colors.grey,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ],

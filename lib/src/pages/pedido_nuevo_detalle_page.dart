@@ -17,7 +17,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        title: Text(pedido.cliente.nombre),
       ),
       body: SingleChildScrollView(
         child: Column(  

@@ -52,12 +52,12 @@ class HomePage extends StatelessWidget {
               height: 200,
             ),
             Text(
-              'Bienvenido a nuestra app de pedidos por favor crea un nuevo pedido',
+              'Bienvenido a nuestra aplicacion de pedidos, empieza creando uno.',
               style: styleText,
               textAlign: TextAlign.center,
             ),
             SizedBox(
-              height: 30,
+              height: 40,
             ),
             _btnCrearPedido(context),
           ],

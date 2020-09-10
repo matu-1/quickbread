@@ -6,6 +6,7 @@ import 'package:quickbread/src/models/producto_model.dart';
 import 'package:quickbread/src/pages/pedido_resumen_page.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
 import 'package:quickbread/src/utils/utils.dart' as utils;
+import 'package:quickbread/src/widgets/chip_custom.dart';
 
 class ProductoDetallePage extends StatelessWidget {
   static final routeName = 'productoDetalle';
@@ -102,12 +103,10 @@ class ProductoDetallePage extends StatelessWidget {
                 producto.getPrecio(),
                 style: stylePrecio,
               ),
-              Chip(
-                  label: Text(
-                    producto.categoria.nombre,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Theme.of(context).accentColor)
+              ChipCustom(
+                value: producto.categoria.nombre,
+                color: Theme.of(context).accentColor,
+              ) 
             ],
           ),
         ],
