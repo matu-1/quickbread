@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickbread/src/constants/pages.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
+import 'package:quickbread/src/widgets/text_prop.dart';
 
 class PedidoDetallePage extends StatelessWidget {
   static final routeName = 'pedidoDetalle';
@@ -40,14 +41,6 @@ class PedidoDetallePage extends StatelessWidget {
   }
 
   Widget _contenido(PedidoModel pedido) {
-    final styleSubtitulo = TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        height: 1.5,
-        color: Colors.black);
-    final styleTexto =
-        TextStyle(height: 1.5, fontSize: 14, fontWeight: FontWeight.normal);
-
     return Container(
       padding: EdgeInsets.all(padding),
       child: Column(
@@ -58,52 +51,15 @@ class PedidoDetallePage extends StatelessWidget {
             style: styleTitulo,
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
-          RichText(
-            text: TextSpan(text: 'Fecha: ', style: styleSubtitulo, children: [
-              TextSpan(text: pedido.getFechaFormateada(), style: styleTexto)
-            ]),
-          ),
-          RichText(
-            text: TextSpan(text: 'Hora: ', style: styleSubtitulo, children: [
-              TextSpan(text: pedido.getHora(), style: styleTexto)
-            ]),
-          ),
-          RichText(
-            text: TextSpan(text: 'Tipo: ', style: styleSubtitulo, children: [
-              TextSpan(text: pedido.tipoEntrega, style: styleTexto)
-            ]),
-          ),
-          RichText(
-            text: TextSpan(text: 'Total: ', style: styleSubtitulo, children: [
-              TextSpan(text: 'Bs.${pedido.total}', style: styleTexto)
-            ]),
-          ),
-          RichText(
-            text: TextSpan(
-                text: 'Observacion: ',
-                style: styleSubtitulo,
-                children: [
-                  TextSpan(
-                      text: pedido.observacion ?? 'No registrado',
-                      style: styleTexto)
-                ]),
-          ),
-          RichText(
-            text: TextSpan(
-                text: 'Estado: ',
-                style: styleSubtitulo,
-                children: [TextSpan(text: pedido.estado, style: styleTexto)]),
-          ),
-          RichText(
-            text: TextSpan(
-                text: 'Creado el: ',
-                style: styleSubtitulo,
-                children: [
-                  TextSpan(text: pedido.fechaHora, style: styleTexto)
-                ]),
-          ),
+          TextProp(prop: 'Fecha:', text: pedido.getFechaFormateada()),
+          TextProp(prop: 'Hora:', text: pedido.getHora()),
+          TextProp(prop: 'Tipo:', text: pedido.tipoEntrega),
+          TextProp(prop: 'Total:', text: 'Bs.${pedido.total}'),
+          TextProp(prop: 'Observacion:', text: pedido.observacion ?? 'No registrado'),
+          TextProp(prop: 'Estado:', text: pedido.estado),
+          TextProp(prop: 'Creado el:', text: pedido.fechaHora),
         ],
       ),
     );
@@ -145,7 +101,7 @@ class PedidoDetallePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
               child: FadeInImage(
                 placeholder: AssetImage(pathLoading),
-                image: NetworkImage(detallePedido.producto.foto),
+                image: NetworkImage(detallePedido.producto.getPathImage()),
                 height: 60,
                 width: 60,
                 fit: BoxFit.cover,

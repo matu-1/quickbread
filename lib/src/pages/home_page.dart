@@ -4,11 +4,29 @@ import 'package:quickbread/src/pages/login_page.dart';
 import 'package:quickbread/src/pages/pedido_nuevos_.page.dart';
 import 'package:quickbread/src/pages/perfil_page.dart';
 import 'package:quickbread/src/pages/producto_page.dart';
+import 'package:quickbread/src/providers/push_notification_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static final routeName = 'home';
-  final TextStyle styleText =
-      TextStyle(fontSize: 20, height: 1.3);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final TextStyle styleText = TextStyle(fontSize: 20, height: 1.3);
+
+  @override
+  void initState() {
+    final pushProvider = new PushNotificationProvider();
+    pushProvider.initNotitication(onToken);
+    pushProvider.messageStream.listen((message) {
+      print(message);
+      if(message['type'] == 'onMessage')
+        showNotificationDialog(message['notification']);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,5 +115,23 @@ class HomePage extends StatelessWidget {
         break;
       default:
     }
+  }
+
+  void onToken(String token) {
+    print('token=' + token);
+  }
+
+  void showNotificationDialog(Map message) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text(message['title']),
+              content: Text(message['body']),
+              actions: [
+                FlatButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('CERRAR'))
+              ],
+            ));
   }
 }

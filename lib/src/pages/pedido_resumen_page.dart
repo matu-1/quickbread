@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickbread/src/constants/pages.dart';
-import 'package:quickbread/src/icons/my_icon_icons.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
+import 'package:quickbread/src/pages/login_page.dart';
 import 'package:quickbread/src/pages/pedido_ubicacion.dart';
+import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
+import 'package:quickbread/src/widgets/error_custom.dart';
 
 class PedidoResumenPage extends StatefulWidget {
   static final routeName = 'pedidoResumen';
@@ -16,6 +18,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
   final TextStyle styleTotal =
       TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
   bool _isDelete = false;
+  final _prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +44,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
 
   Widget _productoList(BuildContext context) {
     final detalles = Provider.of<PedidoModel>(context).detalles;
-    if (detalles.length == 0) return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(MyIcon.carritatriste, size: 120,),
-          Text('No tienes panes', style: TextStyle(fontSize: 16),)
-        ],
-      ),
-    );
+    if (detalles.length == 0) return ErrorCustom(message: 'No tienes panes');
 
     return ListView(
       children: [
@@ -92,7 +87,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
               borderRadius: BorderRadius.circular(40),
               child: FadeInImage(
                 placeholder: AssetImage(pathLoading),
-                image: NetworkImage(detallePedido.producto.foto),
+                image: NetworkImage(detallePedido.producto.getPathImage()),
                 height: 60,
                 width: 60,
                 fit: BoxFit.cover,
@@ -176,10 +171,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
             padding: EdgeInsets.symmetric(vertical: 15),
             textColor: Colors.white,
             color: Theme.of(context).primaryColor,
-            onPressed: !hasDetalles(context)
-                ? null
-                : () =>
-                    Navigator.of(context).pushNamed(PedidoUbicacion.routeName),
+            onPressed: !hasDetalles(context) ? null : _siguiente,
             child: Text('SIGUIENTE'),
             disabledColor: Theme.of(context).primaryColor.withOpacity(0.4),
             disabledTextColor: Colors.white,
@@ -190,14 +182,23 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
   }
 
   double getTotal(BuildContext context) {
-    final detalles = Provider.of<PedidoModel>(context).detalles;
+    final pedido = Provider.of<PedidoModel>(context);
     double total = 0;
-    detalles.forEach((x) => total += x.subtotal);
+    pedido.detalles.forEach((x) => total += x.subtotal);
+    pedido.total = total;
     return total;
   }
 
   bool hasDetalles(BuildContext context) {
     final detalles = Provider.of<PedidoModel>(context).detalles;
     return detalles.length > 0;
+  }
+
+  void _siguiente() {
+    if (_prefs.usuario == null) {
+      Navigator.of(context).pushNamed(LoginPage.routeName, arguments: true);
+      return;
+    }
+    Navigator.of(context).pushNamed(PedidoUbicacion.routeName);
   }
 }

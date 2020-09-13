@@ -34,6 +34,8 @@ dependencies:
   geolocator: ^6.0.0+3
   progress_dialog: ^1.2.4
   shared_preferences: ^0.5.10
+  firebase_messaging: ^7.0.0
+  http: ^0.12.2
 
 dev_dependencies:
   flutter_test:

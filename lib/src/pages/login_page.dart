@@ -115,6 +115,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _login(BuildContext context) async {
     if (!formKey.currentState.validate()) return;
+    final _isResumenPage = ModalRoute.of(context).settings.arguments;
     formKey.currentState.save();
     print(usuario.toJson());
   }

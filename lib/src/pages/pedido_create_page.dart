@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quickbread/src/models/pedido_model.dart';
+import 'package:quickbread/src/pages/home_page.dart';
+import 'package:quickbread/src/providers/pedido_provider.dart';
+import 'package:quickbread/src/utils/utils.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
 
 class PedidoCreatePage extends StatefulWidget {
@@ -16,10 +21,20 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
   TextEditingController _textFieldHora = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final styleTitulo = TextStyle(fontSize: 20, fontWeight: FontWeight.w600);
+  PedidoModel _pedido;
+  final _pedidoProvider = new PedidoProvider();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void didChangeDependencies() {
+    _pedido = Provider.of<PedidoModel>(context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Crear pedido'),
       ),
@@ -44,8 +59,7 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
                     height: 40,
                   ),
                   BotonCustom(
-                      titulo: 'ENVIAR PEDIDO',
-                      onPressed: _registrarPedido)
+                      titulo: 'ENVIAR PEDIDO', onPressed: _registrarPedido)
                 ],
               ),
             )),
@@ -69,7 +83,7 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
         if (value.length == 0) return 'La fecha es obligatoria';
         return null;
       },
-      onSaved: (value) => _fecha = value,
+      onSaved: (value) => _pedido.fecha = value,
     );
   }
 
@@ -88,34 +102,31 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
         if (value.length == 0) return 'La hora es obligatoria';
         return null;
       },
-      onSaved: (value) => _hora = value,
+      onSaved: (value) => _pedido.hora = value,
     );
   }
 
   Widget _selectTipo() {
     return DropdownButtonFormField(
-      value: _tipoId,
-      decoration: InputDecoration(
-        labelText: 'Tipo entrega *',
-        icon: Icon(Icons.directions_car)
-      ),
-      items: [
-        DropdownMenuItem(
-          child: Text('A domicilio'),
-          value: 1,
-        ),
-        DropdownMenuItem(
-          child: Text('Recoger al local'),
-          value: 2,
-        ),
-      ],
-      onSaved: (value) => setState(() => _tipoId = value),
-      onChanged: (value) => setState(() => _tipoId = value),
-      validator: (value) {
-        if (value == null) return 'El tipo es obligatoria';
-        return null;
-      }
-    );
+        value: _tipoId,
+        decoration: InputDecoration(
+            labelText: 'Tipo entrega *', icon: Icon(Icons.directions_car)),
+        items: [
+          DropdownMenuItem(
+            child: Text('A domicilio'),
+            value: 1,
+          ),
+          DropdownMenuItem(
+            child: Text('Recoger al local'),
+            value: 2,
+          ),
+        ],
+        onSaved: (value) => setState(() => _pedido.tipoEntregId = value),
+        onChanged: (value) => setState(() => _tipoId = value),
+        validator: (value) {
+          if (value == null) return 'El tipo es obligatoria';
+          return null;
+        });
   }
 
   void _selectDate(BuildContext context) async {
@@ -146,13 +157,16 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
     }
   }
 
-  void _registrarPedido() {
+  void _registrarPedido() async {
     if (!formKey.currentState.validate()) return;
     formKey.currentState.save();
-
-    print(_fecha);
-    print(_hora);
-    print(_tipoId);
+    try {
+      await _pedidoProvider.create(_pedido);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(HomePage.routeName, (route) => false);
+    } catch (e) {
+      showSnackbar(e.message, _scaffoldKey);
+    }
   }
 
   bool isValid() {

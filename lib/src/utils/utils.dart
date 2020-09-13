@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:quickbread/src/constants/fecha.dart';
 
 bool isEmail(String texto) {
@@ -20,3 +21,14 @@ bool isNumeric(String s) {
 String getFecha(DateTime fecha) {
   return '${dias[fecha.weekday - 1]}, ${fecha.day} de ${meses[fecha.month - 1]} del ${fecha.year}';
 }
+
+void showSnackbar(String message, GlobalKey<ScaffoldState> scaffoldKey) {
+  scaffoldKey.currentState.showSnackBar(SnackBar(
+    content: Text(message),
+    duration: Duration(seconds: 2),
+  ));
+}
+
+String apiParam(String route, dynamic param) {
+    return route.replaceAll(':id', param.toString());
+  }

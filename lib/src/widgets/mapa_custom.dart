@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class MapCustom extends StatefulWidget {
   final Function(LatLng) onMove;
@@ -14,6 +15,14 @@ class _MapCustomState extends State<MapCustom> {
   final _origen = LatLng(-17.850553, -63.113256);
   GoogleMapController _mapController;
   LatLng _myUbicacion = LatLng(-17.844980, -63.111379);
+  ProgressDialog _pr;
+
+  @override
+  void didChangeDependencies() {
+    _pr = new ProgressDialog(context, isDismissible: false);
+    _pr.style(message: 'Espere por favor');
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +62,9 @@ class _MapCustomState extends State<MapCustom> {
   Set<Marker> _markerCreate() {
     Set<Marker> marker = new Set();
     marker.add(Marker(
-        markerId: MarkerId('sabe'),
+        markerId: MarkerId('myubicacion'),
         position: _myUbicacion,
-        icon:
-            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet)));
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet)));
     return marker;
   }
 
@@ -66,14 +74,18 @@ class _MapCustomState extends State<MapCustom> {
   }
 
   void _myLocation() async {
+    _pr.show();
     try {
       Position position =
           await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       LatLng latlng = LatLng(position.latitude, position.longitude);
-      print(latlng);
       _mapController.animateCamera(CameraUpdate.newLatLng(latlng));
+      _pr.hide();
     } catch (e) {
       print('Ups ocurrio un error');
+      Future.delayed(Duration(milliseconds: 200), () {
+        _pr.hide();
+      });
     }
   }
 }

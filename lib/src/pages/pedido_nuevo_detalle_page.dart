@@ -4,12 +4,14 @@ import 'package:quickbread/src/constants/pages.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/mapa_page.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
+import 'package:quickbread/src/widgets/text_prop.dart';
 
 class PedidoNuevoDetallePage extends StatelessWidget {
   static final routeName = 'pedidoNuevoDetalle';
   final TextStyle styleTotal =
       TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
-  final styleTitulo = TextStyle(fontSize: sizeTitulo, fontWeight: FontWeight.w600);
+  final styleTitulo =
+      TextStyle(fontSize: sizeTitulo, fontWeight: FontWeight.w600);
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +22,10 @@ class PedidoNuevoDetallePage extends StatelessWidget {
         title: Text(pedido.cliente.nombre),
       ),
       body: SingleChildScrollView(
-        child: Column(  
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _contenido(pedido),
+            _pedido(pedido),
             _divider(),
             _cliente(pedido),
             _divider(),
@@ -42,14 +44,6 @@ class PedidoNuevoDetallePage extends StatelessWidget {
   }
 
   Widget _cliente(PedidoModel pedido) {
-    final styleSubtitulo = TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        height: 1.5,
-        color: Colors.black);
-    final styleTexto =
-        TextStyle(height: 1.5, fontSize: 14, fontWeight: FontWeight.normal);
-
     return Container(
       padding: EdgeInsets.all(padding),
       child: Column(
@@ -62,34 +56,14 @@ class PedidoNuevoDetallePage extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          RichText(
-            text: TextSpan(text: 'Nombre: ', style: styleSubtitulo, children: [
-              TextSpan(text: pedido.cliente.getFullName(), style: styleTexto)
-            ]),
-          ),
-          RichText(
-            text: TextSpan(
-                text: 'Telefono celular: ',
-                style: styleSubtitulo,
-                children: [
-                  TextSpan(
-                      text: pedido.cliente.telefonoCelular, style: styleTexto)
-                ]),
-          ),
+          TextProp(prop: 'Nombre:', text: pedido.cliente.getFullName()),
+          TextProp(prop: 'Telefono celular:', text: pedido.cliente.telefonoCelular),
         ],
       ),
     );
   }
 
   Widget _ubicacion(PedidoModel pedido, BuildContext context) {
-    final styleSubtitulo = TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        height: 1.5,
-        color: Colors.black);
-    final styleTexto =
-        TextStyle(height: 1.5, fontSize: 14, fontWeight: FontWeight.normal);
-
     return Container(
       padding: EdgeInsets.all(padding),
       child: Column(
@@ -102,19 +76,8 @@ class PedidoNuevoDetallePage extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          RichText(
-            text: TextSpan(
-                text: 'Calle y numero: ',
-                style: styleSubtitulo,
-                children: [
-                  TextSpan(text: pedido.direccion, style: styleTexto)
-                ]),
-          ),
-          RichText(
-            text: TextSpan(text: 'Referencia: ', style: styleSubtitulo, children: [
-              TextSpan(text: pedido.referencia, style: styleTexto)
-            ]),
-          ),
+          TextProp(prop: 'Calle y numero:', text: pedido.direccion),
+          TextProp(prop: 'Referencia:', text: pedido.referencia),
           SizedBox(
             height: 10,
           ),
@@ -129,15 +92,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
     );
   }
 
-  Widget _contenido(PedidoModel pedido) {
-    final styleSubtitulo = TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        height: 1.5,
-        color: Colors.black);
-    final styleTexto =
-        TextStyle(height: 1.5, fontSize: 14, fontWeight: FontWeight.normal);
-
+  Widget _pedido(PedidoModel pedido) {
     return Container(
       padding: EdgeInsets.all(padding),
       child: Column(
@@ -150,48 +105,15 @@ class PedidoNuevoDetallePage extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          RichText(
-            text: TextSpan(text: 'Fecha: ', style: styleSubtitulo, children: [
-              TextSpan(text: pedido.getFechaFormateada(), style: styleTexto)
-            ]),
-          ),
-          RichText(
-            text: TextSpan(text: 'Hora: ', style: styleSubtitulo, children: [
-              TextSpan(text: pedido.getHora(), style: styleTexto)
-            ]),
-          ),
-          RichText(
-            text: TextSpan(text: 'Tipo: ', style: styleSubtitulo, children: [
-              TextSpan(text: pedido.tipoEntrega, style: styleTexto)
-            ]),
-          ),
-          RichText(
-            text: TextSpan(
-                text: 'Total: ',
-                style: styleSubtitulo,
-                children: [TextSpan(text: 'Bs.${pedido.total}', style: styleTexto)]),
-          ),
-          RichText(
-            text: TextSpan(
-                text: 'Observacion: ',
-                style: styleSubtitulo,
-                children: [
-                  TextSpan(
-                      text: pedido.observacion ?? 'No registrado',
-                      style: styleTexto)
-                ]),
-          ),
-          RichText(
-            text: TextSpan(
-                text: 'Estado: ',
-                style: styleSubtitulo,
-                children: [TextSpan(text: pedido.estado, style: styleTexto)]),
-          ),
-          RichText(
-            text: TextSpan(text: 'Creado el: ', style: styleSubtitulo, children: [
-              TextSpan(text: pedido.fechaHora, style: styleTexto)
-            ]),
-          ),
+          TextProp(prop: 'Fecha:', text: pedido.getFechaFormateada()),
+          TextProp(prop: 'Hora:', text: pedido.getHora()),
+          TextProp(prop: 'Tipo:', text: pedido.tipoEntrega),
+          TextProp(prop: 'Total:', text: 'Bs.${pedido.total}'),
+          TextProp(
+              prop: 'Observacion:',
+              text: pedido.observacion ?? 'No registrado'),
+          TextProp(prop: 'Estado:', text: pedido.estado),
+          TextProp(prop: 'Creado el:', text: pedido.fechaHora),
         ],
       ),
     );
@@ -199,12 +121,12 @@ class PedidoNuevoDetallePage extends StatelessWidget {
 
   Padding _divider() {
     return Padding(
-          padding: EdgeInsets.symmetric(horizontal: padding),
-          child: Divider(
-            height: 1,
-            color: Colors.grey[350],
-          ),
-        );
+      padding: EdgeInsets.symmetric(horizontal: padding),
+      child: Divider(
+        height: 1,
+        color: Colors.grey[350],
+      ),
+    );
   }
 
   Widget _productoList(BuildContext context, PedidoModel pedido) {
@@ -215,10 +137,10 @@ class PedidoNuevoDetallePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Text(
-              'Productos',
-              style: styleTitulo,
-            ),
+          Text(
+            'Productos',
+            style: styleTitulo,
+          ),
           ...detalles.map((detalle) => _productoBox(detalle, context)),
         ],
       ),

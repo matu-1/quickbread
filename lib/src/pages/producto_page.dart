@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickbread/src/constants/pages.dart';
-import 'package:quickbread/src/constants/productos.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/producto_model.dart';
 import 'package:quickbread/src/pages/pedido_resumen_page.dart';
 import 'package:quickbread/src/pages/producto_detalle_page.dart';
+import 'package:quickbread/src/providers/producto_provider.dart';
+import 'package:quickbread/src/widgets/error_custom.dart';
 
 class ProductoPage extends StatelessWidget {
   static final routeName = 'producto';
+  final _productoProvider = new ProductoProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +26,30 @@ class ProductoPage extends StatelessWidget {
   }
 
   Widget _productoList() {
-    List<ProductoModel> productos = productosFromJsonList(productosData);
+    // List<ProductoModel> productos = productosFromJsonList(productosData);
+    return FutureBuilder(
+      future: _productoProvider.getAll(),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<ProductoModel>> snapshot) {
+        if (snapshot.hasData) {
+          List<ProductoModel> productos = snapshot.data;
 
-    return ListView.builder(
-      itemCount: productos.length,
-      itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          child: _productoBox(productos[index]),
-          onTap: () => Navigator.of(context).pushNamed(
-              ProductoDetallePage.routeName,
-              arguments: productos[index]),
+          return ListView.builder(
+            itemCount: productos.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                child: _productoBox(productos[index]),
+                onTap: () => Navigator.of(context).pushNamed(
+                    ProductoDetallePage.routeName,
+                    arguments: productos[index]),
+              );
+            },
+          );
+        } else if (snapshot.hasError) {
+          return ErrorCustom(message: '${snapshot.error}'.substring(11));
+        }
+        return Center(
+          child: CircularProgressIndicator(),
         );
       },
     );
@@ -58,7 +74,7 @@ class ProductoPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(40),
                 child: FadeInImage(
                   placeholder: AssetImage(pathLoading),
-                  image: NetworkImage(producto.foto),
+                  image: NetworkImage(producto.getPathImage()),
                   height: 80,
                   width: 80,
                   fit: BoxFit.cover,
@@ -81,7 +97,9 @@ class ProductoPage extends StatelessWidget {
                     style: styleTexto,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Text(
                     producto.getPrecio(),
                     style: stylePrecio,

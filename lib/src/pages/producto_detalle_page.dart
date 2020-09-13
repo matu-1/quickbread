@@ -64,7 +64,7 @@ class ProductoDetallePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           child: FadeInImage(
             placeholder: AssetImage(pathLoadingLong),
-            image: NetworkImage(producto.foto),
+            image: NetworkImage(producto.getPathImage()),
             height: 280,
             width: double.infinity,
             fit: BoxFit.cover,

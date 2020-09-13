@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "447226635643",
+    "firebase_url": "https://flotter-curso-cb472.firebaseio.com",
+    "project_id": "flotter-curso-cb472",
+    "storage_bucket": "flotter-curso-cb472.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447226635643:android:18fb4e138f50782c3ac9de",
+        "android_client_info": {
+          "package_name": "com.example.mapa_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447226635643-qqpclu4ebr51hcic1lnc6f6l8unp51ev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkqSINrNh77HY7_cldRu3kNtADwfxDH1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447226635643-qqpclu4ebr51hcic1lnc6f6l8unp51ev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447226635643:android:1b1da219136becde3ac9de",
+        "android_client_info": {
+          "package_name": "com.quickbread.quickbread"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447226635643-qqpclu4ebr51hcic1lnc6f6l8unp51ev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkqSINrNh77HY7_cldRu3kNtADwfxDH1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447226635643-qqpclu4ebr51hcic1lnc6f6l8unp51ev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

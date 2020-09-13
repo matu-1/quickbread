@@ -14,7 +14,7 @@ class PedidoUbicacion extends StatefulWidget {
 }
 
 class _PedidoUbicacionState extends State<PedidoUbicacion> {
-  LatLng _miUbicacion = LatLng(-17.846783, -63.112505);
+  LatLng _miUbicacion;
   final styleTitulo = TextStyle(fontSize: 20, fontWeight: FontWeight.w600);
   final formKey = GlobalKey<FormState>();
   PedidoModel _pedido;
@@ -22,7 +22,6 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
   @override
   void initState() {
     super.initState();
-    // _myLocation();
   }
 
   @override
@@ -41,9 +40,6 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
         child: Column(
           children: [
             _contenedorMapa(),
-            SizedBox(
-              height: 10,
-            ),
             _formulario(),
           ],
         ),
@@ -60,23 +56,17 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
           children: <Widget>[
             TextFormField(
               decoration: InputDecoration(
-                labelText: 'Calle y numero *',
-                fillColor: Colors.grey[100],
-                filled: true,
-              ),
+                  labelText: 'Calle y numero *', hintText: 'Ej. Paurito 23'),
               onSaved: (value) => _pedido.direccion = value,
               validator: (value) {
                 if (value.length > 0) return null;
                 return 'Es obligatorio';
               },
             ),
-            SizedBox(height: 20),
             TextFormField(
               decoration: InputDecoration(
-                labelText: 'Referencia *',
-                fillColor: Colors.grey[100],
-                filled: true,
-              ),
+                  labelText: 'Referencia *',
+                  hintText: 'Ej. casa azul al lado de la cancha'),
               onSaved: (value) => _pedido.referencia = value,
               validator: (value) {
                 if (value.length > 0) return null;
@@ -86,7 +76,7 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
             SizedBox(height: 40),
             BotonCustom(
               titulo: 'SIGUIENTE',
-              onPressed: () => _siguiente(context),
+              onPressed: _siguiente,
             )
           ],
         ),
@@ -106,10 +96,11 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
     );
   }
 
-  void _siguiente(BuildContext context) async {
+  void _siguiente() async {
     if (!formKey.currentState.validate()) return;
-    Navigator.of(context).pushNamed(PedidoCreatePage.routeName);
     formKey.currentState.save();
-    print(_pedido.direccion);
+    _pedido.coordenada = _miUbicacion.toString();
+    Navigator.of(context).pushNamed(PedidoCreatePage.routeName);
   }
 }
+

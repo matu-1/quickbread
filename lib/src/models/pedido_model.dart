@@ -20,6 +20,7 @@ class PedidoModel with ChangeNotifier {
   String estado;
   double total;
   String fechaHora;
+  int clienteId;
   List<DetallePedidoModel> detalles;
   ClienteModel cliente;
 
@@ -34,15 +35,16 @@ class PedidoModel with ChangeNotifier {
     this.tipoEntregId,
     this.tipoEntrega,
     this.observacion,
-    this.estado,
+    this.estado = 'en espera',
     this.total,
     this.fechaHora,
+    this.clienteId,
     this.cliente,
     this.detalles,
   });
 
   factory PedidoModel.fromJson(Map json) => PedidoModel(
-        id: json['id'],
+        id: json['idpedido'],
         tiempoEntrega: json['tiempo_entrega'],
         fecha: json['fecha'],
         hora: json['hora'],
@@ -51,13 +53,29 @@ class PedidoModel with ChangeNotifier {
         referencia: json['referencia'],
         observacion: json['observacion'],
         estado: json['estado'],
-        total: json['total'],
+        total: double.parse(json['total']),
         tipoEntrega: json['tipo_entrega'],
         fechaHora: json['fecha_hora'],
         cliente: ClienteModel.fromJson(json['cliente']),
         detalles: List<DetallePedidoModel>.from(
             json['detalles'].map((x) => DetallePedidoModel.fromJson(x))),
       );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "fecha": fecha,
+        "hora": hora,
+        "coordenada": coordenada,
+        "direccion": direccion,
+        "referencia": referencia,
+        "observacion": observacion,
+        "estado": estado,
+        "fkidtipo_entrega": tipoEntregId,
+        "fecha_hora": fechaHora,
+        "fkidcliente": clienteId,
+        "total": total,
+        "detalles": DetallePedidoModel.listToJson(detalles)
+      };
 
   void add(DetallePedidoModel detalle) {
     detalles.add(detalle);
@@ -70,7 +88,8 @@ class PedidoModel with ChangeNotifier {
   }
 
   bool existProducto(ProductoModel producto) {
-    final productoFinded = this.detalles.where((x) => x.producto.id == producto.id);
+    final productoFinded =
+        this.detalles.where((x) => x.producto.id == producto.id);
     print(productoFinded.length);
     return productoFinded.length > 0;
   }
@@ -107,4 +126,13 @@ class DetallePedidoModel {
   String getSubtotal() {
     return 'Bs.${this.cantidad * this.producto.precio}';
   }
+
+  Map<String, dynamic> toJson() => {
+        "idproducto": producto.id,
+        "cantidad": cantidad,
+        "precio": producto.precio,
+      };
+
+  static List<Map<String, dynamic>> listToJson(List<DetallePedidoModel> detalles) =>
+    detalles.map((x) => x.toJson()).toList(); 
 }
