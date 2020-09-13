@@ -8,7 +8,6 @@ UsuarioModel usuarioModelFromJson(String str) =>
     UsuarioModel.fromJson(json.decode(str));
 
 String usuarioModelToJson(UsuarioModel data) => json.encode(data.toJson());
-
 class UsuarioModel {
   int id;
   String ci;
@@ -19,6 +18,7 @@ class UsuarioModel {
   String email;
   String password;
   String rol;
+  String token;
 
   UsuarioModel({
     this.id,
@@ -30,6 +30,7 @@ class UsuarioModel {
     this.email,
     this.password,
     this.rol = 'cliente',
+    this.token,
   });
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) => UsuarioModel(
@@ -54,6 +55,7 @@ class UsuarioModel {
         "email": email,
         "password": password,
         "rol": rol,
+        'token': token
       };
 
   String getFullName() => '${this.nombre} $apellido';

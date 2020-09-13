@@ -61,4 +61,18 @@ class PedidoProvider {
       throw Exception(MessageException.dbConection);
     }
   }
+
+  Future<Map> setEntregado(int id) async {
+    try {
+      final response = await http.get(apiParam(Api.pedidoSetEntregado, id));
+      final respJson = json.decode(response.body);
+      if (response.statusCode == 200) {
+        return respJson;
+      } else {
+        throw Exception(respJson['message']);
+      }
+    } catch (e) {
+      throw Exception(MessageException.dbConection);
+    }
+  }
 }

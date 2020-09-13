@@ -39,6 +39,15 @@ class PreferenciasUsuario {
     _prefs.setString('usuario', usuarioModelToJson(usuario));
   }
 
+  // GET y SET del token
+  String get token {
+    return _prefs.getString('token');
+  }
+
+  set token(String token) {
+    _prefs.setString('token', token);
+  }
+
   // devuelve la pagina de inicio cuando esta logeado o no
   String paginaInicio() {
     if (_prefs.getString('usuario') != null) {

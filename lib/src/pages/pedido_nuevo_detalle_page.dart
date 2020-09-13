@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:quickbread/src/constants/pages.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
+import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/pages/mapa_page.dart';
+import 'package:quickbread/src/pages/pedido_nuevos_.page.dart';
+import 'package:quickbread/src/providers/pedido_provider.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
 import 'package:quickbread/src/widgets/text_prop.dart';
+import 'package:quickbread/src/utils/utils.dart' as utils;
 
 class PedidoNuevoDetallePage extends StatelessWidget {
   static final routeName = 'pedidoNuevoDetalle';
@@ -12,12 +17,16 @@ class PedidoNuevoDetallePage extends StatelessWidget {
       TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
   final styleTitulo =
       TextStyle(fontSize: sizeTitulo, fontWeight: FontWeight.w600);
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     PedidoModel pedido = ModalRoute.of(context).settings.arguments;
+    final pr = new ProgressDialog(context, isDismissible: false);
+    pr.style(message: 'Espere por favor');
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(pedido.cliente.nombre),
       ),
@@ -40,7 +49,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.check),
-          onPressed: () => _showConfirmDialog(context)),
+          onPressed: () => _showConfirmDialog(context, pr, pedido)),
     );
   }
 
@@ -214,7 +223,8 @@ class PedidoNuevoDetallePage extends StatelessWidget {
         builder: (BuildContext context) => MapaPage(coordenada: coordenada)));
   }
 
-  void _showConfirmDialog(BuildContext context) {
+  void _showConfirmDialog(
+      BuildContext context, ProgressDialog pr, PedidoModel pedido) {
     final styleBtnText = TextStyle(color: Theme.of(context).primaryColor);
     showDialog(
         context: context,
@@ -229,9 +239,26 @@ class PedidoNuevoDetallePage extends StatelessWidget {
                       style: styleBtnText,
                     )),
                 FlatButton(
-                    onPressed: () {},
+                    onPressed: () => setEntregado(pr, pedido, context),
                     child: Text('GUARDAR', style: styleBtnText)),
               ],
             ));
+  }
+
+  void setEntregado(
+      ProgressDialog pr, PedidoModel pedido, BuildContext context) async {
+    final pedidoProvider = new PedidoProvider();
+    Navigator.of(context).pop();
+    pr.show();
+    try {
+      print(pedido.id);
+      await pedidoProvider.setEntregado(pedido.id);
+      pr.hide();
+      Navigator.of(_scaffoldKey.currentContext)
+          .pushNamedAndRemoveUntil(PedidoNuevoPage.routeName, ModalRoute.withName(HomePage.routeName));
+    } catch (e) {
+      pr.hide();
+      utils.showSnackbar(e.message, _scaffoldKey);
+    }
   }
 }

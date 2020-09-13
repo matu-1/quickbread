@@ -10,6 +10,7 @@ class UsuarioProvider {
   final _pref = new PreferenciasUsuario();
 
   Future<Map> create(UsuarioModel usuario) async {
+    usuario.token = _pref.token;
     try {
       final response = await http
           .post(Api.clienteCreate, body: json.encode(usuario), headers: {

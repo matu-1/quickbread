@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     pushProvider.initNotitication(onToken);
     pushProvider.messageStream.listen((message) {
       print(message);
-      if(message['type'] == 'onMessage')
+      if (message['type'] == 'onMessage')
         showNotificationDialog(message['notification']);
     });
     super.initState();
@@ -56,8 +56,8 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 40,
             ),
-            if(( _prefs.usuario?.rol == 'cliente') || _prefs.usuario == null)
-            _btnCrearPedido(context),
+            if ((_prefs.usuario?.rol == 'cliente') || _prefs.usuario == null)
+              _btnCrearPedido(context),
           ],
         ),
       ),
@@ -81,6 +81,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onToken(String token) {
+    final prefs = new PreferenciasUsuario();
+    prefs.token = token;
     print('token=' + token);
   }
 

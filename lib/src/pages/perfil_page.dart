@@ -20,8 +20,8 @@ class _PerfilPageState extends State<PerfilPage> {
       body: _cargarPagina(),
       bottomNavigationBar: _contenedorBottonNavigationBar(),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
-        child: currentIndex == 0? Icon(Icons.refresh): Icon(Icons.edit),
+        onPressed: () {},
+        child: currentIndex == 0 ? Icon(Icons.edit) : Icon(Icons.refresh),
       ),
     );
   }
@@ -30,7 +30,7 @@ class _PerfilPageState extends State<PerfilPage> {
     return BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {
-          setState(() => currentIndex = index );
+          setState(() => currentIndex = index);
         },
         items: [
           BottomNavigationBarItem(

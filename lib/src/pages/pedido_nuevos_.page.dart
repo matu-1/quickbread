@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quickbread/src/constants/pages.dart';
-import 'package:quickbread/src/constants/pedidos.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/pedido_nuevo_detalle_page.dart';
 import 'package:quickbread/src/providers/pedido_provider.dart';
@@ -9,19 +8,25 @@ import 'package:quickbread/src/widgets/error_custom.dart';
 
 class PedidoNuevoPage extends StatelessWidget {
   static final routeName = 'pedidoNuevo';
-   final _pedidoProvider = new PedidoProvider();
+  final _pedidoProvider = new PedidoProvider();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pedidos'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () => Navigator.pushReplacementNamed(
+                  context, PedidoNuevoPage.routeName))
+        ],
       ),
       body: _pedidoList(),
     );
   }
 
-    Widget _pedidoList() {
+  Widget _pedidoList() {
     // List<PedidoModel> pedidos = pedidosFromJsonList(pedidosData);
     return FutureBuilder(
       future: _pedidoProvider.getAll(),
@@ -29,6 +34,10 @@ class PedidoNuevoPage extends StatelessWidget {
           (BuildContext context, AsyncSnapshot<List<PedidoModel>> snapshot) {
         if (snapshot.hasData) {
           final pedidos = snapshot.data;
+
+          if (pedidos.length == 0)
+            return ErrorCustom(message: 'No hay registros');
+            
           return ListView.builder(
             itemCount: pedidos.length,
             itemBuilder: (BuildContext context, int index) {
@@ -107,7 +116,8 @@ class PedidoNuevoPage extends StatelessWidget {
                     height: 5,
                   ),
                   ChipCustom(
-                      value: 'En espera', color: Theme.of(context).accentColor),
+                      value: pedido.estado,
+                      color: Theme.of(context).accentColor),
                   Container(
                     alignment: Alignment.topRight,
                     child: Text(

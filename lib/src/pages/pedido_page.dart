@@ -28,6 +28,9 @@ class PedidoPage extends StatelessWidget {
           (BuildContext context, AsyncSnapshot<List<PedidoModel>> snapshot) {
         if (snapshot.hasData) {
           final pedidos = snapshot.data;
+
+          if (pedidos.length == 0)
+            return ErrorCustom(message: 'No hay registros');
           return ListView.builder(
             itemCount: pedidos.length,
             itemBuilder: (BuildContext context, int index) {
