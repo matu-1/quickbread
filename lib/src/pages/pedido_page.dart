@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:quickbread/src/constants/pages.dart';
-import 'package:quickbread/src/constants/pedidos.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/pedido_detalle_page.dart';
 import 'package:quickbread/src/providers/pedido_provider.dart';
+import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/widgets/chip_custom.dart';
 import 'package:quickbread/src/widgets/error_custom.dart';
 
 class PedidoPage extends StatelessWidget {
   final _pedidoProvider = new PedidoProvider();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,6 +19,9 @@ class PedidoPage extends StatelessWidget {
 
   Widget _pedidoList() {
     // List<PedidoModel> pedidos = pedidosFromJsonList(pedidosData);
+    final _prefs = new PreferenciasUsuario();
+    if (_prefs.usuario.rol != 'cliente')
+      return ErrorCustom(message: 'Debe ingresar como un cliente');
     return FutureBuilder(
       future: _pedidoProvider.getByCliente(),
       builder:

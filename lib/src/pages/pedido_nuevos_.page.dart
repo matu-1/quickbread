@@ -3,10 +3,13 @@ import 'package:quickbread/src/constants/pages.dart';
 import 'package:quickbread/src/constants/pedidos.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/pedido_nuevo_detalle_page.dart';
+import 'package:quickbread/src/providers/pedido_provider.dart';
 import 'package:quickbread/src/widgets/chip_custom.dart';
+import 'package:quickbread/src/widgets/error_custom.dart';
 
 class PedidoNuevoPage extends StatelessWidget {
   static final routeName = 'pedidoNuevo';
+   final _pedidoProvider = new PedidoProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -18,18 +21,32 @@ class PedidoNuevoPage extends StatelessWidget {
     );
   }
 
-  Widget _pedidoList() {
-    List<PedidoModel> pedidos = pedidosFromJsonList(pedidosData);
+    Widget _pedidoList() {
+    // List<PedidoModel> pedidos = pedidosFromJsonList(pedidosData);
+    return FutureBuilder(
+      future: _pedidoProvider.getAll(),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<PedidoModel>> snapshot) {
+        if (snapshot.hasData) {
+          final pedidos = snapshot.data;
+          return ListView.builder(
+            itemCount: pedidos.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                  onTap: () => Navigator.of(context).pushNamed(
+                      PedidoNuevoDetallePage.routeName,
+                      arguments: pedidos[index]),
+                  onLongPress: () => showAnularDialog(context),
+                  child: _pedidoBox(pedidos[index], context));
+            },
+          );
+        } else if (snapshot.hasError) {
+          return ErrorCustom(message: snapshot.error.toString());
+        }
 
-    return ListView.builder(
-      itemCount: pedidos.length,
-      itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-            onTap: () => Navigator.of(context).pushNamed(
-                PedidoNuevoDetallePage.routeName,
-                arguments: pedidos[index]),
-            onLongPress: () => showAnularDialog(context),
-            child: _pedidoBox(pedidos[index], context));
+        return Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }
@@ -57,7 +74,7 @@ class PedidoNuevoPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
               child: FadeInImage(
                 placeholder: AssetImage(pathLoading),
-                image: NetworkImage(pedido.detalles[0].producto.foto),
+                image: NetworkImage(pedido.detalles[0].producto.getPathImage()),
                 height: 80,
                 width: 80,
                 fit: BoxFit.cover,

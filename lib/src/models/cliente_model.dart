@@ -3,6 +3,7 @@ List<ClienteModel> clientesFromJsonList(List jsonList) =>
 
 class ClienteModel {
   int id;
+  String ci;
   String nombre;
   String apellido;
   String telefonoCelular;

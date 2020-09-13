@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/pages/login_page.dart';
+import 'package:quickbread/src/providers/usuario_provider.dart';
 import 'package:quickbread/src/utils/utils.dart' as utils;
 import 'package:quickbread/src/models/usuario_model.dart';
 import 'package:quickbread/src/widgets/TextFormFieldSample.dart';
@@ -18,6 +20,7 @@ class _RegistroPageState extends State<RegistroPage> {
   ProgressDialog _pr;
   bool _isOcultado = true;
   final formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +28,7 @@ class _RegistroPageState extends State<RegistroPage> {
     _pr.style(message: 'Espere por favor');
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Crear cuenta'),
@@ -123,8 +127,7 @@ class _RegistroPageState extends State<RegistroPage> {
           },
           obscureText: _isOcultado,
           suffixIcon: IconButton(
-            icon:
-                Icon((_isOcultado) ? Icons.visibility : Icons.visibility_off),
+            icon: Icon((_isOcultado) ? Icons.visibility : Icons.visibility_off),
             onPressed: () => setState(() => _isOcultado = !_isOcultado),
           ),
           onSaved: (value) => _usuario.password = value,
@@ -154,8 +157,18 @@ class _RegistroPageState extends State<RegistroPage> {
   }
 
   void _registrarUsuario(BuildContext context) async {
+    final _usuarioProvider = new UsuarioProvider();
     if (!formKey.currentState.validate()) return;
     formKey.currentState.save();
-    print(_usuario.toJson());
+    _pr.show();
+    try {
+      await _usuarioProvider.create(_usuario);
+      _pr.hide();
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(HomePage.routeName, (Route route) => false);
+    } catch (e) {
+      _pr.hide();
+      utils.showSnackbar(e.message, _scaffoldKey);
+    }
   }
 }

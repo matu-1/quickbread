@@ -5,6 +5,8 @@ import 'package:quickbread/src/pages/pedido_nuevos_.page.dart';
 import 'package:quickbread/src/pages/perfil_page.dart';
 import 'package:quickbread/src/pages/producto_page.dart';
 import 'package:quickbread/src/providers/push_notification_provider.dart';
+import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
+import 'package:quickbread/src/widgets/drawer_navigation.dart';
 
 class HomePage extends StatefulWidget {
   static final routeName = 'home';
@@ -15,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextStyle styleText = TextStyle(fontSize: 20, height: 1.3);
+  final _prefs = new PreferenciasUsuario();
 
   @override
   void initState() {
@@ -33,30 +36,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('QuickBread'),
-        actions: [
-          PopupMenuButton(
-              onSelected: (value) => _selectedPopuMenu(value, context),
-              itemBuilder: (_) {
-                return [
-                  PopupMenuItem(
-                    child: Text('Iniciar sesion'),
-                    value: 1,
-                  ),
-                  PopupMenuItem(
-                    child: Text('Perfil'),
-                    value: 2,
-                  ),
-                  PopupMenuItem(
-                    child: Text('Ayuda'),
-                    value: 3,
-                  ),
-                  PopupMenuItem(
-                    child: Text('Repartidor'),
-                    value: 4,
-                  ),
-                ];
-              })
-        ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -77,10 +56,12 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 40,
             ),
+            if(( _prefs.usuario?.rol == 'cliente') || _prefs.usuario == null)
             _btnCrearPedido(context),
           ],
         ),
       ),
+      drawer: DrawerNavigation(),
     );
   }
 
@@ -97,24 +78,6 @@ class _HomePageState extends State<HomePage> {
         child: Text('CREAR PEDIDO'),
       ),
     );
-  }
-
-  void _selectedPopuMenu(value, BuildContext context) {
-    switch (value) {
-      case 1:
-        Navigator.of(context).pushNamed(LoginPage.routeName);
-        break;
-      case 2:
-        Navigator.of(context).pushNamed(PerfilPage.routeName);
-        break;
-      case 3:
-        Navigator.of(context).pushNamed(AyudaPage.routeName);
-        break;
-      case 4:
-        Navigator.of(context).pushNamed(PedidoNuevoPage.routeName);
-        break;
-      default:
-    }
   }
 
   void onToken(String token) {

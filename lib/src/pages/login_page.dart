@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:quickbread/src/models/usuario_model.dart';
+import 'package:quickbread/src/pages/home_page.dart';
+import 'package:quickbread/src/pages/pedido_ubicacion.dart';
 import 'package:quickbread/src/pages/registro_page.dart';
+import 'package:quickbread/src/providers/usuario_provider.dart';
 import 'package:quickbread/src/utils/utils.dart' as utils;
 import 'package:quickbread/src/widgets/TextFormFieldSample.dart';
 import 'package:quickbread/src/widgets/boton_gradient.dart';
@@ -18,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   UsuarioModel usuario = new UsuarioModel();
   ProgressDialog pr;
   bool _isOcultado = true;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -29,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Form(
@@ -91,8 +96,8 @@ class _LoginPageState extends State<LoginPage> {
             },
             obscureText: _isOcultado,
             suffixIcon: IconButton(
-              icon: Icon(
-                  (_isOcultado) ? Icons.visibility : Icons.visibility_off),
+              icon:
+                  Icon((_isOcultado) ? Icons.visibility : Icons.visibility_off),
               onPressed: () => setState(() => _isOcultado = !_isOcultado),
             ),
             onSaved: (value) => usuario.password = value,
@@ -117,7 +122,19 @@ class _LoginPageState extends State<LoginPage> {
     if (!formKey.currentState.validate()) return;
     final _isResumenPage = ModalRoute.of(context).settings.arguments;
     formKey.currentState.save();
-    print(usuario.toJson());
+    final _usuarioProvider = new UsuarioProvider();
+    pr.show();
+    try {
+      await _usuarioProvider.login(usuario);
+      pr.hide();
+      if (_isResumenPage != null)
+        Navigator.of(context).pushReplacementNamed(PedidoUbicacion.routeName);
+      else
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            HomePage.routeName, (Route route) => false);
+    } catch (e) {
+      pr.hide();
+       utils.showSnackbar(e.message, _scaffoldKey);
+    }
   }
 }
-

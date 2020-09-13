@@ -34,18 +34,18 @@ class _PerfilPageState extends State<PerfilPage> {
         },
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), title: Text('Pedidos')),
-          BottomNavigationBarItem(
               icon: Icon(Icons.sentiment_satisfied), title: Text('Yo')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart), title: Text('Pedidos')),
         ]);
   }
 
   Widget _cargarPagina() {
     switch (currentIndex) {
       case 0:
-        return PedidoPage();
-      case 1:
         return YoPage();
+      case 1:
+        return PedidoPage();
       default:
         return YoPage();
     }

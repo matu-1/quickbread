@@ -38,8 +38,9 @@ class PedidoNuevoDetallePage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton:
-          FloatingActionButton(child: Icon(Icons.edit), onPressed: () {}),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.check),
+          onPressed: () => _showConfirmDialog(context)),
     );
   }
 
@@ -57,7 +58,8 @@ class PedidoNuevoDetallePage extends StatelessWidget {
             height: 5,
           ),
           TextProp(prop: 'Nombre:', text: pedido.cliente.getFullName()),
-          TextProp(prop: 'Telefono celular:', text: pedido.cliente.telefonoCelular),
+          TextProp(
+              prop: 'Telefono celular:', text: pedido.cliente.telefonoCelular),
         ],
       ),
     );
@@ -165,7 +167,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
               child: FadeInImage(
                 placeholder: AssetImage(pathLoading),
-                image: NetworkImage(detallePedido.producto.foto),
+                image: NetworkImage(detallePedido.producto.getPathImage()),
                 height: 60,
                 width: 60,
                 fit: BoxFit.cover,
@@ -210,5 +212,26 @@ class PedidoNuevoDetallePage extends StatelessWidget {
     LatLng coordenada = LatLng(num.parse(latLng[0]), num.parse(latLng[1]));
     Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => MapaPage(coordenada: coordenada)));
+  }
+
+  void _showConfirmDialog(BuildContext context) {
+    final styleBtnText = TextStyle(color: Theme.of(context).primaryColor);
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Marcar pedido'),
+              content: Text('Esta seguro de marcarlo como entregado?'),
+              actions: [
+                FlatButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(
+                      'CERRAR',
+                      style: styleBtnText,
+                    )),
+                FlatButton(
+                    onPressed: () {},
+                    child: Text('GUARDAR', style: styleBtnText)),
+              ],
+            ));
   }
 }

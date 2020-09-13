@@ -13,7 +13,7 @@ class ErrorCustom extends StatelessWidget {
         children: [
           Icon(
             MyIcon.carritatriste,
-            size: 120,
+            size: 100,
           ),
           Text(
             this.message,

@@ -4,18 +4,20 @@ import 'package:http/http.dart' as http;
 import 'package:quickbread/src/constants/service.dart';
 import 'package:quickbread/src/models/message_exception.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
-import 'package:quickbread/src/models/producto_model.dart';
+import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/utils/utils.dart';
 
 class PedidoProvider {
-  Future<List<ProductoModel>> getAll() async {
+  final _pref = new PreferenciasUsuario();
+
+  Future<List<PedidoModel>> getAll() async {
     try {
-      final response = await http.get(api['pedido']['listar']);
-      final data = json.decode(response.body);
+      final response = await http.get(Api.pedidoListar);
+      final respJson = json.decode(response.body);
       if (response.statusCode == 200) {
-        return productosFromJsonList(data['data']);
+        return pedidosFromJsonList(respJson['data']);
       } else {
-        throw Exception(data['message']);
+        throw Exception(respJson['message']);
       }
     } catch (e) {
       throw Exception(MessageException.dbConection);
@@ -23,9 +25,11 @@ class PedidoProvider {
   }
 
   Future<List<PedidoModel>> getByCliente() async {
-    print(apiParam(Api.pedidoByCliente, 1));
+    int clienteId = _pref.usuario.id;
+    print('id cliente');
+    print(clienteId);
     try {
-      final response = await http.get(apiParam(Api.pedidoByCliente, 1));
+      final response = await http.get(apiParam(Api.pedidoByCliente, clienteId));
       final respJson = json.decode(response.body);
       if (response.statusCode == 200) {
         return pedidosFromJsonList(respJson['data']);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickbread/src/pages/about_page.dart';
 import 'package:quickbread/src/pages/ayuda_page.dart';
 import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/pages/login_page.dart';
@@ -16,7 +17,8 @@ import 'package:quickbread/src/pages/registro_page.dart';
 final Map<String, WidgetBuilder> routes = {
   HomePage.routeName: (BuildContext context) => HomePage(),
   ProductoPage.routeName: (BuildContext context) => ProductoPage(),
-  ProductoDetallePage.routeName: (BuildContext context) => ProductoDetallePage(),
+  ProductoDetallePage.routeName: (BuildContext context) =>
+      ProductoDetallePage(),
   PedidoResumenPage.routeName: (BuildContext context) => PedidoResumenPage(),
   PedidoCreatePage.routeName: (BuildContext context) => PedidoCreatePage(),
   LoginPage.routeName: (BuildContext context) => LoginPage(),
@@ -26,5 +28,7 @@ final Map<String, WidgetBuilder> routes = {
   PedidoUbicacion.routeName: (BuildContext context) => PedidoUbicacion(),
   PedidoDetallePage.routeName: (BuildContext context) => PedidoDetallePage(),
   PedidoNuevoPage.routeName: (BuildContext context) => PedidoNuevoPage(),
-  PedidoNuevoDetallePage.routeName: (BuildContext context) => PedidoNuevoDetallePage(),
+  PedidoNuevoDetallePage.routeName: (BuildContext context) =>
+      PedidoNuevoDetallePage(),
+  AboutPage.routeName: (BuildContext context) => AboutPage(),
 };
