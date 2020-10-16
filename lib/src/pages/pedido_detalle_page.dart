@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quickbread/src/constants/pages.dart';
+import 'package:quickbread/src/constants/path.dart';
+import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/widgets/text_prop.dart';
 
@@ -32,7 +33,7 @@ class PedidoDetallePage extends StatelessWidget {
 
   Padding _divider() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: padding),
+      padding: EdgeInsets.symmetric(horizontal: paddingUI),
       child: Divider(
         height: 1,
         color: Colors.grey[350],
@@ -42,7 +43,7 @@ class PedidoDetallePage extends StatelessWidget {
 
   Widget _contenido(PedidoModel pedido) {
     return Container(
-      padding: EdgeInsets.all(padding),
+      padding: EdgeInsets.all(paddingUI),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -69,7 +70,7 @@ class PedidoDetallePage extends StatelessWidget {
     final detalles = pedido.detalles;
 
     return Padding(
-      padding: EdgeInsets.all(padding),
+      padding: EdgeInsets.all(paddingUI),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -90,7 +91,7 @@ class PedidoDetallePage extends StatelessWidget {
     final stylePrecio = TextStyle(height: 1.3);
 
     return Container(
-        padding: EdgeInsets.symmetric(vertical: padding),
+        padding: EdgeInsets.symmetric(vertical: paddingUI),
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(color: Colors.grey[300], width: 0.5))),

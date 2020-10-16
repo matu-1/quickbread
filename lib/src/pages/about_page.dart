@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quickbread/src/constants/pages.dart';
+import 'package:quickbread/src/constants/ui.dart';
 
 class AboutPage extends StatelessWidget {
   static final routeName = 'about';
@@ -14,7 +14,7 @@ class AboutPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(padding),
+          padding: EdgeInsets.all(paddingUI),
           child: Column(
             children: <Widget>[
               Image(

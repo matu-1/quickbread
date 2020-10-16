@@ -7,7 +7,7 @@ import 'package:quickbread/src/models/producto_model.dart';
 class ProductoProvider {
   Future<List<ProductoModel>> getAll() async {
     try {
-      final response = await http.get(api['producto']['listar']);
+      final response = await http.get(Api.productoListar);
       final data = json.decode(response.body);
       if (response.statusCode == 200) {
         return productosFromJsonList(data['data']);

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quickbread/src/pages/ayuda_page.dart';
-import 'package:quickbread/src/pages/login_page.dart';
-import 'package:quickbread/src/pages/pedido_nuevos_.page.dart';
-import 'package:quickbread/src/pages/perfil_page.dart';
+import 'package:quickbread/src/pages/pedido_ubicacion.dart';
 import 'package:quickbread/src/pages/producto_page.dart';
 import 'package:quickbread/src/providers/push_notification_provider.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
@@ -35,7 +32,19 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QuickBread'),
+        title: GestureDetector(
+          onTap: () => Navigator.of(context).pushNamed(PedidoUbicacion.routeName),
+          child: Row(
+            children: [
+              Text(
+                _prefs.ubicacion.direccion,
+                style: TextStyle(
+                    fontSize: 16, color: Theme.of(context).primaryColor),
+              ),
+              Icon(Icons.keyboard_arrow_down)
+            ],
+          ),
+        ),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15),

@@ -5,16 +5,20 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 class MapCustom extends StatefulWidget {
   final Function(LatLng) onMove;
-  MapCustom({@required this.onMove});
+  final LatLng initialPosition;
+  final bool showCurrentPosition;
+  MapCustom(
+      {@required this.onMove,
+      @required this.initialPosition,
+      this.showCurrentPosition = false});
 
   @override
   _MapCustomState createState() => _MapCustomState();
 }
 
 class _MapCustomState extends State<MapCustom> {
-  final _origen = LatLng(-17.850553, -63.113256);
   GoogleMapController _mapController;
-  LatLng _myUbicacion = LatLng(-17.844980, -63.111379);
+  LatLng _myUbicacion; //marcador
   ProgressDialog _pr;
 
   @override
@@ -25,11 +29,18 @@ class _MapCustomState extends State<MapCustom> {
   }
 
   @override
+  void initState() {
+    _myUbicacion = widget.initialPosition;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         GoogleMap(
-          initialCameraPosition: CameraPosition(target: _origen, zoom: 16.0),
+          initialCameraPosition:
+              CameraPosition(target: widget.initialPosition, zoom: 16.0),
           onMapCreated: _onMapCreated,
           compassEnabled: true,
           markers: _markerCreate(),
@@ -64,13 +75,14 @@ class _MapCustomState extends State<MapCustom> {
     marker.add(Marker(
         markerId: MarkerId('myubicacion'),
         position: _myUbicacion,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet)));
+        icon:
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet)));
     return marker;
   }
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
-    _myLocation();
+    if(widget.showCurrentPosition) _myLocation();
   }
 
   void _myLocation() async {

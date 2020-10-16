@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
@@ -24,6 +25,7 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
   PedidoModel _pedido;
   final _pedidoProvider = new PedidoProvider();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  ProgressDialog _pr;
 
   @override
   void didChangeDependencies() {
@@ -33,6 +35,9 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
 
   @override
   Widget build(BuildContext context) {
+    _pr = new ProgressDialog(context, isDismissible: false);
+    _pr.style(message: 'Espere por favor');
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -160,11 +165,14 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
   void _registrarPedido() async {
     if (!formKey.currentState.validate()) return;
     formKey.currentState.save();
+    _pr.show();
     try {
       await _pedidoProvider.create(_pedido);
+      _pr.hide();
       Navigator.of(context)
           .pushNamedAndRemoveUntil(HomePage.routeName, (route) => false);
     } catch (e) {
+      _pr.hide();
       showSnackbar(e.message, _scaffoldKey);
     }
   }

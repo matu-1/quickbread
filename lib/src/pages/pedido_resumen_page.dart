@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickbread/src/constants/pages.dart';
+import 'package:quickbread/src/constants/common_page.dart';
+import 'package:quickbread/src/constants/path.dart';
+import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/login_page.dart';
 import 'package:quickbread/src/pages/pedido_ubicacion.dart';
@@ -50,7 +52,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
       children: [
         ...detalles.map((detalle) => _productoBox(detalle, context)),
         Padding(
-          padding: EdgeInsets.all(padding),
+          padding: EdgeInsets.all(paddingUI),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -76,7 +78,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
     final stylePrecio = TextStyle(height: 1.3);
 
     return Container(
-        padding: EdgeInsets.all(padding),
+        padding: EdgeInsets.all(paddingUI),
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(color: Colors.grey[300], width: 0.5))),

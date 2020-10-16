@@ -133,6 +133,7 @@ class DetallePedidoModel {
         "precio": producto.precio,
       };
 
-  static List<Map<String, dynamic>> listToJson(List<DetallePedidoModel> detalles) =>
-    detalles.map((x) => x.toJson()).toList(); 
+  static List<Map<String, dynamic>> listToJson(
+          List<DetallePedidoModel> detalles) =>
+      detalles.map((x) => x.toJson()).toList();
 }

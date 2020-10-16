@@ -8,9 +8,11 @@
     Recuerden que el main() debe de ser async {...
 */
 
+import 'package:quickbread/src/models/ubicacion_model.dart';
 import 'package:quickbread/src/models/usuario_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/pages/login_page.dart';
+import 'package:quickbread/src/pages/pedido_ubicacion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
@@ -48,12 +50,22 @@ class PreferenciasUsuario {
     _prefs.setString('token', token);
   }
 
+  // GET y SET ubicacion
+  UbicacionModel get ubicacion {
+    if (_prefs.getString('ubicacion') == null) return null;
+    return UbicacionModel.ubicacionFromJson(_prefs.getString('ubicacion'));
+  }
+
+  set ubicacion(UbicacionModel ubicacion) {
+    _prefs.setString('ubicacion', UbicacionModel.ubicacionToJson(ubicacion));
+  }
+
   // devuelve la pagina de inicio cuando esta logeado o no
   String paginaInicio() {
-    if (_prefs.getString('usuario') != null) {
+    if (_prefs.getString('ubicacion') != null) {
       return HomePage.routeName;
     } else {
-      return LoginPage.routeName;
+      return PedidoUbicacion.routeName;
     }
   }
 

@@ -8,12 +8,3 @@ class Api {
   static final clienteCreate = host + '/mob/register';
   static final login = host + '/mob/login';
 }
-
-final api = {
-  'producto': {
-    'listar': host + '/web/producto',
-  },
-  'pedido': {
-    'listar': host + '/web/pedido',
-  }
-};

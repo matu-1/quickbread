@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:quickbread/src/constants/pages.dart';
+import 'package:quickbread/src/constants/path.dart';
+import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/pages/mapa_page.dart';
@@ -16,7 +17,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
   final TextStyle styleTotal =
       TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
   final styleTitulo =
-      TextStyle(fontSize: sizeTitulo, fontWeight: FontWeight.w600);
+      TextStyle(fontSize: sizeTituloUI, fontWeight: FontWeight.w600);
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -55,7 +56,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
 
   Widget _cliente(PedidoModel pedido) {
     return Container(
-      padding: EdgeInsets.all(padding),
+      padding: EdgeInsets.all(paddingUI),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -76,7 +77,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
 
   Widget _ubicacion(PedidoModel pedido, BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(padding),
+      padding: EdgeInsets.all(paddingUI),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -105,7 +106,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
 
   Widget _pedido(PedidoModel pedido) {
     return Container(
-      padding: EdgeInsets.all(padding),
+      padding: EdgeInsets.all(paddingUI),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -132,7 +133,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
 
   Padding _divider() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: padding),
+      padding: EdgeInsets.symmetric(horizontal: paddingUI),
       child: Divider(
         height: 1,
         color: Colors.grey[350],
@@ -144,7 +145,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
     final detalles = pedido.detalles;
 
     return Padding(
-      padding: EdgeInsets.all(padding),
+      padding: EdgeInsets.all(paddingUI),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -165,7 +166,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
     final stylePrecio = TextStyle(height: 1.3);
 
     return Container(
-        padding: EdgeInsets.symmetric(vertical: padding),
+        padding: EdgeInsets.symmetric(vertical: paddingUI),
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(color: Colors.grey[300], width: 0.5))),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickbread/src/constants/pages.dart';
+import 'package:quickbread/src/constants/path.dart';
+import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/producto_model.dart';
 import 'package:quickbread/src/pages/pedido_resumen_page.dart';
@@ -27,7 +28,7 @@ class ProductoDetallePage extends StatelessWidget {
         children: [
           Expanded(child: _contenido(producto, context)),
           Container(
-            padding: EdgeInsets.all(padding),
+            padding: EdgeInsets.all(paddingUI),
             child: BotonCustom(
               titulo: 'SELECCIONAR PAN',
               onPressed: () => _cantidadModalBottom(context, producto),
@@ -57,7 +58,7 @@ class ProductoDetallePage extends StatelessWidget {
 
   Widget _imagen(ProductoModel producto) {
     return Padding(
-      padding: EdgeInsets.only(left: padding, right: padding, top: padding),
+      padding: EdgeInsets.only(left: paddingUI, right: paddingUI, top: paddingUI),
       child: Hero(
         tag: producto.id,
         child: ClipRRect(
@@ -76,7 +77,7 @@ class ProductoDetallePage extends StatelessWidget {
 
   Padding _divider() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: padding),
+      padding: EdgeInsets.symmetric(horizontal: paddingUI),
       child: Divider(
         height: 1,
         color: Colors.grey[350],
@@ -90,7 +91,7 @@ class ProductoDetallePage extends StatelessWidget {
     final stylePrecio = TextStyle(fontSize: 20, height: 1.3);
 
     return Padding(
-      padding: EdgeInsets.all(padding),
+      padding: EdgeInsets.all(paddingUI),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -122,7 +123,7 @@ class ProductoDetallePage extends StatelessWidget {
     final styleBody = TextStyle(height: 1.3);
 
     return Padding(
-      padding: EdgeInsets.all(padding),
+      padding: EdgeInsets.all(paddingUI),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quickbread/src/constants/pages.dart';
+import 'package:quickbread/src/constants/common_page.dart';
+import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/pedido_detalle_page.dart';
 import 'package:quickbread/src/providers/pedido_provider.dart';

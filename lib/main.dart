@@ -15,6 +15,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final _navigatorKey = GlobalKey<NavigatorState>();
+  final _prefs = new PreferenciasUsuario();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: _navigatorKey,
         title: 'Quick Bread app',
         debugShowCheckedModeBanner: false,
-        initialRoute: HomePage.routeName,
+        initialRoute: _prefs.paginaInicio(),
         routes: routes,
         theme: theme,
       ),

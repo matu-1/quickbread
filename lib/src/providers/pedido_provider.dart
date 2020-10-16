@@ -42,11 +42,12 @@ class PedidoProvider {
   }
 
   Future<Map> create(PedidoModel pedido) async {
-    pedido.clienteId = 1;
+    pedido.clienteId = _pref.usuario.id;
     pedido.fechaHora = DateTime.now().toIso8601String();
+    print(pedido.toJson());
     try {
       final response = await http
-          .post(api['pedido']['listar'], body: json.encode(pedido), headers: {
+          .post(Api.pedidoListar, body: json.encode(pedido), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
       });

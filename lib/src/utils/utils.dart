@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:quickbread/src/constants/fecha.dart';
 
 bool isEmail(String texto) {
@@ -30,5 +31,6 @@ void showSnackbar(String message, GlobalKey<ScaffoldState> scaffoldKey) {
 }
 
 String apiParam(String route, dynamic param) {
-    return route.replaceAll(':id', param.toString());
-  }
+  return route.replaceAll(':id', param.toString());
+}
+
