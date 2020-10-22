@@ -3,7 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:quickbread/src/constants/common_page.dart';
 import 'package:quickbread/src/models/ubicacion_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
-import 'package:quickbread/src/pages/pedido_create_page.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
 import 'package:quickbread/src/widgets/mapa_custom.dart';

@@ -82,7 +82,7 @@ class _MapCustomState extends State<MapCustom> {
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
-    if(widget.showCurrentPosition) _myLocation();
+    if (widget.showCurrentPosition) _myLocation();
   }
 
   void _myLocation() async {
@@ -95,9 +95,28 @@ class _MapCustomState extends State<MapCustom> {
       _pr.hide();
     } catch (e) {
       print('Ups ocurrio un error');
-      Future.delayed(Duration(milliseconds: 200), () {
+      await Future.delayed(Duration(milliseconds: 200), () {
         _pr.hide();
       });
+      showMessageModal();
     }
+  }
+
+  void showMessageModal() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text('Aviso'),
+              content: Text('Por favor habilitar el GPS'),
+              actions: [
+                FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _myLocation();
+                    },
+                    child: Text('ACTIVAR'))
+              ],
+            ));
   }
 }

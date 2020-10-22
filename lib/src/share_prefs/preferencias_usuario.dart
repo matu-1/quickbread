@@ -11,7 +11,6 @@
 import 'package:quickbread/src/models/ubicacion_model.dart';
 import 'package:quickbread/src/models/usuario_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
-import 'package:quickbread/src/pages/login_page.dart';
 import 'package:quickbread/src/pages/pedido_ubicacion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';

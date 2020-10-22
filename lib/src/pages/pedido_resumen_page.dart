@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickbread/src/constants/common_page.dart';
 import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/login_page.dart';
-import 'package:quickbread/src/pages/pedido_ubicacion.dart';
+import 'package:quickbread/src/pages/pedido_create_page.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/widgets/error_custom.dart';
 
@@ -201,6 +200,6 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
       Navigator.of(context).pushNamed(LoginPage.routeName, arguments: true);
       return;
     }
-    Navigator.of(context).pushNamed(PedidoUbicacion.routeName);
+    Navigator.of(context).pushNamed(PedidoCreatePage.routeName);
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:quickbread/src/constants/service.dart';
@@ -51,7 +52,10 @@ class UsuarioProvider {
         throw Exception(respJson['message']);
       }
     } catch (e) {
-      throw Exception(MessageException.dbConection);
+      if (e.runtimeType == SocketException) {
+        throw Exception(MessageException.dbConection);
+      }
+      throw Exception(e.message);
     }
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
-import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/routes/routes.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/theme/theme.dart';
