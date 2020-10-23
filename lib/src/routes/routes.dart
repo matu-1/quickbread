@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickbread/src/pages/about_page.dart';
 import 'package:quickbread/src/pages/ayuda_page.dart';
+import 'package:quickbread/src/pages/cuando_page.dart';
 import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/pages/login_page.dart';
 import 'package:quickbread/src/pages/pedido_create_page.dart';
@@ -31,4 +32,5 @@ final Map<String, WidgetBuilder> routes = {
   PedidoNuevoDetallePage.routeName: (BuildContext context) =>
       PedidoNuevoDetallePage(),
   AboutPage.routeName: (BuildContext context) => AboutPage(),
+  CuandoPage.routeName: (BuildContext context) => CuandoPage(),
 };

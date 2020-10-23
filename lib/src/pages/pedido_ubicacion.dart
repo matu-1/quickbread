@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:quickbread/src/constants/common_page.dart';
+import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/ubicacion_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
@@ -15,20 +17,23 @@ class PedidoUbicacion extends StatefulWidget {
 }
 
 class _PedidoUbicacionState extends State<PedidoUbicacion> {
-  LatLng _miUbicacion;
+  LatLng _miUbicacion = new LatLng(-17.850553, -63.113256);
   final styleTitulo = TextStyle(fontSize: 20, fontWeight: FontWeight.w600);
   final formKey = GlobalKey<FormState>();
   final _prefs = new PreferenciasUsuario();
   final UbicacionModel _ubicacion = new UbicacionModel();
+  PedidoModel _pedido;
 
   @override
   void initState() {
-    if(_prefs.ubicacion != null) _miUbicacion = _prefs.ubicacion.getLatLng();
+    if (_prefs.ubicacion != null) _miUbicacion = _prefs.ubicacion.getLatLng();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    _pedido = Provider.of<PedidoModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Ubicacion entrega'),
@@ -89,9 +94,7 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
       height: size.height * 0.35,
       child: MapCustom(
         showCurrentPosition: _prefs.ubicacion == null ? true : false,
-        initialPosition: _prefs.ubicacion == null
-            ? LatLng(-17.850553, -63.113256)
-            : _prefs.ubicacion.getLatLng(),
+        initialPosition: _miUbicacion,
         onMove: (latlng) {
           _miUbicacion = latlng;
         },
@@ -105,7 +108,12 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
     _ubicacion.coordenada =
         '${_miUbicacion.latitude}, ${_miUbicacion.longitude}';
     _prefs.ubicacion = _ubicacion;
-    // Navigator.of(context).pushNamed(PedidoCreatePage.routeName);
-    Navigator.pushReplacementNamed(context, HomePage.routeName);
+    _pedido.setUbicacion(_ubicacion);
+    final isPedidoCreate = ModalRoute.of(context).settings.arguments;
+    if (isPedidoCreate != null) {
+      Navigator.of(context).pop();
+    } else {
+      Navigator.pushReplacementNamed(context, HomePage.routeName);
+    }
   }
 }

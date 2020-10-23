@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
+import 'package:quickbread/src/pages/cuando_page.dart';
 import 'package:quickbread/src/pages/home_page.dart';
+import 'package:quickbread/src/pages/pedido_ubicacion.dart';
 import 'package:quickbread/src/providers/pedido_provider.dart';
+import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/utils/utils.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
 
@@ -21,11 +25,14 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
   TextEditingController _textFieldFecha = TextEditingController();
   TextEditingController _textFieldHora = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  final styleTitulo = TextStyle(fontSize: 20, fontWeight: FontWeight.w600);
+  final styleTitulo =
+      TextStyle(fontSize: sizeSubtituloUI, fontWeight: FontWeight.w600);
   PedidoModel _pedido;
   final _pedidoProvider = new PedidoProvider();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ProgressDialog _pr;
+  PreferenciasUsuario _prefs = new PreferenciasUsuario();
+  String _tipo = 'Al domicilio';
 
   @override
   void didChangeDependencies() {
@@ -46,30 +53,235 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
       body: SingleChildScrollView(
         child: Form(
             key: formKey,
-            child: Container(
-              padding: EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _entradaFecha(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  _entradaHora(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  _selectTipo(),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  BotonCustom(
-                      titulo: 'ENVIAR PEDIDO', onPressed: _registrarPedido)
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _cuandoInput(),
+                Divider(
+                  height: 0.5,
+                ),
+                _tipoEntregaInput(),
+                Divider(
+                  height: 0.5,
+                ),
+                Opacity(opacity: 0.3, child: _formaPagoInput()),
+                Divider(
+                  height: 0.5,
+                ),
+                _ubicacionInput(),
+                // _entradaFecha(),
+                // _entradaHora(),
+                // _selectTipo(),
+                SizedBox(
+                  height: 40,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: paddingUI),
+                  child: BotonCustom(
+                      titulo: 'ENVIAR PEDIDO', onPressed: _registrarPedido),
+                )
+              ],
             )),
       ),
     );
+  }
+
+  Widget _cuandoInput() {
+    return Container(
+      padding: EdgeInsets.all(paddingUI),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Para cuando',
+                style: styleTitulo,
+              ),
+              GestureDetector(
+                onTap: () =>
+                    Navigator.of(context).pushNamed(CuandoPage.routeName),
+                child: Icon(
+                  Icons.edit,
+                  size: 20,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(_pedido.fecha == null
+              ? 'Lo antes posible'
+              : _pedido.getFechaHoraCorta()),
+        ],
+      ),
+    );
+  }
+
+  Widget _formaPagoInput() {
+    return Container(
+      padding: EdgeInsets.all(paddingUI),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Forma de pago',
+                style: styleTitulo,
+              ),
+              Icon(
+                Icons.edit,
+                size: 20,
+                color: Theme.of(context).primaryColor,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text('En efectivo'),
+        ],
+      ),
+    );
+  }
+
+  Widget _tipoEntregaInput() {
+    return Container(
+      padding: EdgeInsets.all(paddingUI),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Tipo de entrega',
+                style: styleTitulo,
+              ),
+              GestureDetector(
+                onTap: () {
+                  _showTipoModalBottom();
+                },
+                child: Icon(
+                  Icons.edit,
+                  size: 20,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(_tipo),
+        ],
+      ),
+    );
+  }
+
+  Widget _ubicacionInput() {
+    return Container(
+      padding: EdgeInsets.all(paddingUI),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Ubicacion',
+                style: styleTitulo,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(PedidoUbicacion.routeName, arguments: true);
+                },
+                child: Icon(
+                  Icons.edit,
+                  size: 20,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(_prefs.ubicacion.getUbicacion()),
+        ],
+      ),
+    );
+  }
+
+  void _showTipoModalBottom() {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        clipBehavior: Clip.antiAlias,
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20))),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(paddingUI),
+                    child: Text(
+                      'Seleccione',
+                      style: TextStyle(
+                          fontSize: sizeTituloUI, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: paddingUI),
+                    child: Divider(
+                      height: 0.5,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _tipo = 'Al domicilio';
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(paddingUI),
+                      child: Text(
+                        'Al domicilio',
+                        style: styleTitulo,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _tipo = 'Recoger al local';
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(paddingUI),
+                      child: Text(
+                        'Recoger al local',
+                        style: styleTitulo,
+                      ),
+                    ),
+                  ),
+                ],
+              ));
+        });
   }
 
   Widget _entradaFecha() {
@@ -115,7 +327,7 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
     return DropdownButtonFormField(
         value: _tipoId,
         decoration: InputDecoration(
-            labelText: 'Tipo entrega *', icon: Icon(Icons.directions_car)),
+            labelText: 'Tipo de entrega *', icon: Icon(Icons.directions_car)),
         items: [
           DropdownMenuItem(
             child: Text('A domicilio'),

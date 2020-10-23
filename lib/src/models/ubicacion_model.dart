@@ -30,4 +30,8 @@ class UbicacionModel {
     final values = this.coordenada.split(',');
     return new LatLng(double.parse(values[0]), double.parse(values[1]));
   }
+
+  String getUbicacion() {
+    return '$direccion, $referencia';
+  }
 }

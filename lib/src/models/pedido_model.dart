@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:quickbread/src/models/cliente_model.dart';
 import 'package:quickbread/src/models/producto_model.dart';
+import 'package:quickbread/src/models/ubicacion_model.dart';
 import 'package:quickbread/src/utils/utils.dart';
 
 List pedidosFromJsonList(List jsonList) =>
@@ -87,6 +88,13 @@ class PedidoModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void setUbicacion(UbicacionModel ubicacion) {
+    coordenada = ubicacion.coordenada;
+    direccion = ubicacion.direccion;
+    referencia = ubicacion.referencia;
+    notifyListeners();
+  }
+
   bool existProducto(ProductoModel producto) {
     final productoFinded =
         this.detalles.where((x) => x.producto.id == producto.id);
@@ -102,12 +110,27 @@ class PedidoModel with ChangeNotifier {
     return '${getFecha(DateTime.parse(this.fecha))}';
   }
 
+  String getFechaHoraCorta() {
+    return '${getDateShort(DateTime.parse(this.fecha))}, $hora';
+  }
+
   String getHora() {
     return this.hora.substring(0, 5);
   }
 
   String getTotal() {
     return 'Bs.${this.total}';
+  }
+
+  void reset() {
+    this.detalles.clear();
+    notifyListeners();
+  }
+
+  void setFechaHora(String date, String time) {
+    fecha = date;
+    hora = time;
+    notifyListeners();
   }
 }
 

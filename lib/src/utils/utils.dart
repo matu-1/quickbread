@@ -22,6 +22,10 @@ String getFecha(DateTime fecha) {
   return '${dias[fecha.weekday - 1]}, ${fecha.day} de ${meses[fecha.month - 1]} del ${fecha.year}';
 }
 
+String getDateShort(DateTime fecha) {
+  return '${dias[fecha.weekday - 1]}, ${fecha.day} de ${meses[fecha.month - 1]}';
+}
+
 void showSnackbar(String message, GlobalKey<ScaffoldState> scaffoldKey) {
   scaffoldKey.currentState.showSnackBar(SnackBar(
     content: Text(message),
