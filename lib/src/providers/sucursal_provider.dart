@@ -4,16 +4,15 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:quickbread/src/constants/message_exception.dart';
 import 'package:quickbread/src/constants/service.dart';
-import 'package:quickbread/src/models/sucursal_producto_model.dart';
-import 'package:quickbread/src/utils/utils.dart';
+import 'package:quickbread/src/models/sucursal_model.dart';
 
-class ProductoProvider {
-  Future<List<SucursalProductoModel>> getAll(int id) async {
+class SucursalProvider {
+  Future<List<SucursalModel>> getAll() async {
     try {
-      final response = await http.get(apiParam(Api.productoSucursalListar, id));
+      final response = await http.get(Api.sucursalListar);
       final data = json.decode(response.body);
       if (response.statusCode == 200) {
-        return SucursalProductoModel.fromJsonList(data['data']);
+        return SucursalModel.fromJsonList(data['data']);
       } else {
         throw Exception(data['message']);
       }

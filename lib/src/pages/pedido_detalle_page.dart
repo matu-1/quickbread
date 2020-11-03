@@ -54,11 +54,13 @@ class PedidoDetallePage extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          TextProp(prop: 'Fecha:', text: pedido.getFechaFormateada()),
-          TextProp(prop: 'Hora:', text: pedido.getHora()),
+          TextProp(prop: 'Cuando:', text: pedido.getFechaHora()),
+          // TextProp(prop: 'Hora:', text: pedido.getHora()),
           TextProp(prop: 'Tipo:', text: pedido.tipoEntrega),
           TextProp(prop: 'Total:', text: 'Bs.${pedido.total}'),
-          TextProp(prop: 'Observacion:', text: pedido.observacion ?? 'No registrado'),
+          TextProp(
+              prop: 'Observacion:',
+              text: pedido.observacion ?? 'No registrado'),
           TextProp(prop: 'Estado:', text: pedido.estado),
           TextProp(prop: 'Creado el:', text: pedido.fechaHora),
         ],
@@ -102,7 +104,8 @@ class PedidoDetallePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
               child: FadeInImage(
                 placeholder: AssetImage(pathLoading),
-                image: NetworkImage(detallePedido.producto.getPathImage()),
+                image: NetworkImage(
+                    detallePedido.sucursalProducto.producto.getPathImage()),
                 height: 60,
                 width: 60,
                 fit: BoxFit.cover,
@@ -116,11 +119,11 @@ class PedidoDetallePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    detallePedido.producto.nombre,
+                    detallePedido.sucursalProducto.producto.nombre,
                     style: styleTitulo,
                   ),
                   Text(
-                    detallePedido.producto.descripcion,
+                    detallePedido.sucursalProducto.producto.descripcion,
                     style: styleTexto,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -128,7 +131,7 @@ class PedidoDetallePage extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    '${detallePedido.producto.getPrecio()} x ${detallePedido.cantidad}',
+                    '${detallePedido.sucursalProducto.producto.getPrecio()} x ${detallePedido.cantidad}',
                     style: stylePrecio,
                   ),
                 ],

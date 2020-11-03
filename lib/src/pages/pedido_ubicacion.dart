@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickbread/src/constants/common_page.dart';
+import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/ubicacion_model.dart';
-import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
 import 'package:quickbread/src/widgets/mapa_custom.dart';
@@ -35,26 +35,56 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
     _pedido = Provider.of<PedidoModel>(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Ubicacion entrega'),
       ),
-      body: SingleChildScrollView(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _contenedorMapa(),
+          _contenedorBtn(),
+          // _formulario(),
+        ],
+      ),
+    );
+  }
+
+  Widget _contenedorBtn() {
+    return Expanded(
+      child: Container(
+        alignment: Alignment.center,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            _contenedorMapa(),
-            _formulario(),
+            Text(
+              '¿Esta es tu ubicacion?',
+              style: TextStyle(fontSize: sizeTituloUI),
+            ),
+            Container(
+                padding: EdgeInsets.all(paddingUI),
+                child: BotonCustom(titulo: confirmC, onPressed: showFormDialog))
           ],
         ),
       ),
     );
   }
 
+  void showFormDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              title: Text('Detalle de direccion'),
+              content: _formulario(),
+            ));
+  }
+
   Widget _formulario() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-      child: Form(
-        key: formKey,
+    return Form(
+      key: formKey,
+      child: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             TextFormField(
               initialValue: _prefs.ubicacion?.direccion,
@@ -77,10 +107,10 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
                 return 'Es obligatorio';
               },
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 20),
             BotonCustom(
               titulo: saveC,
-              onPressed: _siguiente,
+              onPressed: _guardar,
             )
           ],
         ),
@@ -91,7 +121,7 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
   Widget _contenedorMapa() {
     final size = MediaQuery.of(context).size;
     return Container(
-      height: size.height * 0.35,
+      height: size.height * 0.65,
       child: MapCustom(
         showCurrentPosition: _prefs.ubicacion == null ? true : false,
         initialPosition: _miUbicacion,
@@ -102,18 +132,21 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
     );
   }
 
-  void _siguiente() async {
+  void _guardar() async {
     if (!formKey.currentState.validate()) return;
     formKey.currentState.save();
     _ubicacion.coordenada =
         '${_miUbicacion.latitude}, ${_miUbicacion.longitude}';
     _prefs.ubicacion = _ubicacion;
     _pedido.setUbicacion(_ubicacion);
+    print(_ubicacion.direccion);
     final isPedidoCreate = ModalRoute.of(context).settings.arguments;
+    Navigator.of(context).pop();
     if (isPedidoCreate != null) {
       Navigator.of(context).pop();
     } else {
-      Navigator.pushReplacementNamed(context, HomePage.routeName);
+      // Navigator.pushReplacementNamed(context, HomePage.routeName);
+      Navigator.of(context).pop();
     }
   }
 }

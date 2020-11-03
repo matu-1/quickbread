@@ -34,9 +34,9 @@ class _PerfilPageState extends State<PerfilPage> {
         },
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.sentiment_satisfied), title: Text('Yo')),
+              icon: Icon(Icons.sentiment_satisfied), label: 'Yo'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), title: Text('Pedidos')),
+              icon: Icon(Icons.shopping_cart), label: 'Pedidos'),
         ]);
   }
 

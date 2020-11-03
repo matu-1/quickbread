@@ -88,7 +88,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
               borderRadius: BorderRadius.circular(40),
               child: FadeInImage(
                 placeholder: AssetImage(pathLoading),
-                image: NetworkImage(detallePedido.producto.getPathImage()),
+                image: NetworkImage(detallePedido.sucursalProducto.producto.getPathImage()),
                 height: 60,
                 width: 60,
                 fit: BoxFit.cover,
@@ -102,11 +102,11 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    detallePedido.producto.nombre,
+                    detallePedido.sucursalProducto.producto.nombre,
                     style: styleTitulo,
                   ),
                   Text(
-                    detallePedido.producto.descripcion,
+                    detallePedido.sucursalProducto.producto.descripcion,
                     style: styleTexto,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -114,7 +114,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
                     height: 5,
                   ),
                   Text(
-                    '${detallePedido.producto.getPrecio()} x ${detallePedido.cantidad}',
+                    '${detallePedido.sucursalProducto.producto.getPrecio()} x ${detallePedido.cantidad}',
                     style: stylePrecio,
                   ),
                 ],

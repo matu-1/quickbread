@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:quickbread/src/constants/message_exception.dart';
 import 'package:quickbread/src/constants/service.dart';
-import 'package:quickbread/src/models/message_exception.dart';
 import 'package:quickbread/src/models/usuario_model.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 
@@ -29,7 +29,7 @@ class UsuarioProvider {
         throw Exception(respJson['message']);
       }
     } catch (e) {
-      throw Exception(MessageException.dbConection);
+      throw Exception(MessageException.noConnection);
     }
   }
 
@@ -53,7 +53,7 @@ class UsuarioProvider {
       }
     } catch (e) {
       if (e.runtimeType == SocketException) {
-        throw Exception(MessageException.dbConection);
+        throw Exception(MessageException.noConnection);
       }
       throw Exception(e.message);
     }

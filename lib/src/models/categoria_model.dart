@@ -5,7 +5,7 @@ class CategoriaModel {
   CategoriaModel({this.id, this.nombre});
 
   factory CategoriaModel.fromJson(Map json) => CategoriaModel(
-    id: json['id'],
+    id: json['idcategoria'],
     nombre: json['nombre'],
   );
 }

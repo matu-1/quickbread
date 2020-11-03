@@ -83,7 +83,7 @@ class PedidoNuevoPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
               child: FadeInImage(
                 placeholder: AssetImage(pathLoading),
-                image: NetworkImage(pedido.detalles[0].producto.getPathImage()),
+                image: NetworkImage(pedido.detalles[0].sucursalProducto.producto.getPathImage()),
                 height: 80,
                 width: 80,
                 fit: BoxFit.cover,

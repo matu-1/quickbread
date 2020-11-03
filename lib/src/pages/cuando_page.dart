@@ -193,7 +193,7 @@ class _CuandoPageState extends State<CuandoPage> {
   }
 
   String getHora(DateTime fecha) {
-    return '${fecha.hour}:${fecha.minute}';
+    return '${fecha.hour.toString().padLeft(2, '0')}:${fecha.minute.toString().padLeft(2, '0')}';
   }
 
   void guardar() {

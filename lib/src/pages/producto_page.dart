@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
-import 'package:quickbread/src/models/producto_model.dart';
+import 'package:quickbread/src/models/sucursal_model.dart';
+import 'package:quickbread/src/models/sucursal_producto_model.dart';
 import 'package:quickbread/src/pages/pedido_resumen_page.dart';
 import 'package:quickbread/src/pages/producto_detalle_page.dart';
 import 'package:quickbread/src/providers/producto_provider.dart';
@@ -14,25 +15,26 @@ class ProductoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SucursalModel sucursal = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Panes'),
+        title: Text(sucursal.nombre),
         actions: [
           _badgeAgregados(context),
         ],
       ),
-      body: _productoList(),
+      body: _productoList(sucursal),
     );
   }
 
-  Widget _productoList() {
+  Widget _productoList(SucursalModel sucursal) {
     // List<ProductoModel> productos = productosFromJsonList(productosData);
     return FutureBuilder(
-      future: _productoProvider.getAll(),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<ProductoModel>> snapshot) {
+      future: _productoProvider.getAll(sucursal.id),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<SucursalProductoModel>> snapshot) {
         if (snapshot.hasData) {
-          List<ProductoModel> productos = snapshot.data;
+          List<SucursalProductoModel> productos = snapshot.data;
 
           return ListView.builder(
             itemCount: productos.length,
@@ -55,7 +57,7 @@ class ProductoPage extends StatelessWidget {
     );
   }
 
-  Widget _productoBox(ProductoModel producto) {
+  Widget _productoBox(SucursalProductoModel sucuralProducto) {
     final styleTitulo =
         TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.3);
     final styleTexto = TextStyle(height: 1.3, color: Colors.grey[600]);
@@ -69,12 +71,12 @@ class ProductoPage extends StatelessWidget {
         child: Row(
           children: [
             Hero(
-              tag: producto.id,
+              tag: sucuralProducto.id,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(40),
                 child: FadeInImage(
                   placeholder: AssetImage(pathLoading),
-                  image: NetworkImage(producto.getPathImage()),
+                  image: NetworkImage(sucuralProducto.producto.getPathImage()),
                   height: 80,
                   width: 80,
                   fit: BoxFit.cover,
@@ -89,11 +91,11 @@ class ProductoPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    producto.nombre,
+                    sucuralProducto.producto.nombre,
                     style: styleTitulo,
                   ),
                   Text(
-                    producto.descripcion,
+                    sucuralProducto.producto.descripcion,
                     style: styleTexto,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -101,7 +103,7 @@ class ProductoPage extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    producto.getPrecio(),
+                    sucuralProducto.producto.getPrecio(),
                     style: stylePrecio,
                   ),
                 ],

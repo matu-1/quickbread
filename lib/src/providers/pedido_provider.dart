@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:quickbread/src/constants/message_exception.dart';
 import 'package:quickbread/src/constants/service.dart';
-import 'package:quickbread/src/models/message_exception.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/utils/utils.dart';
@@ -20,14 +21,12 @@ class PedidoProvider {
         throw Exception(respJson['message']);
       }
     } catch (e) {
-      throw Exception(MessageException.dbConection);
+      throw Exception(MessageException.noConnection);
     }
   }
 
   Future<List<PedidoModel>> getByCliente() async {
     int clienteId = _pref.usuario.id;
-    print('id cliente');
-    print(clienteId);
     try {
       final response = await http.get(apiParam(Api.pedidoByCliente, clienteId));
       final respJson = json.decode(response.body);
@@ -37,12 +36,15 @@ class PedidoProvider {
         throw Exception(respJson['message']);
       }
     } catch (e) {
-      throw Exception(MessageException.dbConection);
+      if (e.runtimeType == SocketException)
+        throw Exception(MessageException.noConnection);
+      throw Exception(e.message);
     }
   }
 
   Future<Map> create(PedidoModel pedido) async {
     pedido.clienteId = _pref.usuario.id;
+    pedido.setUbicacionSave(_pref.ubicacion);
     pedido.fechaHora = DateTime.now().toIso8601String();
     print(pedido.toJson());
     try {
@@ -59,7 +61,9 @@ class PedidoProvider {
         throw Exception(respJson['message']);
       }
     } catch (e) {
-      throw Exception(MessageException.dbConection);
+      if (e.runtimeType == SocketException)
+        throw Exception(MessageException.noConnection);
+      throw Exception(e.message);
     }
   }
 
@@ -73,7 +77,7 @@ class PedidoProvider {
         throw Exception(respJson['message']);
       }
     } catch (e) {
-      throw Exception(MessageException.dbConection);
+      throw Exception(MessageException.noConnection);
     }
   }
 }

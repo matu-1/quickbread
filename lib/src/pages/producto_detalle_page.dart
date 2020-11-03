@@ -4,6 +4,7 @@ import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/producto_model.dart';
+import 'package:quickbread/src/models/sucursal_producto_model.dart';
 import 'package:quickbread/src/pages/pedido_resumen_page.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
 import 'package:quickbread/src/utils/utils.dart' as utils;
@@ -16,7 +17,8 @@ class ProductoDetallePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProductoModel producto = ModalRoute.of(context).settings.arguments;
+    final SucursalProductoModel sucursalProducto =
+        ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -26,12 +28,13 @@ class ProductoDetallePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Expanded(child: _contenido(producto, context)),
+          Expanded(child: _contenido(sucursalProducto.producto, context)),
           Container(
             padding: EdgeInsets.all(paddingUI),
             child: BotonCustom(
               titulo: 'SELECCIONAR PAN',
-              onPressed: () => _cantidadModalBottom(context, producto),
+              onPressed: () =>
+                  _cantidadModalBottom(context, sucursalProducto),
             ),
           )
         ],
@@ -58,7 +61,8 @@ class ProductoDetallePage extends StatelessWidget {
 
   Widget _imagen(ProductoModel producto) {
     return Padding(
-      padding: EdgeInsets.only(left: paddingUI, right: paddingUI, top: paddingUI),
+      padding:
+          EdgeInsets.only(left: paddingUI, right: paddingUI, top: paddingUI),
       child: Hero(
         tag: producto.id,
         child: ClipRRect(
@@ -140,7 +144,7 @@ class ProductoDetallePage extends StatelessWidget {
     );
   }
 
-  void _cantidadModalBottom(BuildContext context, ProductoModel producto) {
+  void _cantidadModalBottom(BuildContext context, SucursalProductoModel producto) {
     final pedido = Provider.of<PedidoModel>(context, listen: false);
     if (pedido.existProducto(producto)) return showMessage('Ya se agrego !!');
     String cantidad;
@@ -164,9 +168,6 @@ class ProductoDetallePage extends StatelessWidget {
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             labelText: 'Cantidad *',
-                            // border: OutlineInputBorder(),
-                            fillColor: Colors.grey[100],
-                            filled: true,
                           ),
                           onSaved: (value) => cantidad = value,
                           validator: (value) {
@@ -199,14 +200,14 @@ class ProductoDetallePage extends StatelessWidget {
   }
 
   void _agregarProducto(
-      BuildContext context, String cantidad, ProductoModel producto) {
+      BuildContext context, String cantidad, SucursalProductoModel producto) {
     final pedido = Provider.of<PedidoModel>(context, listen: false);
     int newCantidad = int.parse(cantidad);
     Navigator.of(context).pop();
     pedido.add(DetallePedidoModel(
         cantidad: newCantidad,
-        producto: producto,
-        subtotal: producto.precio * newCantidad));
+        sucursalProducto: producto,
+        subtotal: producto.producto.precio * newCantidad));
     Navigator.of(context).pushNamed(PedidoResumenPage.routeName);
   }
 

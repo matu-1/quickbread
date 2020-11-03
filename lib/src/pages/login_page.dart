@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:quickbread/src/models/usuario_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
-import 'package:quickbread/src/pages/pedido_ubicacion.dart';
+import 'package:quickbread/src/pages/pedido_create_page.dart';
 import 'package:quickbread/src/pages/registro_page.dart';
 import 'package:quickbread/src/providers/usuario_provider.dart';
 import 'package:quickbread/src/utils/utils.dart' as utils;
@@ -128,13 +128,13 @@ class _LoginPageState extends State<LoginPage> {
       await _usuarioProvider.login(usuario);
       pr.hide();
       if (_isResumenPage != null)
-        Navigator.of(context).pushReplacementNamed(PedidoUbicacion.routeName);
+        Navigator.of(context).pushReplacementNamed(PedidoCreatePage.routeName);
       else
         Navigator.of(context).pushNamedAndRemoveUntil(
             HomePage.routeName, (Route route) => false);
     } catch (e) {
       pr.hide();
-       utils.showSnackbar(e.message, _scaffoldKey);
+      utils.showSnackbar(e.message, _scaffoldKey);
     }
   }
 }

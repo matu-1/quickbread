@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:quickbread/src/models/cliente_model.dart';
-import 'package:quickbread/src/models/producto_model.dart';
+import 'package:quickbread/src/models/sucursal_producto_model.dart';
 import 'package:quickbread/src/models/ubicacion_model.dart';
 import 'package:quickbread/src/utils/utils.dart';
 
@@ -22,6 +22,7 @@ class PedidoModel with ChangeNotifier {
   double total;
   String fechaHora;
   int clienteId;
+  int sucursalId;
   List<DetallePedidoModel> detalles;
   ClienteModel cliente;
 
@@ -40,6 +41,7 @@ class PedidoModel with ChangeNotifier {
     this.total,
     this.fechaHora,
     this.clienteId,
+    this.sucursalId,
     this.cliente,
     this.detalles,
   });
@@ -74,6 +76,7 @@ class PedidoModel with ChangeNotifier {
         "fkidtipo_entrega": tipoEntregId,
         "fecha_hora": fechaHora,
         "fkidcliente": clienteId,
+        "fkidsucursal": detalles[0].sucursalProducto.sucursal.id,
         "total": total,
         "detalles": DetallePedidoModel.listToJson(detalles)
       };
@@ -95,18 +98,25 @@ class PedidoModel with ChangeNotifier {
     notifyListeners();
   }
 
-  bool existProducto(ProductoModel producto) {
+  void setUbicacionSave(UbicacionModel ubicacion) {
+    coordenada = ubicacion.coordenada;
+    direccion = ubicacion.direccion;
+    referencia = ubicacion.referencia;
+  }
+
+  bool existProducto(SucursalProductoModel producto) {
     final productoFinded =
-        this.detalles.where((x) => x.producto.id == producto.id);
-    print(productoFinded.length);
+        this.detalles.where((x) => x.sucursalProducto.id == producto.id);
     return productoFinded.length > 0;
   }
 
   String getFechaHora() {
-    return '${getFecha(DateTime.parse(this.fecha))} a las ${this.hora.substring(0, 5)}';
+    if (this.fecha == null) return 'Lo antes posible';
+    return '${getFecha(DateTime.parse(this.fecha))}, ${this.hora.substring(0, 5)}';
   }
 
   String getFechaFormateada() {
+    if (this.fecha == null) return 'Lo antes posible';
     return '${getFecha(DateTime.parse(this.fecha))}';
   }
 
@@ -137,23 +147,24 @@ class PedidoModel with ChangeNotifier {
 class DetallePedidoModel {
   int cantidad;
   double subtotal;
-  ProductoModel producto;
+  SucursalProductoModel sucursalProducto;
 
   factory DetallePedidoModel.fromJson(Map json) => DetallePedidoModel(
         cantidad: json['cantidad'],
-        producto: ProductoModel.fromJson(json['producto']),
+        sucursalProducto:
+            SucursalProductoModel.fromJson(json['sucursal_producto']),
       );
 
-  DetallePedidoModel({this.cantidad, this.producto, this.subtotal});
+  DetallePedidoModel({this.cantidad, this.sucursalProducto, this.subtotal});
 
   String getSubtotal() {
-    return 'Bs.${this.cantidad * this.producto.precio}';
+    return 'Bs.${this.cantidad * this.sucursalProducto.producto.precio}';
   }
 
   Map<String, dynamic> toJson() => {
-        "idproducto": producto.id,
+        "idsucursal_producto": sucursalProducto.id,
         "cantidad": cantidad,
-        "precio": producto.precio,
+        "precio": sucursalProducto.producto.precio,
       };
 
   static List<Map<String, dynamic>> listToJson(

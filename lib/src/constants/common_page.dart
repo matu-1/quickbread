@@ -1,3 +1,3 @@
 final aceptC = 'ACEPTAR';
-final confirm = 'CONFIRMAR';
+final confirmC = 'CONFIRMAR';
 final saveC = 'GUARDAR';   
