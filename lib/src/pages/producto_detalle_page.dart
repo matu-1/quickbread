@@ -23,21 +23,49 @@ class ProductoDetallePage extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text(''),
-      ),
-      body: Column(
+      // appBar: AppBar(
+      //   title: Text(''),
+      // ),
+      body: Stack(
         children: [
-          Expanded(child: _contenido(sucursalProducto.producto, context)),
-          Container(
-            padding: EdgeInsets.all(paddingUI),
-            child: BotonCustom(
-              titulo: 'SELECCIONAR PAN',
-              onPressed: () =>
-                  _cantidadModalBottom(context, sucursalProducto),
-            ),
-          )
+          Column(
+            children: [
+              Expanded(child: _contenido(sucursalProducto.producto, context)),
+              Container(
+                padding: EdgeInsets.all(paddingUI),
+                child: BotonCustom(
+                  titulo: 'SELECCIONAR PAN',
+                  onPressed: () =>
+                      _cantidadModalBottom(context, sucursalProducto),
+                ),
+              )
+            ],
+          ),
+          _appbar(context),
         ],
+      ),
+    );
+  }
+
+  Widget _appbar(BuildContext context) {
+    return Container(
+      height: 56 + MediaQuery.of(context).padding.top,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+            Colors.black26,
+            Colors.transparent,
+          ])),
+      child: SafeArea(
+        child: Row(
+          children: [
+            IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop())
+          ],
+        ),
       ),
     );
   }
@@ -47,7 +75,7 @@ class ProductoDetallePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _imagen(producto),
+          _imagen(producto, context),
           _tituloContainer(producto, context),
           _divider(),
           _descripcion(producto),
@@ -59,22 +87,17 @@ class ProductoDetallePage extends StatelessWidget {
     );
   }
 
-  Widget _imagen(ProductoModel producto) {
-    return Padding(
-      padding:
-          EdgeInsets.only(left: paddingUI, right: paddingUI, top: paddingUI),
-      child: Hero(
-        tag: producto.id,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: FadeInImage(
-            placeholder: AssetImage(pathLoadingLong),
-            image: NetworkImage(producto.getPathImage()),
-            height: 280,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-        ),
+  Widget _imagen(ProductoModel producto, BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    return Hero(
+      tag: producto.id,
+      child: FadeInImage(
+        placeholder: AssetImage(pathLoadingLong),
+        image: NetworkImage(producto.getPathImage()),
+        height: size.height * 0.35,
+        width: double.infinity,
+        fit: BoxFit.cover,
       ),
     );
   }
@@ -91,7 +114,7 @@ class ProductoDetallePage extends StatelessWidget {
 
   Widget _tituloContainer(ProductoModel producto, BuildContext context) {
     final styleTitulo =
-        TextStyle(fontSize: 30, fontWeight: FontWeight.w600, height: 1.3);
+        TextStyle(fontSize: 27, fontWeight: FontWeight.w600, height: 1.3);
     final stylePrecio = TextStyle(fontSize: 20, height: 1.3);
 
     return Padding(
@@ -144,7 +167,8 @@ class ProductoDetallePage extends StatelessWidget {
     );
   }
 
-  void _cantidadModalBottom(BuildContext context, SucursalProductoModel producto) {
+  void _cantidadModalBottom(
+      BuildContext context, SucursalProductoModel producto) {
     final pedido = Provider.of<PedidoModel>(context, listen: false);
     if (pedido.existProducto(producto)) return showMessage('Ya se agrego !!');
     String cantidad;

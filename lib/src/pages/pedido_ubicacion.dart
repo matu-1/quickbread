@@ -76,6 +76,16 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
         builder: (BuildContext context) => AlertDialog(
               title: Text('Detalle de direccion'),
               content: _formulario(),
+              actions: [
+                FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('CERRAR')),
+                FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: _guardar,
+                    child: Text('ACEPTAR')),
+              ],
             ));
   }
 
@@ -107,11 +117,6 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
                 return 'Es obligatorio';
               },
             ),
-            SizedBox(height: 20),
-            BotonCustom(
-              titulo: saveC,
-              onPressed: _guardar,
-            )
           ],
         ),
       ),

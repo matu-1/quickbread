@@ -78,8 +78,8 @@ class PedidoPage extends StatelessWidget {
                 placeholder: AssetImage(pathLoading),
                 image: NetworkImage(pedido.detalles[0].sucursalProducto.producto
                     .getPathImage()),
-                height: 80,
-                width: 80,
+                height: 70,
+                width: 70,
                 fit: BoxFit.cover,
               ),
             ),

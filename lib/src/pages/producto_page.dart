@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickbread/src/constants/path.dart';
+import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/sucursal_model.dart';
 import 'package:quickbread/src/models/sucursal_producto_model.dart';
@@ -9,8 +10,14 @@ import 'package:quickbread/src/pages/producto_detalle_page.dart';
 import 'package:quickbread/src/providers/producto_provider.dart';
 import 'package:quickbread/src/widgets/error_custom.dart';
 
-class ProductoPage extends StatelessWidget {
+class ProductoPage extends StatefulWidget {
   static final routeName = 'producto';
+
+  @override
+  _ProductoPageState createState() => _ProductoPageState();
+}
+
+class _ProductoPageState extends State<ProductoPage> {
   final _productoProvider = new ProductoProvider();
 
   @override
@@ -24,23 +31,44 @@ class ProductoPage extends StatelessWidget {
         ],
       ),
       body: _productoList(sucursal),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.search),
+      ),
     );
   }
 
   Widget _productoList(SucursalModel sucursal) {
     // List<ProductoModel> productos = productosFromJsonList(productosData);
+    bool showCategoria = true;
     return FutureBuilder(
       future: _productoProvider.getAll(sucursal.id),
       builder: (BuildContext context,
           AsyncSnapshot<List<SucursalProductoModel>> snapshot) {
         if (snapshot.hasData) {
-          List<SucursalProductoModel> productos = snapshot.data;
+          final productos = snapshot.data;
 
           return ListView.builder(
+            shrinkWrap: true,
             itemCount: productos.length,
             itemBuilder: (BuildContext context, int index) {
+              if (index > 0) {
+                showCategoria =
+                    productos[index - 1].producto.categoria.nombre !=
+                            productos[index].producto.categoria.nombre
+                        ? true
+                        : false;
+              } else {
+                showCategoria = true;
+              }
               return GestureDetector(
-                child: _productoBox(productos[index]),
+                child: Column(
+                  children: [
+                    if (showCategoria)
+                      _seccionHeader(context, productos[index]),
+                    _productoBox(productos[index]),
+                  ],
+                ),
                 onTap: () => Navigator.of(context).pushNamed(
                     ProductoDetallePage.routeName,
                     arguments: productos[index]),
@@ -57,6 +85,24 @@ class ProductoPage extends StatelessWidget {
     );
   }
 
+  Container _seccionHeader(
+      BuildContext context, SucursalProductoModel sucursalProducto) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      decoration: BoxDecoration(
+          // border: Border(
+          //     bottom:
+          //         BorderSide(width: 1, color: Theme.of(context).accentColor))
+          ),
+      child: Text(sucursalProducto.producto.categoria.nombre.toUpperCase(),
+          style: TextStyle(
+              color: Theme.of(context).accentColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w600)),
+    );
+  }
+
   Widget _productoBox(SucursalProductoModel sucuralProducto) {
     final styleTitulo =
         TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.3);
@@ -64,10 +110,11 @@ class ProductoPage extends StatelessWidget {
     final stylePrecio = TextStyle(height: 1.3);
 
     return Container(
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.symmetric(vertical: paddingUI),
+        margin: EdgeInsets.symmetric(horizontal: paddingUI),
         decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(color: Colors.grey[300], width: 0.5))),
+            border:
+                Border(top: BorderSide(color: Colors.grey[300], width: 0.5))),
         child: Row(
           children: [
             Hero(
@@ -77,8 +124,8 @@ class ProductoPage extends StatelessWidget {
                 child: FadeInImage(
                   placeholder: AssetImage(pathLoading),
                   image: NetworkImage(sucuralProducto.producto.getPathImage()),
-                  height: 80,
-                  width: 80,
+                  height: 70,
+                  width: 70,
                   fit: BoxFit.cover,
                 ),
               ),

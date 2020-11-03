@@ -13,7 +13,9 @@ class ProductoProvider {
       final response = await http.get(apiParam(Api.productoSucursalListar, id));
       final data = json.decode(response.body);
       if (response.statusCode == 200) {
-        return SucursalProductoModel.fromJsonList(data['data']);
+        return SucursalProductoModel.fromJsonList(data['data'])
+          ..sort((a, b) => a.producto.categoria.nombre
+              .compareTo(b.producto.categoria.nombre));
       } else {
         throw Exception(data['message']);
       }
