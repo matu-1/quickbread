@@ -117,9 +117,8 @@ class PedidoNuevoDetallePage extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          TextProp(prop: 'Fecha:', text: pedido.getFechaFormateada()),
-          TextProp(prop: 'Hora:', text: pedido.getHora()),
-          TextProp(prop: 'Tipo:', text: pedido.tipoEntrega),
+          TextProp(prop: 'Cuando:', text: pedido.getFechaHora()),
+          TextProp(prop: 'Tipo entrega:', text: pedido.tipoEntrega),
           TextProp(prop: 'Total:', text: 'Bs.${pedido.total}'),
           TextProp(
               prop: 'Observacion:',
@@ -177,7 +176,8 @@ class PedidoNuevoDetallePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
               child: FadeInImage(
                 placeholder: AssetImage(pathLoading),
-                image: NetworkImage(detallePedido.sucursalProducto.producto.getPathImage()),
+                image: NetworkImage(
+                    detallePedido.sucursalProducto.producto.getPathImage()),
                 height: 60,
                 width: 60,
                 fit: BoxFit.cover,
@@ -255,8 +255,8 @@ class PedidoNuevoDetallePage extends StatelessWidget {
       print(pedido.id);
       await pedidoProvider.setEntregado(pedido.id);
       pr.hide();
-      Navigator.of(_scaffoldKey.currentContext)
-          .pushNamedAndRemoveUntil(PedidoNuevoPage.routeName, ModalRoute.withName(HomePage.routeName));
+      Navigator.of(_scaffoldKey.currentContext).pushNamedAndRemoveUntil(
+          PedidoNuevoPage.routeName, ModalRoute.withName(HomePage.routeName));
     } catch (e) {
       pr.hide();
       utils.showSnackbar(e.message, _scaffoldKey);

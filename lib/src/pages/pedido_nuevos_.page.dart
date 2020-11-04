@@ -37,7 +37,7 @@ class PedidoNuevoPage extends StatelessWidget {
 
           if (pedidos.length == 0)
             return ErrorCustom(message: 'No hay registros');
-            
+
           return ListView.builder(
             itemCount: pedidos.length,
             itemBuilder: (BuildContext context, int index) {
@@ -83,9 +83,10 @@ class PedidoNuevoPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
               child: FadeInImage(
                 placeholder: AssetImage(pathLoading),
-                image: NetworkImage(pedido.detalles[0].sucursalProducto.producto.getPathImage()),
-                height: 80,
-                width: 80,
+                image: NetworkImage(pedido.detalles[0].sucursalProducto.producto
+                    .getPathImage()),
+                height: 70,
+                width: 70,
                 fit: BoxFit.cover,
               ),
             ),
@@ -102,10 +103,6 @@ class PedidoNuevoPage extends StatelessWidget {
                   ),
                   Text(
                     pedido.getFechaHora(),
-                    style: styleTexto,
-                  ),
-                  Text(
-                    pedido.tipoEntrega,
                     style: styleTexto,
                   ),
                   Text(

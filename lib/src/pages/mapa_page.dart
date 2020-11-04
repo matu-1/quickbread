@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MapaPage extends StatelessWidget {
   final LatLng coordenada;
@@ -7,6 +8,8 @@ class MapaPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getPosicionActual();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Mapa'),
@@ -28,5 +31,9 @@ class MapaPage extends StatelessWidget {
         icon:
             BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet)));
     return marker;
+  }
+
+  void getPosicionActual() async {
+    await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
 }

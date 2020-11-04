@@ -44,9 +44,7 @@ class UsuarioProvider {
       final respJson = json.decode(response.body);
       if (response.statusCode == 200) {
         final usuarioDB = UsuarioModel.fromJson(respJson['data']);
-        usuarioDB.id = respJson['data']['idcliente'];
         _pref.usuario = usuarioDB;
-        print(_pref.usuario.toJson());
         return respJson;
       } else {
         throw Exception(respJson['message']);

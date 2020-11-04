@@ -8,6 +8,7 @@ UsuarioModel usuarioModelFromJson(String str) =>
     UsuarioModel.fromJson(json.decode(str));
 
 String usuarioModelToJson(UsuarioModel data) => json.encode(data.toJson());
+
 class UsuarioModel {
   int id;
   String ci;

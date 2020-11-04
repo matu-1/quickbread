@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:quickbread/src/constants/common_page.dart';
 import 'package:quickbread/src/models/usuario_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/pages/pedido_create_page.dart';
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     pr = new ProgressDialog(context, isDismissible: false);
-    pr.style(message: 'Espere por favor');
+    pr.style(message: loadingC);
     super.initState();
   }
 

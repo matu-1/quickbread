@@ -262,36 +262,6 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
                       ),
                     ),
                   ),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     setState(() {
-                  //       _tipo = 'Al domicilio';
-                  //     });
-                  //     Navigator.of(context).pop();
-                  //   },
-                  //   child: Container(
-                  //     padding: EdgeInsets.all(paddingUI),
-                  //     child: Text(
-                  //       'Al domicilio',
-                  //       style: styleTitulo,
-                  //     ),
-                  //   ),
-                  // ),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     setState(() {
-                  //       _tipo = 'Recoger al local';
-                  //     });
-                  //     Navigator.of(context).pop();
-                  //   },
-                  //   child: Container(
-                  //     padding: EdgeInsets.all(paddingUI),
-                  //     child: Text(
-                  //       'Recoger al local',
-                  //       style: styleTitulo,
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ));
         });
@@ -303,13 +273,12 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
     _pr.show();
     try {
       await _pedidoProvider.create(_pedido);
-      _pr.hide();
       Navigator.of(context)
           .pushNamedAndRemoveUntil(HomePage.routeName, (route) => false);
     } catch (e) {
-      _pr.hide();
       showSnackbar(e.message, _scaffoldKey);
     }
+    Future.delayed(Duration(milliseconds: 200), () => _pr.hide());
   }
 
   bool isValid() {

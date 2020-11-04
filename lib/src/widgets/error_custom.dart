@@ -8,18 +8,22 @@ class ErrorCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            MyIcon.carritatriste,
-            size: 100,
-          ),
-          Text(
-            this.message,
-            style: TextStyle(fontSize: 16),
-          )
-        ],
+      child: Container(
+        margin: EdgeInsets.only(bottom: 40),
+        // color: Colors.red,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              MyIcon.carritatriste,
+              size: 100,
+            ),
+            Text(
+              this.message,
+              style: TextStyle(fontSize: 16),
+            )
+          ],
+        ),
       ),
     );
   }

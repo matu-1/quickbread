@@ -22,26 +22,27 @@ class DrawerNavigation extends StatelessWidget {
                   ? null
                   : () => Navigator.of(context).pushNamed(LoginPage.routeName),
               child: Container(
+                color: Colors.transparent,
                 alignment: Alignment.center,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     CircleAvatar(
                         radius: 35,
-                        backgroundColor: Theme.of(context).accentColor,
+                        backgroundColor: Colors.white70,
                         child: _prefs.usuario != null
                             ? Text(
                                 _prefs.usuario.getInitialName(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 30,
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               )
                             : Icon(
                                 MyIcon.carritatriste,
                                 size: 50,
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColor,
                               )),
                     SizedBox(
                       height: 10,
@@ -68,7 +69,11 @@ class DrawerNavigation extends StatelessWidget {
                 ),
               ),
             ),
-            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+              Theme.of(context).primaryColor,
+              Theme.of(context).accentColor
+            ])),
           ),
           ListTile(
               leading: Icon(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickbread/src/pages/pedido_page.dart';
 import 'package:quickbread/src/pages/yo_page.dart';
+import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 
 class PerfilPage extends StatefulWidget {
   static final routeName = 'perfil';
@@ -10,7 +11,7 @@ class PerfilPage extends StatefulWidget {
 
 class _PerfilPageState extends State<PerfilPage> {
   int currentIndex = 0;
-
+  final _prefs = new PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +19,9 @@ class _PerfilPageState extends State<PerfilPage> {
         title: Text('Perfil'),
       ),
       body: _cargarPagina(),
-      bottomNavigationBar: _contenedorBottonNavigationBar(),
+      bottomNavigationBar: _prefs.usuario.rol != 'cliente'
+          ? null
+          : _contenedorBottonNavigationBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: currentIndex == 0 ? Icon(Icons.edit) : Icon(Icons.refresh),

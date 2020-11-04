@@ -69,31 +69,14 @@ class _HomePageState extends State<HomePage> {
             height: 200,
           ),
           Text(
-            'Bienvenido a nuestra aplicacion de pedidos, empieza creando uno.',
+            'Bienvenido a nuestra aplicacion de pedidos, empieza a repartir',
             style: styleText,
             textAlign: TextAlign.center,
           ),
           SizedBox(
             height: 40,
           ),
-          if ((_prefs.usuario?.rol == 'cliente') || _prefs.usuario == null)
-            _btnCrearPedido(context),
         ],
-      ),
-    );
-  }
-
-  Widget _btnCrearPedido(BuildContext context) {
-    return RaisedButton(
-      onPressed: () => Navigator.of(context).pushNamed(ProductoPage.routeName),
-      color: Theme.of(context).primaryColor,
-      textColor: Colors.white,
-      shape: StadiumBorder(),
-      padding: EdgeInsets.symmetric(vertical: 15),
-      child: Container(
-        alignment: Alignment.center,
-        width: double.infinity,
-        child: Text('CREAR PEDIDO'),
       ),
     );
   }
@@ -119,6 +102,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _sucursalList() {
+    if (_prefs.usuario != null && _prefs.usuario.rol != 'cliente')
+      return _bodyContainer(context);
     // List<SucursalModel> sucursales = SucursalModel.fromJsonList(sucursalData);
     return FutureBuilder(
       future: _sucursalProvider.getAll(),

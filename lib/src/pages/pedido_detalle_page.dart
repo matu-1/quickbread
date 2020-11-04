@@ -18,13 +18,17 @@ class PedidoDetallePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Mi pedido'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _contenido(pedido),
-          _divider(),
-          _productoList(context, pedido)
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _pedido(pedido),
+            _divider(),
+            _sucursal(pedido),
+            _divider(),
+            _productoList(context, pedido)
+          ],
+        ),
       ),
       floatingActionButton:
           FloatingActionButton(child: Icon(Icons.delete), onPressed: () {}),
@@ -41,7 +45,31 @@ class PedidoDetallePage extends StatelessWidget {
     );
   }
 
-  Widget _contenido(PedidoModel pedido) {
+  Widget _sucursal(PedidoModel pedido) {
+    return Container(
+      padding: EdgeInsets.all(paddingUI),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Sucursal',
+            style: styleTitulo,
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          TextProp(
+              prop: 'Nombre:',
+              text: pedido.detalles[0].sucursalProducto.sucursal.nombre),
+          TextProp(
+              prop: 'Direccion:',
+              text: pedido.detalles[0].sucursalProducto.sucursal.direccion),
+        ],
+      ),
+    );
+  }
+
+  Widget _pedido(PedidoModel pedido) {
     return Container(
       padding: EdgeInsets.all(paddingUI),
       child: Column(
@@ -55,7 +83,6 @@ class PedidoDetallePage extends StatelessWidget {
             height: 5,
           ),
           TextProp(prop: 'Cuando:', text: pedido.getFechaHora()),
-          // TextProp(prop: 'Hora:', text: pedido.getHora()),
           TextProp(prop: 'Tipo:', text: pedido.tipoEntrega),
           TextProp(prop: 'Total:', text: 'Bs.${pedido.total}'),
           TextProp(

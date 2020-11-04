@@ -43,23 +43,25 @@ class PedidoProvider {
   }
 
   Future<Map> create(PedidoModel pedido) async {
+    print(_pref.usuario.toJson());
     pedido.clienteId = _pref.usuario.id;
     pedido.setUbicacionSave(_pref.ubicacion);
     pedido.fechaHora = DateTime.now().toIso8601String();
     print(pedido.toJson());
     try {
-      final response = await http
-          .post(Api.pedidoListar, body: json.encode(pedido), headers: {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-      });
+      // final response = await http
+      //     .post(Api.pedidoListar, body: json.encode(pedido), headers: {
+      //   'Content-type': 'application/json',
+      //   'Accept': 'application/json',
+      // });
 
-      final respJson = json.decode(response.body);
-      if (response.statusCode == 200) {
-        return respJson;
-      } else {
-        throw Exception(respJson['message']);
-      }
+      // final respJson = json.decode(response.body);
+      // if (response.statusCode == 200) {
+      //   return respJson;
+      // } else {
+      //   throw Exception(respJson['message']);
+      // }
+      throw Exception('ups');
     } catch (e) {
       if (e.runtimeType == SocketException)
         throw Exception(MessageException.noConnection);

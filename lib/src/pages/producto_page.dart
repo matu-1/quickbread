@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickbread/src/constants/path.dart';
-import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/sucursal_model.dart';
 import 'package:quickbread/src/models/sucursal_producto_model.dart';
 import 'package:quickbread/src/pages/pedido_resumen_page.dart';
 import 'package:quickbread/src/pages/producto_detalle_page.dart';
+import 'package:quickbread/src/pages/search_page.dart';
 import 'package:quickbread/src/providers/producto_provider.dart';
 import 'package:quickbread/src/widgets/error_custom.dart';
+import 'package:quickbread/src/widgets/producto_basic_box.dart';
 
 class ProductoPage extends StatefulWidget {
   static final routeName = 'producto';
@@ -32,7 +32,8 @@ class _ProductoPageState extends State<ProductoPage> {
       ),
       body: _productoList(sucursal),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => Navigator.of(context)
+            .pushNamed(SearchPage.routeName, arguments: sucursal),
         child: Icon(Icons.search),
       ),
     );
@@ -66,7 +67,7 @@ class _ProductoPageState extends State<ProductoPage> {
                   children: [
                     if (showCategoria)
                       _seccionHeader(context, productos[index]),
-                    _productoBox(productos[index]),
+                    ProductoBasicBox(sucuralProducto: productos[index]),
                   ],
                 ),
                 onTap: () => Navigator.of(context).pushNamed(
@@ -101,63 +102,6 @@ class _ProductoPageState extends State<ProductoPage> {
               fontSize: 16,
               fontWeight: FontWeight.w600)),
     );
-  }
-
-  Widget _productoBox(SucursalProductoModel sucuralProducto) {
-    final styleTitulo =
-        TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.3);
-    final styleTexto = TextStyle(height: 1.3, color: Colors.grey[600]);
-    final stylePrecio = TextStyle(height: 1.3);
-
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: paddingUI),
-        margin: EdgeInsets.symmetric(horizontal: paddingUI),
-        decoration: BoxDecoration(
-            border:
-                Border(top: BorderSide(color: Colors.grey[300], width: 0.5))),
-        child: Row(
-          children: [
-            Hero(
-              tag: sucuralProducto.id,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(40),
-                child: FadeInImage(
-                  placeholder: AssetImage(pathLoading),
-                  image: NetworkImage(sucuralProducto.producto.getPathImage()),
-                  height: 70,
-                  width: 70,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    sucuralProducto.producto.nombre,
-                    style: styleTitulo,
-                  ),
-                  Text(
-                    sucuralProducto.producto.descripcion,
-                    style: styleTexto,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    sucuralProducto.producto.getPrecio(),
-                    style: stylePrecio,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ));
   }
 
   Widget _badgeAgregados(BuildContext context) {
