@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:quickbread/src/constants/path.dart';
+import 'package:quickbread/src/constants/pedido_estado.dart';
 import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
@@ -48,10 +49,16 @@ class PedidoNuevoDetallePage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.check),
-          onPressed: () => _showConfirmDialog(context, pr, pedido)),
+      floatingActionButton: _floatingActionButton(pedido, context, pr),
     );
+  }
+
+  Widget _floatingActionButton(
+      PedidoModel pedido, BuildContext context, ProgressDialog pr) {
+    if (pedido.estado == PedidoEstado.entregado) return null;
+    return FloatingActionButton(
+        child: Icon(Icons.check),
+        onPressed: () => _showConfirmDialog(context, pr, pedido));
   }
 
   Widget _cliente(PedidoModel pedido) {

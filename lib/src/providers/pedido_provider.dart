@@ -14,7 +14,7 @@ class PedidoProvider {
   Future<List<PedidoModel>> getAll() async {
     try {
       final response = await http
-          .get(apiParam(Api.pedidoBySucursal, _pref.usuario.sucursalId));
+          .get(apiParam(Api.pedidoByEmpleadoListar, _pref.usuario.id));
       final respJson = json.decode(response.body);
       if (response.statusCode == 200) {
         return pedidosFromJsonList(respJson['data']);
