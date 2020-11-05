@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quickbread/src/constants/message_exception.dart';
 import 'package:quickbread/src/models/sucursal_model.dart';
 import 'package:quickbread/src/models/sucursal_producto_model.dart';
+import 'package:quickbread/src/pages/producto_detalle_page.dart';
 import 'package:quickbread/src/providers/producto_provider.dart';
 import 'package:quickbread/src/widgets/error_custom.dart';
 import 'package:quickbread/src/widgets/producto_basic_box.dart';
@@ -70,8 +71,13 @@ class _SearchPageState extends State<SearchPage> {
     return ListView.builder(
       itemCount: _sucursalProductosSearched.length,
       itemBuilder: (BuildContext context, int index) {
-        return ProductoBasicBox(
-            sucuralProducto: _sucursalProductosSearched[index]);
+        return InkWell(
+          onTap: () => Navigator.of(context).pushNamed(
+              ProductoDetallePage.routeName,
+              arguments: _sucursalProductosSearched[index]),
+          child: ProductoBasicBox(
+              sucuralProducto: _sucursalProductosSearched[index]),
+        );
       },
     );
   }

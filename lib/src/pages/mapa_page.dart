@@ -4,7 +4,8 @@ import 'package:geolocator/geolocator.dart';
 
 class MapaPage extends StatelessWidget {
   final LatLng coordenada;
-  MapaPage({@required this.coordenada});
+  final String titulo;
+  MapaPage({@required this.coordenada, @required this.titulo});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class MapaPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mapa'),
+        title: Text(this.titulo),
       ),
       body: GoogleMap(
         myLocationEnabled: true,

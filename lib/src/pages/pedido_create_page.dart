@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:quickbread/src/constants/common_page.dart';
+import 'package:quickbread/src/constants/common_text.dart';
 import 'package:quickbread/src/constants/tipo_entregas.dart';
 import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
@@ -42,7 +42,7 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
   @override
   Widget build(BuildContext context) {
     _pr = new ProgressDialog(context, isDismissible: false);
-    _pr.style(message: loadingC);
+    _pr.style(message: CommonText.loading);
 
     return Scaffold(
       key: _scaffoldKey,

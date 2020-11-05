@@ -45,7 +45,8 @@ class PedidoPage extends StatelessWidget {
             },
           );
         } else if (snapshot.hasError) {
-          return ErrorCustom(message: snapshot.error.toString());
+          final dynamic error = snapshot.error;
+          return ErrorCustom(message: error.message);
         }
 
         return Center(

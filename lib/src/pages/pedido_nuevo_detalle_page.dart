@@ -218,10 +218,10 @@ class PedidoNuevoDetallePage extends StatelessWidget {
   }
 
   void _verMapa(PedidoModel pedido, BuildContext context) {
-    List<String> latLng = pedido.coordenada.split(',');
-    LatLng coordenada = LatLng(num.parse(latLng[0]), num.parse(latLng[1]));
+    LatLng coordenada = pedido.getCoordenada();
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => MapaPage(coordenada: coordenada)));
+        builder: (BuildContext context) =>
+            MapaPage(coordenada: coordenada, titulo: pedido.direccion)));
   }
 
   void _showConfirmDialog(
@@ -252,14 +252,13 @@ class PedidoNuevoDetallePage extends StatelessWidget {
     Navigator.of(context).pop();
     pr.show();
     try {
-      print(pedido.id);
       await pedidoProvider.setEntregado(pedido.id);
       pr.hide();
       Navigator.of(_scaffoldKey.currentContext).pushNamedAndRemoveUntil(
           PedidoNuevoPage.routeName, ModalRoute.withName(HomePage.routeName));
     } catch (e) {
-      pr.hide();
       utils.showSnackbar(e.message, _scaffoldKey);
+      Future.delayed(Duration(milliseconds: 200), () => pr.hide());
     }
   }
 }

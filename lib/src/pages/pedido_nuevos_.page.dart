@@ -15,12 +15,7 @@ class PedidoNuevoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pedidos'),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () => Navigator.pushReplacementNamed(
-                  context, PedidoNuevoPage.routeName))
-        ],
+        actions: [IconButton(icon: Icon(Icons.refresh), onPressed: () {})],
       ),
       body: _pedidoList(),
     );

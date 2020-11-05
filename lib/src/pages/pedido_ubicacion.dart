@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickbread/src/constants/common_page.dart';
+import 'package:quickbread/src/constants/common_text.dart';
 import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/ubicacion_model.dart';
+import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
 import 'package:quickbread/src/widgets/mapa_custom.dart';
@@ -63,7 +64,8 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
             ),
             Container(
                 padding: EdgeInsets.all(paddingUI),
-                child: BotonCustom(titulo: confirmC, onPressed: showFormDialog))
+                child: BotonCustom(
+                    titulo: CommonText.confirm, onPressed: showFormDialog))
           ],
         ),
       ),
@@ -144,14 +146,12 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
         '${_miUbicacion.latitude}, ${_miUbicacion.longitude}';
     _prefs.ubicacion = _ubicacion;
     _pedido.setUbicacion(_ubicacion);
-    print(_ubicacion.direccion);
     final isPedidoCreate = ModalRoute.of(context).settings.arguments;
     Navigator.of(context).pop();
     if (isPedidoCreate != null) {
       Navigator.of(context).pop();
     } else {
-      // Navigator.pushReplacementNamed(context, HomePage.routeName);
-      Navigator.of(context).pop();
+      Navigator.pushReplacementNamed(context, HomePage.routeName);
     }
   }
 }

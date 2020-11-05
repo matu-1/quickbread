@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quickbread/src/constants/ui.dart';
+import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/sucursal_model.dart';
 import 'package:quickbread/src/pages/pedido_ubicacion.dart';
 import 'package:quickbread/src/pages/producto_page.dart';
@@ -7,6 +9,7 @@ import 'package:quickbread/src/providers/push_notification_provider.dart';
 import 'package:quickbread/src/providers/sucursal_provider.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/widgets/drawer_navigation.dart';
+import 'package:quickbread/src/widgets/error_custom.dart';
 
 class HomePage extends StatefulWidget {
   static final routeName = 'home';
@@ -34,11 +37,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<PedidoModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: () =>
-              Navigator.of(context).pushNamed(PedidoUbicacion.routeName),
+          onTap: () => Navigator.of(context)
+              .pushNamed(PedidoUbicacion.routeName, arguments: true),
           child: Row(
             children: [
               Text(
@@ -122,12 +127,9 @@ class _HomePageState extends State<HomePage> {
                   child: _sucursalBox(sucursales[index]));
             },
           );
-        }
-        if (snapshot.hasError) {
+        } else if (snapshot.hasError) {
           final dynamic error = snapshot.error;
-          return Center(
-            child: Text(error.message),
-          );
+          return ErrorCustom(message: error.message);
         }
         return Center(
           child: CircularProgressIndicator(),

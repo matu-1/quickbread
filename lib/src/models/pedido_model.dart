@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:quickbread/src/models/cliente_model.dart';
 import 'package:quickbread/src/models/sucursal_producto_model.dart';
 import 'package:quickbread/src/models/ubicacion_model.dart';
@@ -136,6 +137,8 @@ class PedidoModel with ChangeNotifier {
 
   void reset() {
     this.detalles.clear();
+    this.fecha = null;
+    this.hora = null;
     notifyListeners();
   }
 
@@ -143,6 +146,11 @@ class PedidoModel with ChangeNotifier {
     fecha = date;
     hora = time;
     notifyListeners();
+  }
+
+  LatLng getCoordenada() {
+    List<String> latLng = coordenada.split(',');
+    return LatLng(num.parse(latLng[0]), num.parse(latLng[1]));
   }
 }
 

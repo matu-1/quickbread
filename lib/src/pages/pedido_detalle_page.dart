@@ -154,9 +154,6 @@ class PedidoDetallePage extends StatelessWidget {
                     style: styleTexto,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
                   Text(
                     '${detallePedido.sucursalProducto.producto.getPrecio()} x ${detallePedido.cantidad}',
                     style: stylePrecio,

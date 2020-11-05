@@ -5,12 +5,11 @@ import 'package:quickbread/src/models/sucursal_producto_model.dart';
 
 class ProductoBasicBox extends StatelessWidget {
   final SucursalProductoModel sucuralProducto;
-  
+
   const ProductoBasicBox({
     Key key,
     @required this.sucuralProducto,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +54,6 @@ class ProductoBasicBox extends StatelessWidget {
                     sucuralProducto.producto.descripcion,
                     style: styleTexto,
                     overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(
-                    height: 5,
                   ),
                   Text(
                     sucuralProducto.producto.getPrecio(),

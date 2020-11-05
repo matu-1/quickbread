@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickbread/src/constants/common_page.dart';
+import 'package:quickbread/src/constants/common_text.dart';
 import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/utils/utils.dart';
@@ -48,7 +48,7 @@ class _CuandoPageState extends State<CuandoPage> {
           Padding(
             padding: EdgeInsets.all(paddingUI),
             child: BotonCustom(
-                titulo: saveC,
+                titulo: CommonText.save,
                 onPressed: isValidoProgramacion() ? guardar : null),
           )
         ],
