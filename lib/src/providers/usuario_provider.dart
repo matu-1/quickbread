@@ -23,7 +23,6 @@ class UsuarioProvider {
       if (response.statusCode == 200) {
         usuario.id = respJson['data']['idcliente'];
         _pref.usuario = usuario;
-        print(_pref.usuario.toJson());
         return respJson;
       } else {
         throw Exception(respJson['message']);
@@ -45,6 +44,7 @@ class UsuarioProvider {
       if (response.statusCode == 200) {
         final usuarioDB = UsuarioModel.fromJson(respJson['data']);
         _pref.usuario = usuarioDB;
+        print(_pref.usuario.toJson());
         return respJson;
       } else {
         throw Exception(respJson['message']);

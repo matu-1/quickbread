@@ -37,3 +37,18 @@ String apiParam(String route, dynamic param) {
   return route.replaceAll(':id', param.toString());
 }
 
+String tiempoTranscurrido(DateTime fecha) {
+  DateTime ahora = DateTime.now();
+  final diff = ahora.difference(fecha);
+  if (diff.inMinutes == 0) {
+    return 'Hace un momento';
+  } else if (diff.inMinutes <= 60) {
+    return 'Hace ${diff.inMinutes} minutos';
+  } else if (diff.inHours <= 60) {
+    return '${diff.inHours} horas atras';
+  } else if (diff.inDays <= 30) {
+    return 'Hace ${diff.inDays} dias';
+  } else {
+    return '${fecha.day} de ${meses[fecha.month + 1]}, ${fecha.year}';
+  }
+}

@@ -118,7 +118,7 @@ class PedidoNuevoPage extends StatelessWidget {
                   Container(
                     alignment: Alignment.topRight,
                     child: Text(
-                      pedido.fechaHora,
+                      pedido.getCreatedAt(),
                       style: TextStyle(
                         height: 1.3,
                         color: Colors.grey,

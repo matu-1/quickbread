@@ -20,6 +20,7 @@ class UsuarioModel {
   String password;
   String rol;
   String token;
+  int sucursalId;
 
   UsuarioModel({
     this.id,
@@ -32,19 +33,20 @@ class UsuarioModel {
     this.password,
     this.rol = 'cliente',
     this.token,
+    this.sucursalId,
   });
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) => UsuarioModel(
-        id: json["id"],
-        ci: json['ci'],
-        nombre: json["nombre"],
-        apellido: json["apellido"],
-        telefono: json["telefono_celular"],
-        direccion: json["direccion"],
-        email: json["email"],
-        password: json["password"],
-        rol: json["rol"],
-      );
+      id: json["id"],
+      ci: json['ci'],
+      nombre: json["nombre"],
+      apellido: json["apellido"],
+      telefono: json["telefono_celular"],
+      direccion: json["direccion"],
+      email: json["email"],
+      password: json["password"],
+      rol: json["rol"],
+      sucursalId: json['fkidsucursal']);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -56,7 +58,8 @@ class UsuarioModel {
         "email": email,
         "password": password,
         "rol": rol,
-        'token': token
+        'token': token,
+        'fkidsucursal': sucursalId,
       };
 
   String getFullName() => '${this.nombre} $apellido';

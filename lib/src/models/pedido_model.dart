@@ -132,6 +132,8 @@ class PedidoModel with ChangeNotifier {
     return 'Bs.${this.total}';
   }
 
+  String getCreatedAt() => this.fechaHora.substring(0, 16);
+
   void reset() {
     this.detalles.clear();
     notifyListeners();

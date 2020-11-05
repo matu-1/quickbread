@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickbread/src/constants/message_exception.dart';
 import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/pedido_detalle_page.dart';
@@ -29,8 +30,9 @@ class PedidoPage extends StatelessWidget {
         if (snapshot.hasData) {
           final pedidos = snapshot.data;
 
-          if (pedidos.length == 0)
-            return ErrorCustom(message: 'No hay registros');
+          if (pedidos.isEmpty)
+            return ErrorCustom(message: MessageException.noData);
+
           return ListView.builder(
             itemCount: pedidos.length,
             itemBuilder: (BuildContext context, int index) {
@@ -111,7 +113,7 @@ class PedidoPage extends StatelessWidget {
                   Container(
                     alignment: Alignment.topRight,
                     child: Text(
-                      pedido.fechaHora,
+                      pedido.getCreatedAt(),
                       style: TextStyle(
                         height: 1.3,
                         color: Colors.grey,

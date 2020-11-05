@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:quickbread/src/constants/common_page.dart';
 import 'package:quickbread/src/constants/tipo_entregas.dart';
 import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
@@ -21,9 +22,6 @@ class PedidoCreatePage extends StatefulWidget {
 }
 
 class _PedidoCreatePageState extends State<PedidoCreatePage> {
-  int _tipoId;
-  String _fecha;
-  String _hora;
   final formKey = GlobalKey<FormState>();
   final styleTitulo =
       TextStyle(fontSize: sizeSubtituloUI, fontWeight: FontWeight.w600);
@@ -44,7 +42,7 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
   @override
   Widget build(BuildContext context) {
     _pr = new ProgressDialog(context, isDismissible: false);
-    _pr.style(message: 'Espere por favor');
+    _pr.style(message: loadingC);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -273,18 +271,13 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
     _pr.show();
     try {
       await _pedidoProvider.create(_pedido);
+      _pr.hide();
+      Provider.of<PedidoModel>(context, listen: false).reset();
       Navigator.of(context)
           .pushNamedAndRemoveUntil(HomePage.routeName, (route) => false);
     } catch (e) {
       showSnackbar(e.message, _scaffoldKey);
+      Future.delayed(Duration(milliseconds: 200), () => _pr.hide());
     }
-    Future.delayed(Duration(milliseconds: 200), () => _pr.hide());
-  }
-
-  bool isValid() {
-    if (_fecha != null && _hora != null && _tipoId != null)
-      return true;
-    else
-      return false;
   }
 }

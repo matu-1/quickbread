@@ -13,7 +13,8 @@ class PedidoProvider {
 
   Future<List<PedidoModel>> getAll() async {
     try {
-      final response = await http.get(Api.pedidoListar);
+      final response = await http
+          .get(apiParam(Api.pedidoBySucursal, _pref.usuario.sucursalId));
       final respJson = json.decode(response.body);
       if (response.statusCode == 200) {
         return pedidosFromJsonList(respJson['data']);
@@ -21,7 +22,9 @@ class PedidoProvider {
         throw Exception(respJson['message']);
       }
     } catch (e) {
-      throw Exception(MessageException.noConnection);
+      if (e.runtimeType == SocketOption)
+        throw Exception(MessageException.noConnection);
+      throw Exception(e.message);
     }
   }
 
@@ -43,25 +46,22 @@ class PedidoProvider {
   }
 
   Future<Map> create(PedidoModel pedido) async {
-    print(_pref.usuario.toJson());
     pedido.clienteId = _pref.usuario.id;
     pedido.setUbicacionSave(_pref.ubicacion);
     pedido.fechaHora = DateTime.now().toIso8601String();
-    print(pedido.toJson());
     try {
-      // final response = await http
-      //     .post(Api.pedidoListar, body: json.encode(pedido), headers: {
-      //   'Content-type': 'application/json',
-      //   'Accept': 'application/json',
-      // });
+      final response = await http
+          .post(Api.pedidoListar, body: json.encode(pedido), headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+      });
 
-      // final respJson = json.decode(response.body);
-      // if (response.statusCode == 200) {
-      //   return respJson;
-      // } else {
-      //   throw Exception(respJson['message']);
-      // }
-      throw Exception('ups');
+      final respJson = json.decode(response.body);
+      if (response.statusCode == 200) {
+        return respJson;
+      } else {
+        throw Exception(respJson['message']);
+      }
     } catch (e) {
       if (e.runtimeType == SocketException)
         throw Exception(MessageException.noConnection);
@@ -79,7 +79,9 @@ class PedidoProvider {
         throw Exception(respJson['message']);
       }
     } catch (e) {
-      throw Exception(MessageException.noConnection);
+      if (e.runtimeType == SocketException)
+        throw Exception(MessageException.noConnection);
+      throw Exception(e.message);
     }
   }
 }

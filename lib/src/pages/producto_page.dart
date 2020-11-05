@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickbread/src/constants/message_exception.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/sucursal_model.dart';
 import 'package:quickbread/src/models/sucursal_producto_model.dart';
@@ -48,6 +49,8 @@ class _ProductoPageState extends State<ProductoPage> {
           AsyncSnapshot<List<SucursalProductoModel>> snapshot) {
         if (snapshot.hasData) {
           final productos = snapshot.data;
+          if (productos.isEmpty)
+            return ErrorCustom(message: MessageException.noData);
 
           return ListView.builder(
             shrinkWrap: true,

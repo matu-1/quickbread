@@ -89,7 +89,7 @@ class PedidoDetallePage extends StatelessWidget {
               prop: 'Observacion:',
               text: pedido.observacion ?? 'No registrado'),
           TextProp(prop: 'Estado:', text: pedido.estado),
-          TextProp(prop: 'Creado el:', text: pedido.fechaHora),
+          TextProp(prop: 'Creado el:', text: pedido.getCreatedAt()),
         ],
       ),
     );
