@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-Color primary = Color(0xff8e44ad);
-Color accent = Color(0xff6c5ce7);
+Color primary = Color(0xff769BC4); //8e44ad
+Color accent = Color(0xff5D7A9B); //6c5ce7
 
 final ThemeData theme = ThemeData.light().copyWith(
     primaryColor: primary,

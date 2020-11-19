@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:quickbread/src/constants/common_text.dart';
+import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/models/usuario_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/pages/pedido_create_page.dart';
@@ -62,10 +63,7 @@ class _LoginPageState extends State<LoginPage> {
           clipBehavior: Clip.antiAlias,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Image(
-              height: 200,
-              width: 200,
-              image: AssetImage('assets/images/logo.png')),
+          child: Image(height: 150, width: 150, image: AssetImage(logoPath)),
         ),
       ),
     );

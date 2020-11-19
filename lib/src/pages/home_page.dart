@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/sucursal_model.dart';
@@ -69,9 +70,12 @@ class _HomePageState extends State<HomePage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(
-            'assets/images/logo.png',
-            width: 200,
-            height: 200,
+            logoPath,
+            width: 150,
+            height: 150,
+          ),
+          SizedBox(
+            height: 40,
           ),
           Text(
             'Bienvenido a nuestra aplicacion de pedidos, empieza a repartir',

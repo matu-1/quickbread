@@ -11,8 +11,8 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="quickbread"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Dulce deleite"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

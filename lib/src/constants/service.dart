@@ -1,4 +1,4 @@
-final host = 'http://192.168.0.11:8080/EDG-PanaderiaFinal/public/api';
+final host = 'https://edg-panaderia.herokuapp.com/api'; //http://192.168.0.11:8080/EDG-PanaderiaFinal/public/api
 
 class Api {
   static final productoListar = host + '/web/producto';
@@ -12,7 +12,7 @@ class Api {
   static final sucursalListar = host + '/movil/sucursal';
   static final pedidoByEmpleadoListar = host + '/movil/asignacion_pedido/:id';
   static final updateToken = host + '/movil/update_token';
-  static final usuarioPersonalListar = host + '/movil/usuario_personal';
+  static final usuarioPersonalListar = host + '/movil/usuario_personal/:id';
   static final usuarioUpdate = host + '/movil/update_perfil/:id';
 
   static final requestHeader = {

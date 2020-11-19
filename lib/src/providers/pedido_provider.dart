@@ -88,7 +88,7 @@ class PedidoProvider {
 
   Future<void> sendNotificationAdmin() async {
     try {
-      final response = await http.get(Api.usuarioPersonalListar);
+      final response = await http.get(apiParam(Api.usuarioPersonalListar, _pref.usuario.sucursalId));
       final respJson = json.decode(response.body);
       if (response.statusCode == 200) {
         final personales = respJson['data'];
