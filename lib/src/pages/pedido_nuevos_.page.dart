@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:quickbread/src/blocs/pedido_bloc.dart';
 import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/pedido_nuevo_detalle_page.dart';
-import 'package:quickbread/src/providers/pedido_provider.dart';
 import 'package:quickbread/src/widgets/chip_custom.dart';
 import 'package:quickbread/src/widgets/error_custom.dart';
 
 class PedidoNuevoPage extends StatelessWidget {
   static final routeName = 'pedidoNuevo';
-  final _pedidoProvider = new PedidoProvider();
+  final _pedidoBloc = new PedidoBloc();
 
   @override
   Widget build(BuildContext context) {
+    _pedidoBloc.getAll();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Pedidos'),
-        actions: [IconButton(icon: Icon(Icons.refresh), onPressed: () {})],
+        actions: [IconButton(icon: Icon(Icons.refresh), onPressed: _pedidoBloc.getAll)],
       ),
       body: _pedidoList(),
     );
@@ -23,8 +25,8 @@ class PedidoNuevoPage extends StatelessWidget {
 
   Widget _pedidoList() {
     // List<PedidoModel> pedidos = pedidosFromJsonList(pedidosData);
-    return FutureBuilder(
-      future: _pedidoProvider.getAll(),
+    return StreamBuilder(
+      stream: _pedidoBloc.pedidoStream,
       builder:
           (BuildContext context, AsyncSnapshot<List<PedidoModel>> snapshot) {
         if (snapshot.hasData) {
@@ -45,7 +47,7 @@ class PedidoNuevoPage extends StatelessWidget {
             },
           );
         } else if (snapshot.hasError) {
-          return ErrorCustom(message: snapshot.error.toString());
+          return ErrorCustom(message: '${snapshot.error}');
         }
 
         return Center(

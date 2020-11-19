@@ -1,4 +1,4 @@
-final host = 'http://192.168.0.22:8080/EDG-PanaderiaFinal/public/api';
+final host = 'http://192.168.0.11:8080/EDG-PanaderiaFinal/public/api';
 
 class Api {
   static final productoListar = host + '/web/producto';
@@ -11,4 +11,12 @@ class Api {
   static final productoSucursalListar = host + '/movil/sucursal_producto/:id';
   static final sucursalListar = host + '/movil/sucursal';
   static final pedidoByEmpleadoListar = host + '/movil/asignacion_pedido/:id';
+  static final updateToken = host + '/movil/update_token';
+  static final usuarioPersonalListar = host + '/movil/usuario_personal';
+  static final usuarioUpdate = host + '/movil/update_perfil/:id';
+
+  static final requestHeader = {
+    'Content-type': 'application/json',
+    'Accept': 'application/json',
+  };
 }

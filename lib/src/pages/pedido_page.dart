@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:quickbread/src/blocs/pedido_bloc.dart';
 import 'package:quickbread/src/constants/message_exception.dart';
 import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/pedido_detalle_page.dart';
-import 'package:quickbread/src/providers/pedido_provider.dart';
-import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 import 'package:quickbread/src/widgets/chip_custom.dart';
 import 'package:quickbread/src/widgets/error_custom.dart';
 
 class PedidoPage extends StatelessWidget {
-  final _pedidoProvider = new PedidoProvider();
+  final _pedidoBloc = new PedidoBloc();
 
   @override
   Widget build(BuildContext context) {
+    print('sd');
+    _pedidoBloc.getByCliente();
     return Container(
+      key: PageStorageKey('pedido'),
       child: _pedidoList(),
     );
   }
 
   Widget _pedidoList() {
     // List<PedidoModel> pedidos = pedidosFromJsonList(pedidosData);
-    final _prefs = new PreferenciasUsuario();
-    if (_prefs.usuario.rol != 'cliente')
-      return ErrorCustom(message: 'Debe ingresar como un cliente');
-    return FutureBuilder(
-      future: _pedidoProvider.getByCliente(),
+    return StreamBuilder(
+      stream: _pedidoBloc.pedidoStream,
       builder:
           (BuildContext context, AsyncSnapshot<List<PedidoModel>> snapshot) {
         if (snapshot.hasData) {
@@ -45,8 +44,7 @@ class PedidoPage extends StatelessWidget {
             },
           );
         } else if (snapshot.hasError) {
-          final dynamic error = snapshot.error;
-          return ErrorCustom(message: error.message);
+          return ErrorCustom(message: '${snapshot.error}');
         }
 
         return Center(

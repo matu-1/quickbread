@@ -22,7 +22,7 @@ class PedidoProvider {
         throw Exception(respJson['message']);
       }
     } catch (e) {
-      if (e.runtimeType == SocketOption)
+      if (e.runtimeType == SocketException)
         throw Exception(MessageException.noConnection);
       throw Exception(e.message);
     }
@@ -58,6 +58,7 @@ class PedidoProvider {
 
       final respJson = json.decode(response.body);
       if (response.statusCode == 200) {
+        this.sendNotificationAdmin();
         return respJson;
       } else {
         throw Exception(respJson['message']);
@@ -82,6 +83,51 @@ class PedidoProvider {
       if (e.runtimeType == SocketException)
         throw Exception(MessageException.noConnection);
       throw Exception(e.message);
+    }
+  }
+
+  Future<void> sendNotificationAdmin() async {
+    try {
+      final response = await http.get(Api.usuarioPersonalListar);
+      final respJson = json.decode(response.body);
+      if (response.statusCode == 200) {
+        final personales = respJson['data'];
+        personales.forEach((personal) {
+          if (personal['token'] != null)
+            sendNotification(personal['token'],
+                'Tienes un nuevo pedido, dale una mirada', 'Pedido nuevo', {});
+        });
+      } else {
+        throw Exception(respJson['message']);
+      }
+    } catch (e) {
+      if (e.runtimeType == SocketOption)
+        throw Exception(MessageException.noConnection);
+      throw Exception(e.message);
+    }
+  }
+
+  static Future<Map> sendNotification(
+      String token, String message, String title, Map data) async {
+    final url = 'https://fcm.googleapis.com/fcm/send';
+    final keyServer =
+        'AAAAaCDI5Xs:APA91bERZTbtiYzQJD0U8AcWkgfThxDgef5f4fWvSgrbsq0fQzlaOo068vKIgZX2wzJA6KDT5pTtIUR-N425mwjDYtnSViRyeTZsdCo-l6oQh2XUKBG8FuV1pnHI8rUMRGC8W0R0Ojko';
+
+    final body = {
+      "to": token,
+      "notification": {"body": message, "title": title},
+      "data": data ?? {}
+    };
+
+    try {
+      final resp = await http.post(url, body: json.encode(body), headers: {
+        ...Api.requestHeader,
+        'Authorization': 'key=$keyServer'
+      });
+      final data = json.decode(resp.body);
+      return data;
+    } catch (e) {
+      throw Exception(MessageException.noResult);
     }
   }
 }

@@ -6,8 +6,9 @@ class YoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-       print(_prefs.usuario?.toJson());
+    print(_prefs.usuario?.toJson());
     return SingleChildScrollView(
+      key: PageStorageKey('perfil'),
       child: Container(
         padding: EdgeInsets.all(10.0),
         child: Column(
@@ -46,7 +47,7 @@ class YoPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Telefono'),
+              title: Text('Telefono celular'),
               subtitle: Text(_prefs.usuario.telefono),
               leading: Icon(
                 Icons.phone_android,

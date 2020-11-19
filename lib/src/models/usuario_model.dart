@@ -62,6 +62,19 @@ class UsuarioModel {
         'fkidsucursal': sucursalId,
       };
 
+  Map<String, dynamic> toJsonUpdate() => {
+        "nombre": nombre,
+        "apellido": apellido,
+        "telefono": telefono,
+        "rol" : rol,
+      };
+
+  setUpdate(UsuarioModel usuario) {
+    this.nombre = usuario.nombre;
+    this.apellido = usuario.apellido;
+    this.telefono = usuario.telefono;
+  }
+
   String getFullName() => '${this.nombre} $apellido';
 
   String getInitialName() => this.nombre[0].toUpperCase();
