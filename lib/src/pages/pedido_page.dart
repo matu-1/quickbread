@@ -12,7 +12,7 @@ class PedidoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('sd');
+    print('pedido build');
     _pedidoBloc.getByCliente();
     return Container(
       key: PageStorageKey('pedido'),

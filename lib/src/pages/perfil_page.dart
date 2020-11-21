@@ -15,6 +15,7 @@ class _PerfilPageState extends State<PerfilPage> {
   int currentIndex = 0;
   final _prefs = new PreferenciasUsuario();
   final _pedidoBloc = new PedidoBloc();
+  final _page = [YoPage(), PedidoPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,10 @@ class _PerfilPageState extends State<PerfilPage> {
         appBar: AppBar(
           title: Text('Perfil'),
         ),
-        body: _cargarPagina(),
+        body: IndexedStack(
+          children: _page,
+          index: currentIndex,
+        ),
         bottomNavigationBar: _prefs.usuario.rol != 'cliente'
             ? null
             : _contenedorBottonNavigationBar(),
@@ -55,16 +59,5 @@ class _PerfilPageState extends State<PerfilPage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart), label: 'Pedidos'),
         ]);
-  }
-
-  Widget _cargarPagina() {
-    switch (currentIndex) {
-      case 0:
-        return YoPage();
-      case 1:
-        return PedidoPage();
-      default:
-        return YoPage();
-    }
   }
 }

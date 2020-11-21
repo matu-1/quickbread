@@ -6,7 +6,6 @@ class YoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(_prefs.usuario?.toJson());
     return SingleChildScrollView(
       key: PageStorageKey('perfil'),
       child: Container(
