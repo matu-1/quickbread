@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickbread/src/constants/common_text.dart';
 import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
@@ -17,6 +18,11 @@ class PedidoDetallePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Mi pedido'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => showAnularDialog(context))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -30,8 +36,6 @@ class PedidoDetallePage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton:
-          FloatingActionButton(child: Icon(Icons.delete), onPressed: () {}),
     );
   }
 
@@ -167,5 +171,29 @@ class PedidoDetallePage extends StatelessWidget {
             ),
           ],
         ));
+  }
+
+  void showAnularDialog(BuildContext context) {
+    final styleBtnText = TextStyle(color: Theme.of(context).primaryColor);
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Anular pedido'),
+            content: Text('Esta seguro de anularlo?'),
+            actions: [
+              FlatButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    CommonText.close,
+                    style: styleBtnText,
+                  )),
+              FlatButton(
+                  onPressed: () {},
+                  child: Text(CommonText.save, style: styleBtnText)),
+            ],
+          );
+        });
   }
 }

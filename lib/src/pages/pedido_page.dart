@@ -39,7 +39,6 @@ class PedidoPage extends StatelessWidget {
                   onTap: () => Navigator.of(context).pushNamed(
                       PedidoDetallePage.routeName,
                       arguments: pedidos[index]),
-                  onLongPress: () => showAnularDialog(context),
                   child: _pedidoBox(pedidos[index], context));
             },
           );
@@ -125,29 +124,5 @@ class PedidoPage extends StatelessWidget {
             ),
           ],
         ));
-  }
-
-  void showAnularDialog(BuildContext context) {
-    final styleBtnText = TextStyle(color: Theme.of(context).primaryColor);
-
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Anular pedido'),
-            content: Text('Esta seguro de anularlo?'),
-            actions: [
-              FlatButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text(
-                    'CERRAR',
-                    style: styleBtnText,
-                  )),
-              FlatButton(
-                  onPressed: () {},
-                  child: Text('GUARDAR', style: styleBtnText)),
-            ],
-          );
-        });
   }
 }

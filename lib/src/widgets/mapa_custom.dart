@@ -75,8 +75,7 @@ class _MapCustomState extends State<MapCustom> {
     marker.add(Marker(
         markerId: MarkerId('myubicacion'),
         position: _myUbicacion,
-        icon:
-            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet)));
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan)));
     return marker;
   }
 

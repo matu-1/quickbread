@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickbread/src/constants/common_text.dart';
 import 'package:quickbread/src/constants/message_exception.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/sucursal_model.dart';
@@ -24,18 +25,22 @@ class _ProductoPageState extends State<ProductoPage> {
   @override
   Widget build(BuildContext context) {
     final SucursalModel sucursal = ModalRoute.of(context).settings.arguments;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(sucursal.nombre),
-        actions: [
-          _badgeAgregados(context),
-        ],
-      ),
-      body: _productoList(sucursal),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context)
-            .pushNamed(SearchPage.routeName, arguments: sucursal),
-        child: Icon(Icons.search),
+
+    return WillPopScope(
+      onWillPop: () => _confirmarSalir(context),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(sucursal.nombre),
+          actions: [
+            _badgeAgregados(context),
+          ],
+        ),
+        body: _productoList(sucursal),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => Navigator.of(context)
+              .pushNamed(SearchPage.routeName, arguments: sucursal),
+          child: Icon(Icons.search),
+        ),
       ),
     );
   }
@@ -80,7 +85,8 @@ class _ProductoPageState extends State<ProductoPage> {
             },
           );
         } else if (snapshot.hasError) {
-          return ErrorCustom(message: '${snapshot.error}'.substring(11));
+          final dynamic error = snapshot.error;
+          return ErrorCustom(message: '${error.message}');
         }
         return Center(
           child: CircularProgressIndicator(),
@@ -135,5 +141,31 @@ class _ProductoPageState extends State<ProductoPage> {
         )
       ],
     );
+  }
+
+  Future<bool> _confirmarSalir(BuildContext context) async {
+    final btnTextColor = Theme.of(context).primaryColor;
+    final pedido = Provider.of<PedidoModel>(context, listen: false);
+
+    if (pedido.detalles.length == 0) return true;
+    return showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text('¿Estas seguro de salir?'),
+              content: Text('Si lo haces, se eliminara tu pedido'),
+              actions: [
+                FlatButton(
+                    textColor: btnTextColor,
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: Text(CommonText.no)),
+                FlatButton(
+                    textColor: btnTextColor,
+                    onPressed: () {
+                      pedido.reset();
+                      Navigator.of(context).pop(true);
+                    },
+                    child: Text('SI, SALIR'))
+              ],
+            ));
   }
 }

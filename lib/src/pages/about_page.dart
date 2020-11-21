@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/constants/ui.dart';
 
 class AboutPage extends StatelessWidget {
@@ -17,10 +18,7 @@ class AboutPage extends StatelessWidget {
           padding: EdgeInsets.all(paddingUI),
           child: Column(
             children: <Widget>[
-              Image(
-                  height: 170,
-                  width: 170,
-                  image: AssetImage('assets/images/logo.png')),
+              Image(height: 150, width: 150, image: AssetImage(logoPath)),
               Text('Version: 1.0.0'),
               SizedBox(
                 height: 30,

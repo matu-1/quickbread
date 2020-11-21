@@ -23,14 +23,11 @@ class ProductoDetallePage extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      // appBar: AppBar(
-      //   title: Text(''),
-      // ),
       body: Stack(
         children: [
           Column(
             children: [
-              Expanded(child: _contenido(sucursalProducto.producto, context)),
+              Expanded(child: _contenido(sucursalProducto, context)),
               Container(
                 padding: EdgeInsets.all(paddingUI),
                 child: BotonCustom(
@@ -70,15 +67,15 @@ class ProductoDetallePage extends StatelessWidget {
     );
   }
 
-  Widget _contenido(ProductoModel producto, BuildContext context) {
+  Widget _contenido(SucursalProductoModel producto, BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _imagen(producto, context),
-          _tituloContainer(producto, context),
+          _tituloContainer(producto.producto, context),
           _divider(),
-          _descripcion(producto),
+          _descripcion(producto.producto),
           SizedBox(
             height: 20,
           ),
@@ -87,14 +84,14 @@ class ProductoDetallePage extends StatelessWidget {
     );
   }
 
-  Widget _imagen(ProductoModel producto, BuildContext context) {
+  Widget _imagen(SucursalProductoModel producto, BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return Hero(
       tag: producto.id,
       child: FadeInImage(
         placeholder: AssetImage(pathLoadingLong),
-        image: NetworkImage(producto.getPathImage()),
+        image: NetworkImage(producto.producto.getPathImage()),
         height: size.height * 0.35,
         width: double.infinity,
         fit: BoxFit.cover,
@@ -195,7 +192,7 @@ class ProductoDetallePage extends StatelessWidget {
                           ),
                           onSaved: (value) => cantidad = value,
                           validator: (value) {
-                            if (utils.isNumeric(value)) return null;
+                            if (utils.isNumeric(value) && int.parse(value) > 0) return null;
                             return 'Debe ser un numero';
                           },
                         )

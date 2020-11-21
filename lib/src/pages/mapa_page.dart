@@ -30,7 +30,7 @@ class MapaPage extends StatelessWidget {
         markerId: MarkerId('coordenada'),
         position: coordenada,
         icon:
-            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet)));
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan)));
     return marker;
   }
 

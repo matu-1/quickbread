@@ -73,20 +73,26 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
   }
 
   void showFormDialog() {
+    final colorBtnText = Theme.of(context).primaryColor;
+
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
               title: Text('Detalle de direccion'),
               content: _formulario(),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               actions: [
                 FlatButton(
-                    textColor: Theme.of(context).primaryColor,
+                    textColor: colorBtnText,
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text('CERRAR')),
+                    child: Text(CommonText.close)),
                 FlatButton(
-                    textColor: Theme.of(context).primaryColor,
+                    textColor: colorBtnText,
                     onPressed: _guardar,
-                    child: Text('ACEPTAR')),
+                    child: Text(
+                      CommonText.acept,
+                    )),
               ],
             ));
   }
