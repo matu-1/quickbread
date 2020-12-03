@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quickbread/src/blocs/pedido_bloc.dart';
 import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
-import 'package:quickbread/src/pages/pedido_nuevo_detalle_page.dart';
+import 'package:quickbread/src/pages/pedido_detalle_admin_page.dart';
 import 'package:quickbread/src/widgets/chip_custom.dart';
 import 'package:quickbread/src/widgets/error_custom.dart';
 

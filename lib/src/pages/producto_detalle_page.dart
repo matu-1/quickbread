@@ -167,7 +167,8 @@ class ProductoDetallePage extends StatelessWidget {
   void _cantidadModalBottom(
       BuildContext context, SucursalProductoModel producto) {
     final pedido = Provider.of<PedidoModel>(context, listen: false);
-    if (pedido.existProducto(producto)) return showMessage('Ya se agrego !!');
+    if (pedido.existProducto(producto))
+      return utils.showSnackbar('Ya se agrego !!', _scaffoldKey);
     String cantidad;
 
     showDialog(
@@ -192,7 +193,8 @@ class ProductoDetallePage extends StatelessWidget {
                           ),
                           onSaved: (value) => cantidad = value,
                           validator: (value) {
-                            if (utils.isNumeric(value) && int.parse(value) > 0) return null;
+                            if (utils.isNumeric(value) && int.parse(value) > 0)
+                              return null;
                             return 'Debe ser un numero';
                           },
                         )
@@ -222,20 +224,19 @@ class ProductoDetallePage extends StatelessWidget {
 
   void _agregarProducto(
       BuildContext context, String cantidad, SucursalProductoModel producto) {
-    final pedido = Provider.of<PedidoModel>(context, listen: false);
     int newCantidad = int.parse(cantidad);
+    if (newCantidad > producto.stock) {
+      Navigator.of(context).pop();
+      return utils.showSnackbar(
+          'No se cuenta con stock suficiente, stock = ${producto.stock}',
+          _scaffoldKey);
+    }
+    final pedido = Provider.of<PedidoModel>(context, listen: false);
     Navigator.of(context).pop();
     pedido.add(DetallePedidoModel(
         cantidad: newCantidad,
         sucursalProducto: producto,
         subtotal: producto.producto.precio * newCantidad));
     Navigator.of(context).pushNamed(PedidoResumenPage.routeName);
-  }
-
-  void showMessage(String message) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text(message),
-      duration: Duration(seconds: 2),
-    ));
   }
 }

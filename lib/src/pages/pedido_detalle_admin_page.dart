@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:quickbread/src/constants/path.dart';
-import 'package:quickbread/src/constants/pedido_estado.dart';
 import 'package:quickbread/src/constants/ui.dart';
+import 'package:quickbread/src/models/estado_model.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
 import 'package:quickbread/src/pages/mapa_page.dart';
-import 'package:quickbread/src/pages/pedido_nuevos_.page.dart';
+import 'package:quickbread/src/pages/pedido_admin_page.dart';
 import 'package:quickbread/src/providers/pedido_provider.dart';
 import 'package:quickbread/src/widgets/boton_custom.dart';
 import 'package:quickbread/src/widgets/text_prop.dart';
@@ -55,7 +55,8 @@ class PedidoNuevoDetallePage extends StatelessWidget {
 
   Widget _floatingActionButton(
       PedidoModel pedido, BuildContext context, ProgressDialog pr) {
-    if (pedido.estado == PedidoEstado.entregado) return null;
+    // if (pedido.estado == PedidoEstado.entregado) return null;
+    if (_mostrarEstado(EstadoEntrega(), pedido.estado) || _mostrarEstado(EstadoAnulado(), pedido.estado)) return null;
     return FloatingActionButton(
         child: Icon(Icons.check),
         onPressed: () => _showConfirmDialog(context, pr, pedido));
@@ -267,5 +268,9 @@ class PedidoNuevoDetallePage extends StatelessWidget {
       utils.showSnackbar(e.message, _scaffoldKey);
       Future.delayed(Duration(milliseconds: 200), () => pr.hide());
     }
+  }
+
+  bool _mostrarEstado(IEstado estadoPedido, String estado) {
+    return estadoPedido.isMostrar(estado);
   }
 }

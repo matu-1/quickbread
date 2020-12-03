@@ -34,7 +34,7 @@ class AyudaPage extends StatelessWidget {
             Divider(),
             ListTile(
               title: Text('Telefono celular'),
-              subtitle: Text('Llamar al numero 78454525 o 78545235 para cualquier consulta.'),
+              subtitle: Text('Llamar al numero 78454525 para cualquier consulta.'),
             ),
             Divider(),
             ListTile(

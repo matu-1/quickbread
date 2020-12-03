@@ -3,7 +3,7 @@ import 'package:quickbread/src/icons/my_icon_icons.dart';
 import 'package:quickbread/src/pages/about_page.dart';
 import 'package:quickbread/src/pages/ayuda_page.dart';
 import 'package:quickbread/src/pages/login_page.dart';
-import 'package:quickbread/src/pages/pedido_nuevos_.page.dart';
+import 'package:quickbread/src/pages/pedido_admin_page.dart';
 import 'package:quickbread/src/pages/perfil_page.dart';
 import 'package:quickbread/src/share_prefs/preferencias_usuario.dart';
 

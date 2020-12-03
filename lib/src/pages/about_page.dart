@@ -24,7 +24,7 @@ class AboutPage extends StatelessWidget {
                 height: 30,
               ),
               Text(
-                'Pan Integral es una aplicacion para realizar pedidos de panes lo que facilita al consumidor tener lo que quiere sin necesidad de ir a comprarlo personalmente.',
+                'Quickbread es una aplicacion para realizar pedidos de panes lo que facilita al consumidor tener lo que quiere sin necesidad de ir a comprarlo personalmente.',
                 textAlign: TextAlign.center,
               ),
               SizedBox(
