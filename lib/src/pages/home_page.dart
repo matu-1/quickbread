@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
             height: 40,
           ),
           Text(
-            'Bienvenido a nuestra aplicacion de pedidos, empieza a repartir',
+            'Bienvenido a nuestra aplicación de pedidos, empieza a repartir',
             style: styleText,
             textAlign: TextAlign.center,
           ),
