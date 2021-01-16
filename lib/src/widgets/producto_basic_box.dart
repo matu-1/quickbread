@@ -14,9 +14,9 @@ class ProductoBasicBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final styleTitulo =
-        TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.3);
-    final styleTexto = TextStyle(height: 1.3, color: Colors.grey[600]);
-    final stylePrecio = TextStyle(height: 1.3);
+        TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.4);
+    final styleTexto = TextStyle(height: 1.4, color: Colors.grey[600]);
+    final stylePrecio = TextStyle(height: 1.4);
 
     return Container(
         padding: EdgeInsets.symmetric(vertical: paddingUI),
@@ -55,6 +55,7 @@ class ProductoBasicBox extends StatelessWidget {
                     style: styleTexto,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  SizedBox(height: 5,),
                   Text(
                     sucuralProducto.producto.getPrecio(),
                     style: stylePrecio,

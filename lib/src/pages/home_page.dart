@@ -152,10 +152,15 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(5)),
       child: Row(
         children: [
-          CircleAvatar(
-            child: Text(sucursal.getInitial()),
-            backgroundColor: Theme.of(context).accentColor,
-            radius: 25,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: FadeInImage(
+              placeholder: AssetImage(pathLoading), 
+              image: NetworkImage(sucursal.getPathImage()),
+              width: 70,
+              height: 70,
+              fit: BoxFit.cover,
+            ),
           ),
           SizedBox(
             width: 15,

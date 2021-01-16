@@ -52,3 +52,6 @@ String tiempoTranscurrido(DateTime fecha) {
     return '${fecha.day} de ${meses[fecha.month + 1]}, ${fecha.year}';
   }
 }
+
+String capitalize(String cadena) =>
+    cadena[0].toUpperCase() + cadena.substring(1);

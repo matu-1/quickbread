@@ -16,6 +16,7 @@ import 'package:quickbread/src/pages/producto_page.dart';
 import 'package:quickbread/src/pages/registro_page.dart';
 import 'package:quickbread/src/pages/search_page.dart';
 import 'package:quickbread/src/pages/yo_edit_page.dart';
+import 'package:quickbread/src/pages/sucursal_info_page.dart';
 
 final Map<String, WidgetBuilder> routes = {
   HomePage.routeName: (BuildContext context) => HomePage(),
@@ -36,5 +37,6 @@ final Map<String, WidgetBuilder> routes = {
   AboutPage.routeName: (BuildContext context) => AboutPage(),
   CuandoPage.routeName: (BuildContext context) => CuandoPage(),
   SearchPage.routeName: (_) => SearchPage(),
-   YoEditPage.routeName: (_) => YoEditPage(),
+  YoEditPage.routeName: (_) => YoEditPage(),
+  SucursalInfoPage.routeName: (_) => SucursalInfoPage(),
 };

@@ -31,7 +31,7 @@ class ProductoModel {
     );
   }
 
-  String getPrecio() => 'Bs.${this.precio}';
+  String getPrecio() => 'Bs. ${this.precio}';
 
   String getPathImage() {
     return host.substring(0, host.length - 4) + '/$foto';

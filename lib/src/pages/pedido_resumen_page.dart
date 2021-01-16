@@ -17,7 +17,7 @@ class PedidoResumenPage extends StatefulWidget {
 
 class _PedidoResumenPageState extends State<PedidoResumenPage> {
   final TextStyle styleTotal =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
+      TextStyle(fontSize: 16, fontWeight: FontWeight.w500);
   bool _isDelete = false;
   final _prefs = new PreferenciasUsuario();
 
@@ -25,7 +25,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Panes agregados'),
+        title: Text('Productos agregados'),
         actions: [
           IconButton(
               icon: Icon(!_isDelete ? Icons.delete : Icons.close),
@@ -45,7 +45,8 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
 
   Widget _productoList(BuildContext context) {
     final detalles = Provider.of<PedidoModel>(context).detalles;
-    if (detalles.length == 0) return ErrorCustom(message: 'No tienes panes');
+    if (detalles.length == 0)
+      return ErrorCustom(message: 'No tienes productos');
 
     return ListView(
       children: [
@@ -72,9 +73,9 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
 
   Widget _productoBox(DetallePedidoModel detallePedido, BuildContext context) {
     final styleTitulo =
-        TextStyle(fontSize: 16, fontWeight: FontWeight.w600, height: 1.3);
-    final styleTexto = TextStyle(height: 1.3, color: Colors.grey[600]);
-    final stylePrecio = TextStyle(height: 1.3);
+        TextStyle(fontSize: 16, fontWeight: FontWeight.w500, height: 1.4);
+    final styleTexto = TextStyle(height: 1.4, color: Colors.grey[600]);
+    final stylePrecio = TextStyle(height: 1.4);
 
     return Container(
         padding: EdgeInsets.all(paddingUI),
@@ -88,7 +89,8 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
               borderRadius: BorderRadius.circular(40),
               child: FadeInImage(
                 placeholder: AssetImage(pathLoading),
-                image: NetworkImage(detallePedido.sucursalProducto.producto.getPathImage()),
+                image: NetworkImage(
+                    detallePedido.sucursalProducto.producto.getPathImage()),
                 height: 60,
                 width: 60,
                 fit: BoxFit.cover,
@@ -156,6 +158,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
             onPressed: () {
               final isByIcon = ModalRoute.of(context).settings.arguments;
               int count = isByIcon != null ? 1 : 0;
+              print('count $count');
               Navigator.of(context).popUntil((route) {
                 return count++ == 2;
               });

@@ -11,6 +11,7 @@ import 'package:quickbread/src/pages/search_page.dart';
 import 'package:quickbread/src/providers/producto_provider.dart';
 import 'package:quickbread/src/widgets/error_custom.dart';
 import 'package:quickbread/src/widgets/producto_basic_box.dart';
+import 'package:quickbread/src/pages/sucursal_info_page.dart';
 
 class ProductoPage extends StatefulWidget {
   static final routeName = 'producto';
@@ -33,6 +34,8 @@ class _ProductoPageState extends State<ProductoPage> {
           title: Text(sucursal.nombre),
           actions: [
             _badgeAgregados(context),
+            IconButton(icon: Icon(Icons.info), onPressed: () =>  Navigator.of(context)
+              .pushNamed(SucursalInfoPage.routeName, arguments: sucursal))
           ],
         ),
         body: _productoList(sucursal),

@@ -78,7 +78,7 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-              title: Text('Detalle de direccion'),
+              title: Text('Detalle de dirección'),
               content: _formulario(),
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 24, vertical: 10),
@@ -107,7 +107,7 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
             TextFormField(
               initialValue: _prefs.ubicacion?.direccion,
               decoration: InputDecoration(
-                  labelText: 'Calle y numero *', hintText: 'Ej. Paurito 23'),
+                  labelText: 'Calle y número *', hintText: 'Ej. Paurito 23'),
               onSaved: (value) => _ubicacion.direccion = value,
               validator: (value) {
                 if (value.length > 0) return null;

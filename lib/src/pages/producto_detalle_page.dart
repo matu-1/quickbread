@@ -10,15 +10,25 @@ import 'package:quickbread/src/widgets/boton_custom.dart';
 import 'package:quickbread/src/utils/utils.dart' as utils;
 import 'package:quickbread/src/widgets/chip_custom.dart';
 
-class ProductoDetallePage extends StatelessWidget {
+class ProductoDetallePage extends StatefulWidget {
   static final routeName = 'productoDetalle';
+
+  @override
+  _ProductoDetallePageState createState() => _ProductoDetallePageState();
+}
+
+class _ProductoDetallePageState extends State<ProductoDetallePage> {
+  final styleTitulo =
+      TextStyle(fontSize: 20, fontWeight: FontWeight.w600, height: 1.4);
+  final styleBody = TextStyle(height: 1.4);
   final formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  int cantidad = 1;
+  SucursalProductoModel sucursalProducto;
 
   @override
   Widget build(BuildContext context) {
-    final SucursalProductoModel sucursalProducto =
-        ModalRoute.of(context).settings.arguments;
+    sucursalProducto = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -31,9 +41,9 @@ class ProductoDetallePage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(paddingUI),
                 child: BotonCustom(
-                  titulo: 'SELECCIONAR PAN',
+                  titulo: 'AGREGAR PRODUCTO',
                   onPressed: () =>
-                      _cantidadModalBottom(context, sucursalProducto),
+                      _agregarProducto(context, cantidad, sucursalProducto),
                 ),
               )
             ],
@@ -73,12 +83,68 @@ class ProductoDetallePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _imagen(producto, context),
-          _tituloContainer(producto.producto, context),
+          _tituloContent(producto.producto, context),
           _divider(),
           _descripcion(producto.producto),
+          _divider(),
+          _cantidadContent(producto, context),
           SizedBox(
             height: 20,
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _cantidadContent(
+      SucursalProductoModel sucursalProducto, BuildContext context) {
+    Color color = Theme.of(context).primaryColor;
+    return Container(
+      padding: EdgeInsets.all(paddingUI),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Cantidad',
+            style: styleTitulo,
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: color, width: 1)),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.remove),
+                    color: color,
+                    onPressed: cantidad > 1 ? disminuirCantidad : null,
+                    disabledColor: Colors.grey[300],
+                  ),
+                  GestureDetector(
+                    onTap: () =>
+                        _cantidadModalBottom(context, sucursalProducto),
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        '${this.cantidad}',
+                        style: TextStyle(color: color),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.add),
+                      color: color,
+                      onPressed: incrementarCantidad)
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -109,10 +175,10 @@ class ProductoDetallePage extends StatelessWidget {
     );
   }
 
-  Widget _tituloContainer(ProductoModel producto, BuildContext context) {
+  Widget _tituloContent(ProductoModel producto, BuildContext context) {
     final styleTitulo =
-        TextStyle(fontSize: 27, fontWeight: FontWeight.w600, height: 1.3);
-    final stylePrecio = TextStyle(fontSize: 20, height: 1.3);
+        TextStyle(fontSize: 24, fontWeight: FontWeight.w600, height: 1.4);
+    final stylePrecio = TextStyle(fontSize: 20, height: 1.4);
 
     return Padding(
       padding: EdgeInsets.all(paddingUI),
@@ -142,17 +208,13 @@ class ProductoDetallePage extends StatelessWidget {
   }
 
   Widget _descripcion(ProductoModel producto) {
-    final styleTitulo =
-        TextStyle(fontSize: 20, fontWeight: FontWeight.w600, height: 1.3);
-    final styleBody = TextStyle(height: 1.3);
-
     return Padding(
       padding: EdgeInsets.all(paddingUI),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Descripcion',
+            'Descripción',
             style: styleTitulo,
           ),
           Text(
@@ -169,74 +231,81 @@ class ProductoDetallePage extends StatelessWidget {
     final pedido = Provider.of<PedidoModel>(context, listen: false);
     if (pedido.existProducto(producto))
       return utils.showSnackbar('Ya se agrego !!', _scaffoldKey);
-    String cantidad;
 
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return AlertDialog(
-                title: Text('Agrege la cantidad'),
-                content: Form(
-                  key: formKey,
-                  child: Container(
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: 'Cantidad *',
-                          ),
-                          onSaved: (value) => cantidad = value,
-                          validator: (value) {
-                            if (utils.isNumeric(value) && int.parse(value) > 0)
-                              return null;
-                            return 'Debe ser un numero';
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                actions: [
-                  FlatButton(
-                      textColor: Theme.of(context).primaryColor,
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text('CERRAR')),
-                  FlatButton(
-                      textColor: Theme.of(context).primaryColor,
-                      onPressed: () {
-                        if (!formKey.currentState.validate()) return;
-                        formKey.currentState.save();
-                        _agregarProducto(context, cantidad, producto);
+          return AlertDialog(
+            title: Text('Unidades'),
+            content: Form(
+              key: formKey,
+              child: Container(
+                width: double.infinity,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      initialValue: '$cantidad',
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Cantidad *',
+                      ),
+                      onSaved: (value) =>
+                          setState(() => cantidad = num.parse(value)),
+                      validator: (value) {
+                        if (utils.isNumeric(value) && int.parse(value) > 0)
+                          return null;
+                        return 'Debe ser un numero';
                       },
-                      child: Text('ACEPTAR')),
-                ],
-              );
-            },
+                    )
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              FlatButton(
+                  textColor: Theme.of(context).primaryColor,
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('CERRAR')),
+              FlatButton(
+                  textColor: Theme.of(context).primaryColor,
+                  onPressed: () {
+                    if (!formKey.currentState.validate()) return;
+                    formKey.currentState.save();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('ACEPTAR')),
+            ],
           );
         });
   }
 
   void _agregarProducto(
-      BuildContext context, String cantidad, SucursalProductoModel producto) {
-    int newCantidad = int.parse(cantidad);
-    if (newCantidad > producto.stock) {
-      Navigator.of(context).pop();
+      BuildContext context, int cantidad, SucursalProductoModel producto) {
+    if (cantidad > producto.stock) {
       return utils.showSnackbar(
           'No se cuenta con stock suficiente, stock = ${producto.stock}',
           _scaffoldKey);
     }
     final pedido = Provider.of<PedidoModel>(context, listen: false);
-    Navigator.of(context).pop();
     pedido.add(DetallePedidoModel(
-        cantidad: newCantidad,
+        cantidad: cantidad,
         sucursalProducto: producto,
-        subtotal: producto.producto.precio * newCantidad));
+        subtotal: producto.producto.precio * cantidad));
     Navigator.of(context).pushNamed(PedidoResumenPage.routeName);
+  }
+
+  void incrementarCantidad() {
+    setState(() {
+      cantidad++;
+    });
+  }
+
+  void disminuirCantidad() {
+    if (cantidad == 1) return;
+    setState(() {
+      cantidad--;
+    });
   }
 }

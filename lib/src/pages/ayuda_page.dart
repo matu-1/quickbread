@@ -12,15 +12,6 @@ class AyudaPage extends StatelessWidget {
       body: Container(
         child: ListView(
           children: [
-            ListTile(
-              title: Text('Hora de atencion'),
-              subtitle: Text('De 8:00 am. a 17:00 pm.'),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Dias de atencion'),
-              subtitle: Text('Lunes a Viernes.'),
-            ),
             Divider(),
             ListTile(
               title: Text('Anular pedido de entrega de mas de 24 horas'),

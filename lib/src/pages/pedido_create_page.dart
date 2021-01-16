@@ -24,7 +24,7 @@ class PedidoCreatePage extends StatefulWidget {
 class _PedidoCreatePageState extends State<PedidoCreatePage> {
   final formKey = GlobalKey<FormState>();
   final styleTitulo =
-      TextStyle(fontSize: sizeSubtituloUI, fontWeight: FontWeight.w600);
+      TextStyle(fontSize: sizeSubtituloUI, fontWeight: FontWeight.w500);
   PedidoModel _pedido;
   final _pedidoProvider = new PedidoProvider();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
