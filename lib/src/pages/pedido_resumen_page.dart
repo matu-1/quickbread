@@ -142,7 +142,7 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
 
   Widget _botones(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(paddingUI),
       child: Row(
         children: [
           Expanded(
@@ -158,7 +158,6 @@ class _PedidoResumenPageState extends State<PedidoResumenPage> {
             onPressed: () {
               final isByIcon = ModalRoute.of(context).settings.arguments;
               int count = isByIcon != null ? 1 : 0;
-              print('count $count');
               Navigator.of(context).popUntil((route) {
                 return count++ == 2;
               });

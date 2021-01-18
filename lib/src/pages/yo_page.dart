@@ -53,14 +53,14 @@ class YoPage extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
               ),
             ),
-            ListTile(
-              title: Text('Dirección'),
-              subtitle: Text(_prefs.usuario.direccion),
-              leading: Icon(
-                Icons.directions,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
+            // ListTile(
+            //   title: Text('Dirección'),
+            //   subtitle: Text(_prefs.usuario.direccion),
+            //   leading: Icon(
+            //     Icons.directions,
+            //     color: Theme.of(context).primaryColor,
+            //   ),
+            // ),
             ListTile(
               title: Text('Email'),
               subtitle: Text(_prefs.usuario.email),

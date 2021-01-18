@@ -19,19 +19,19 @@ class AboutPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Image(height: 150, width: 150, image: AssetImage(logoPath)),
-              Text('Version: 1.0.0'),
+              Text('Version: 1.3.0'),
               SizedBox(
                 height: 30,
               ),
               Text(
-                'Quickbread es una aplicacion para realizar pedidos de panes lo que facilita al consumidor tener lo que quiere sin necesidad de ir a comprarlo personalmente.',
+                'Quickbread es una aplicación para realizar pedidos de panes lo que facilita al consumidor tener lo que quiere sin necesidad de ir a comprarlo personalmente.',
                 textAlign: TextAlign.center,
               ),
               SizedBox(
                 height: 10,
               ),
               Text(
-                'Eliges lo que te gusta, agregas los datos de tu ubicacion y tu pedido va por ti.',
+                'Eliges lo que te gusta, agregas los datos de tu ubicación y tu pedido va por ti.',
                 textAlign: TextAlign.center,
               ),
               SizedBox(

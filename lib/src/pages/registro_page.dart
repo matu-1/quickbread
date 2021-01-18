@@ -96,16 +96,16 @@ class _RegistroPageState extends State<RegistroPage> {
           },
         ),
         SizedBox(height: 20),
-        TextFormFieldSample(
-          icon: Icon(Icons.directions),
-          hintText: 'Dirección',
-          onSaved: (value) => _usuario.direccion = value,
-          validator: (value) {
-            if (value.length >= 3) return null;
-            return 'Minimo 3 caracteres por favor';
-          },
-        ),
-        SizedBox(height: 20),
+        // TextFormFieldSample(
+        //   icon: Icon(Icons.directions),
+        //   hintText: 'Dirección',
+        //   onSaved: (value) => _usuario.direccion = value,
+        //   validator: (value) {
+        //     if (value.length >= 3) return null;
+        //     return 'Minimo 3 caracteres por favor';
+        //   },
+        // ),
+        // SizedBox(height: 20),
         TextFormFieldSample(
           icon: Icon(Icons.alternate_email),
           hintText: 'Email',
