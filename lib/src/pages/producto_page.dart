@@ -188,7 +188,7 @@ class _ProductoPageState extends State<ProductoPage> {
         context: context,
         builder: (_) => AlertDialog(
               title: Text('¿Estas seguro de salir?'),
-              content: Text('Si lo haces, se eliminara tu pedido'),
+              content: Text('Si lo haces, se eliminará tu pedido'),
               actions: [
                 FlatButton(
                     textColor: btnTextColor,

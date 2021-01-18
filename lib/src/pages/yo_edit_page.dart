@@ -32,7 +32,7 @@ class _YoEditPageState extends State<YoEditPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Edicion del perfil'),
+        title: Text('Edición del perfil'),
       ),
       body: SingleChildScrollView(
         child: Container(

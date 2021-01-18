@@ -228,10 +228,6 @@ class _ProductoDetallePageState extends State<ProductoDetallePage> {
 
   void _cantidadModalBottom(
       BuildContext context, SucursalProductoModel producto) {
-    final pedido = Provider.of<PedidoModel>(context, listen: false);
-    if (pedido.existProducto(producto))
-      return utils.showSnackbar('Ya se agrego !!', _scaffoldKey);
-
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -283,12 +279,15 @@ class _ProductoDetallePageState extends State<ProductoDetallePage> {
 
   void _agregarProducto(
       BuildContext context, int cantidad, SucursalProductoModel producto) {
+    final pedido = Provider.of<PedidoModel>(context, listen: false);
+    if (pedido.existProducto(producto))
+      return utils.showSnackbar('Ya se agrego !!', _scaffoldKey);
+
     if (cantidad > producto.stock) {
       return utils.showSnackbar(
           'No se cuenta con stock suficiente, stock = ${producto.stock}',
           _scaffoldKey);
     }
-    final pedido = Provider.of<PedidoModel>(context, listen: false);
     pedido.add(DetallePedidoModel(
         cantidad: cantidad,
         sucursalProducto: producto,

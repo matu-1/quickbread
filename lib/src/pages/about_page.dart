@@ -19,7 +19,7 @@ class AboutPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Image(height: 150, width: 150, image: AssetImage(logoPath)),
-              Text('Version: 1.3.0'),
+              Text('Version: 1.3.3'),
               SizedBox(
                 height: 30,
               ),

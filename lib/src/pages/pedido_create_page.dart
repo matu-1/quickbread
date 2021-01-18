@@ -74,7 +74,7 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: paddingUI),
                   child: BotonCustom(
-                      titulo: 'ENVIAR PEDIDO', onPressed: _registrarPedido),
+                      titulo: 'ENVIAR PEDIDO', onPressed: _comfirmarDialog),
                 )
               ],
             )),
@@ -279,5 +279,29 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
       showSnackbar(e.message, _scaffoldKey);
       Future.delayed(Duration(milliseconds: 200), () => _pr.hide());
     }
+  }
+
+  void _comfirmarDialog() async {
+    final btnTextColor = Theme.of(context).primaryColor;
+
+    return showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text('Confirmar'),
+              content: Text('¿Estas seguro de realizar el pedido?'),
+              actions: [
+                FlatButton(
+                    textColor: btnTextColor,
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(CommonText.close)),
+                FlatButton(
+                    textColor: btnTextColor,
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                      _registrarPedido();
+                    },
+                    child: Text(CommonText.confirm))
+              ],
+            ));
   }
 }

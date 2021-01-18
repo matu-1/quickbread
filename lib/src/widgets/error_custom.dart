@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/icons/my_icon_icons.dart';
 
 class ErrorCustom extends StatelessWidget {
@@ -9,6 +10,7 @@ class ErrorCustom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        padding: EdgeInsets.all(paddingUI),
         margin: EdgeInsets.only(bottom: 40),
         // color: Colors.red,
         child: Column(
@@ -21,6 +23,7 @@ class ErrorCustom extends StatelessWidget {
             Text(
               this.message,
               style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
             )
           ],
         ),
