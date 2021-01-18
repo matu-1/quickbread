@@ -111,7 +111,7 @@ class DrawerNavigation extends StatelessWidget {
                 Icons.highlight_off,
                 color: Theme.of(context).primaryColor,
               ),
-              title: Text('Cerrar sesion'),
+              title: Text('Cerrar sesión'),
               onTap: () => _prefs.logout(context),
             ),
           SizedBox(

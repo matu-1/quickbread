@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:quickbread/src/constants/common_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:quickbread/src/constants/path.dart';
 import 'package:quickbread/src/constants/ui.dart';
+import 'package:quickbread/src/models/cliente_model.dart';
 import 'package:quickbread/src/models/estado_model.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/home_page.dart';
@@ -25,7 +28,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
   Widget build(BuildContext context) {
     PedidoModel pedido = ModalRoute.of(context).settings.arguments;
     final pr = new ProgressDialog(context, isDismissible: false);
-    pr.style(message: 'Espere por favor');
+    pr.style(message: CommonText.loading);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -69,9 +72,23 @@ class PedidoNuevoDetallePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Cliente',
-            style: styleTitulo,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Cliente',
+                style: styleTitulo,
+              ),
+              GestureDetector(
+                onTap: () => _launchWhatsapp(pedido.cliente),
+                child: Tooltip(
+                  message: 'Escribir mensaje',
+                  child: Icon(
+                    Icons.message,
+                  ),
+                ),
+              )
+            ],
           ),
           SizedBox(
             height: 5,
@@ -273,5 +290,15 @@ class PedidoNuevoDetallePage extends StatelessWidget {
 
   bool _mostrarEstado(IEstado estadoPedido, String estado) {
     return estadoPedido.isMostrar(estado);
+  }
+
+  void _launchWhatsapp(ClienteModel cliente) async {
+    final url =
+        'whatsapp://send?phone=+591${cliente.telefonoCelular}&text=holaa men';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      utils.showSnackbar('No se pudo iniciar :(', _scaffoldKey);
+    }
   }
 }
