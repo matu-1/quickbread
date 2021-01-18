@@ -88,7 +88,7 @@ class _RegistroPageState extends State<RegistroPage> {
           textCapitalization: TextCapitalization.words,
           textInputType: TextInputType.number,
           icon: Icon(Icons.phone_android),
-          hintText: 'Telefono',
+          hintText: 'Teléfono celular',
           onSaved: (value) => _usuario.telefono = value,
           validator: (value) {
             if (utils.isNumeric(value)) return null;
@@ -98,7 +98,7 @@ class _RegistroPageState extends State<RegistroPage> {
         SizedBox(height: 20),
         TextFormFieldSample(
           icon: Icon(Icons.directions),
-          hintText: 'Direccion',
+          hintText: 'Dirección',
           onSaved: (value) => _usuario.direccion = value,
           validator: (value) {
             if (value.length >= 3) return null;

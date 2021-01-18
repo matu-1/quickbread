@@ -31,7 +31,7 @@ final Map<String, WidgetBuilder> routes = {
   AyudaPage.routeName: (BuildContext context) => AyudaPage(),
   PedidoUbicacion.routeName: (BuildContext context) => PedidoUbicacion(),
   PedidoDetallePage.routeName: (BuildContext context) => PedidoDetallePage(),
-  PedidoNuevoPage.routeName: (BuildContext context) => PedidoNuevoPage(),
+  PedidoAdminPage.routeName: (BuildContext context) => PedidoAdminPage(),
   PedidoNuevoDetallePage.routeName: (BuildContext context) =>
       PedidoNuevoDetallePage(),
   AboutPage.routeName: (BuildContext context) => AboutPage(),

@@ -22,9 +22,9 @@ class PedidoBloc {
     _pedidoStreamController.sink.add(pedidos);
   }
 
-  getAll() async {
+  getAll(String estado) async {
     try {
-      pedidoSink = await _pedidoProvider.getAll();
+      pedidoSink = await _pedidoProvider.getAll(estado);
     } catch (e) {
       _pedidoStreamController.addError(e.message);
     }

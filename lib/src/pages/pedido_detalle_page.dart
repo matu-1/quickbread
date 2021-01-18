@@ -66,7 +66,7 @@ class PedidoDetallePage extends StatelessWidget {
               prop: 'Nombre:',
               text: pedido.detalles[0].sucursalProducto.sucursal.nombre),
           TextProp(
-              prop: 'Direccion:',
+              prop: 'Dirección:',
               text: pedido.detalles[0].sucursalProducto.sucursal.direccion),
         ],
       ),
@@ -90,7 +90,7 @@ class PedidoDetallePage extends StatelessWidget {
           TextProp(prop: 'Tipo:', text: pedido.tipoEntrega),
           TextProp(prop: 'Total:', text: 'Bs.${pedido.total}'),
           TextProp(
-              prop: 'Observacion:',
+              prop: 'Observación:',
               text: pedido.observacion ?? 'No registrado'),
           TextProp(prop: 'Estado:', text: pedido.estado),
           TextProp(prop: 'Creado el:', text: pedido.getCreatedAt()),

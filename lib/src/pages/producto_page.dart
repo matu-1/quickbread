@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickbread/src/constants/common_text.dart';
 import 'package:quickbread/src/constants/message_exception.dart';
+import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/models/sucursal_model.dart';
 import 'package:quickbread/src/models/sucursal_producto_model.dart';
@@ -34,14 +35,23 @@ class _ProductoPageState extends State<ProductoPage> {
           title: Text(sucursal.nombre),
           actions: [
             _badgeAgregados(context),
-            IconButton(icon: Icon(Icons.info), onPressed: () =>  Navigator.of(context)
-              .pushNamed(SucursalInfoPage.routeName, arguments: sucursal))
+            IconButton(
+                icon: Icon(Icons.info),
+                onPressed: () => Navigator.of(context)
+                    .pushNamed(SucursalInfoPage.routeName, arguments: sucursal))
           ],
         ),
-        body: _productoList(sucursal),
+        body: Column(
+          children: [
+            if (!sucursal.isAvailable()) _cerradoContent(),
+            Expanded(child: _productoList(sucursal)),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.of(context)
-              .pushNamed(SearchPage.routeName, arguments: sucursal),
+          onPressed: sucursal.isAvailable()
+              ? () => Navigator.of(context)
+                  .pushNamed(SearchPage.routeName, arguments: sucursal)
+              : null,
           child: Icon(Icons.search),
         ),
       ),
@@ -75,15 +85,18 @@ class _ProductoPageState extends State<ProductoPage> {
               }
               return GestureDetector(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (showCategoria)
                       _seccionHeader(context, productos[index]),
                     ProductoBasicBox(sucuralProducto: productos[index]),
                   ],
                 ),
-                onTap: () => Navigator.of(context).pushNamed(
-                    ProductoDetallePage.routeName,
-                    arguments: productos[index]),
+                onTap: () => sucursal.isAvailable()
+                    ? Navigator.of(context).pushNamed(
+                        ProductoDetallePage.routeName,
+                        arguments: productos[index])
+                    : null,
               );
             },
           );
@@ -103,16 +116,11 @@ class _ProductoPageState extends State<ProductoPage> {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      decoration: BoxDecoration(
-          // border: Border(
-          //     bottom:
-          //         BorderSide(width: 1, color: Theme.of(context).accentColor))
-          ),
       child: Text(sucursalProducto.producto.categoria.nombre.toUpperCase(),
           style: TextStyle(
               color: Theme.of(context).accentColor,
               fontSize: 16,
-              fontWeight: FontWeight.w600)),
+              fontWeight: FontWeight.w500)),
     );
   }
 
@@ -143,6 +151,31 @@ class _ProductoPageState extends State<ProductoPage> {
           ),
         )
       ],
+    );
+  }
+
+  Widget _cerradoContent() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(paddingUI),
+      decoration: BoxDecoration(color: Colors.red.withOpacity(0.1)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Cerrado',
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                height: 1.4,
+                color: Theme.of(context).errorColor),
+          ),
+          Text(
+            'No es posible realizar pedidos',
+            style: TextStyle(color: Theme.of(context).errorColor, height: 1.4),
+          ),
+        ],
+      ),
     );
   }
 

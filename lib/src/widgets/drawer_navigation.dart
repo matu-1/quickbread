@@ -150,7 +150,7 @@ class DrawerNavigation extends StatelessWidget {
         title: Text('Pedido'),
         onTap: () {
           Navigator.pop(context);
-          Navigator.pushNamed(context, PedidoNuevoPage.routeName);
+          Navigator.pushNamed(context, PedidoAdminPage.routeName);
         },
       ),
       Divider(),

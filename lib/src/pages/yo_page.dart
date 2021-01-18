@@ -46,7 +46,7 @@ class YoPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Telefono celular'),
+              title: Text('Teléfono celular'),
               subtitle: Text(_prefs.usuario.telefono),
               leading: Icon(
                 Icons.phone_android,
@@ -54,7 +54,7 @@ class YoPage extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Direccion'),
+              title: Text('Dirección'),
               subtitle: Text(_prefs.usuario.direccion),
               leading: Icon(
                 Icons.directions,

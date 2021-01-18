@@ -190,7 +190,7 @@ class _PedidoCreatePageState extends State<PedidoCreatePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Ubicacion',
+                'Ubicación',
                 style: styleTitulo,
               ),
               GestureDetector(

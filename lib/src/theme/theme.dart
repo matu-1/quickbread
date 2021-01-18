@@ -15,6 +15,11 @@ final ThemeData theme = ThemeData.light().copyWith(
     primaryIconTheme: ThemeData.light().primaryIconTheme.copyWith(
           color: Colors.black,
         ),
+    tabBarTheme: ThemeData.light().tabBarTheme.copyWith(
+        labelColor: primary,
+        unselectedLabelColor: Colors.black,
+        indicator: BoxDecoration(
+            border: Border(bottom: BorderSide(width: 2, color: primary)))),
     floatingActionButtonTheme:
         ThemeData.light().floatingActionButtonTheme.copyWith(
               backgroundColor: accent,

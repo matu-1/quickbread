@@ -38,7 +38,7 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Ubicacion entrega'),
+        title: Text('Ubicación entrega'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -59,7 +59,7 @@ class _PedidoUbicacionState extends State<PedidoUbicacion> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '¿Esta es tu ubicacion?',
+              '¿Esta es tu ubicación?',
               style: TextStyle(fontSize: sizeTituloUI),
             ),
             Container(

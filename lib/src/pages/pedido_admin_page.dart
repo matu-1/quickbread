@@ -1,26 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:quickbread/src/blocs/pedido_bloc.dart';
 import 'package:quickbread/src/constants/path.dart';
+import 'package:quickbread/src/constants/pedido_estado.dart';
+import 'package:quickbread/src/constants/ui.dart';
 import 'package:quickbread/src/models/pedido_model.dart';
 import 'package:quickbread/src/pages/pedido_detalle_admin_page.dart';
 import 'package:quickbread/src/widgets/chip_custom.dart';
 import 'package:quickbread/src/widgets/error_custom.dart';
 
-class PedidoNuevoPage extends StatelessWidget {
+class PedidoAdminPage extends StatefulWidget {
   static final routeName = 'pedidoNuevo';
+
+  @override
+  _PedidoAdminPageState createState() => _PedidoAdminPageState();
+}
+
+class _PedidoAdminPageState extends State<PedidoAdminPage>
+    with SingleTickerProviderStateMixin {
   final _pedidoBloc = new PedidoBloc();
+  TabController _tabController;
+  final _tabs = [
+    Tab(text: 'NUEVO'),
+    Tab(text: 'ENTREGADO'),
+    Tab(text: 'ANULADO'),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(length: _tabs.length, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _pedidoBloc.getAll();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Pedidos'),
-        actions: [IconButton(icon: Icon(Icons.refresh), onPressed: _pedidoBloc.getAll)],
+        actions: [
+          IconButton(
+              tooltip: 'Recargar',
+              icon: Icon(Icons.refresh),
+              onPressed: () => filterPedidos(_tabController.index))
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: _tabs,
+        ),
       ),
-      body: _pedidoList(),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _PedidoList(index: 0),
+          _PedidoList(
+            index: 1,
+          ),
+          _PedidoList(
+            index: 2,
+          )
+        ],
+      ),
     );
+  }
+
+  void filterPedidos(index) {
+    switch (index) {
+      case 0:
+        _pedidoBloc.getAll(PedidoEstado.enProceso);
+        break;
+      case 1:
+        _pedidoBloc.getAll(PedidoEstado.entregado);
+        break;
+      case 2:
+        _pedidoBloc.getAll(PedidoEstado.anulado);
+        break;
+      default:
+        _pedidoBloc.getAll(PedidoEstado.enProceso);
+    }
+  }
+}
+
+class _PedidoList extends StatelessWidget {
+  final _pedidoBloc = new PedidoBloc();
+  final int index;
+  _PedidoList({@required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    filterPedidos(index);
+    return Container(key: PageStorageKey('pedido$index'), child: _pedidoList());
   }
 
   Widget _pedidoList() {
@@ -69,7 +136,7 @@ class PedidoNuevoPage extends StatelessWidget {
         TextStyle(height: 1.4, fontSize: 16, fontWeight: FontWeight.normal);
 
     return Container(
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(paddingUI),
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(color: Colors.grey[300], width: 0.5))),
@@ -152,5 +219,21 @@ class PedidoNuevoPage extends StatelessWidget {
             ],
           );
         });
+  }
+
+  void filterPedidos(index) {
+    switch (index) {
+      case 0:
+        _pedidoBloc.getAll(PedidoEstado.enProceso);
+        break;
+      case 1:
+        _pedidoBloc.getAll(PedidoEstado.entregado);
+        break;
+      case 2:
+        _pedidoBloc.getAll(PedidoEstado.anulado);
+        break;
+      default:
+        _pedidoBloc.getAll(PedidoEstado.enProceso);
+    }
   }
 }

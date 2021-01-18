@@ -56,7 +56,8 @@ class PedidoNuevoDetallePage extends StatelessWidget {
   Widget _floatingActionButton(
       PedidoModel pedido, BuildContext context, ProgressDialog pr) {
     // if (pedido.estado == PedidoEstado.entregado) return null;
-    if (_mostrarEstado(EstadoEntrega(), pedido.estado) || _mostrarEstado(EstadoAnulado(), pedido.estado)) return null;
+    if (_mostrarEstado(EstadoEntrega(), pedido.estado) ||
+        _mostrarEstado(EstadoAnulado(), pedido.estado)) return null;
     return FloatingActionButton(
         child: Icon(Icons.check),
         onPressed: () => _showConfirmDialog(context, pr, pedido));
@@ -90,13 +91,13 @@ class PedidoNuevoDetallePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Ubicacion',
+            'Ubicación',
             style: styleTitulo,
           ),
           SizedBox(
             height: 5,
           ),
-          TextProp(prop: 'Calle y numero:', text: pedido.direccion),
+          TextProp(prop: 'Calle y número:', text: pedido.direccion),
           TextProp(prop: 'Referencia:', text: pedido.referencia),
           SizedBox(
             height: 10,
@@ -263,7 +264,7 @@ class PedidoNuevoDetallePage extends StatelessWidget {
       await pedidoProvider.setEntregado(pedido.id);
       pr.hide();
       Navigator.of(_scaffoldKey.currentContext).pushNamedAndRemoveUntil(
-          PedidoNuevoPage.routeName, ModalRoute.withName(HomePage.routeName));
+          PedidoAdminPage.routeName, ModalRoute.withName(HomePage.routeName));
     } catch (e) {
       utils.showSnackbar(e.message, _scaffoldKey);
       Future.delayed(Duration(milliseconds: 200), () => pr.hide());

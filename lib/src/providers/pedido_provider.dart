@@ -11,10 +11,10 @@ import 'package:quickbread/src/utils/utils.dart';
 class PedidoProvider {
   final _pref = new PreferenciasUsuario();
 
-  Future<List<PedidoModel>> getAll() async {
+  Future<List<PedidoModel>> getAll(String estado) async {
     try {
-      final response = await http
-          .get(apiParam(Api.pedidoByEmpleadoListar, _pref.usuario.id));
+      final response = await http.get(
+          '${apiParam(Api.pedidoByEmpleadoListar, _pref.usuario.id)}?estado=$estado');
       final respJson = json.decode(response.body);
       if (response.statusCode == 200) {
         return pedidosFromJsonList(respJson['data']);
@@ -88,12 +88,14 @@ class PedidoProvider {
 
   Future<void> sendNotificationAdmin() async {
     try {
-      final response = await http.get(apiParam(Api.usuarioPersonalListar, _pref.usuario.sucursalId));
+      final response = await http
+          .get(apiParam(Api.usuarioPersonalListar, _pref.usuario.sucursalId));
       final respJson = json.decode(response.body);
       if (response.statusCode == 200) {
         final personales = respJson['data'];
         personales.forEach((personal) {
-          if (personal['token'] != null)
+          final roles = personal['user']['roles'];
+          if (personal['token'] != null && roles != null && roles[0]['name'] != 'repartidor')
             sendNotification(personal['token'],
                 'Tienes un nuevo pedido, dale una mirada', 'Pedido nuevo', {});
         });
@@ -120,10 +122,9 @@ class PedidoProvider {
     };
 
     try {
-      final resp = await http.post(url, body: json.encode(body), headers: {
-        ...Api.requestHeader,
-        'Authorization': 'key=$keyServer'
-      });
+      final resp = await http.post(url,
+          body: json.encode(body),
+          headers: {...Api.requestHeader, 'Authorization': 'key=$keyServer'});
       final data = json.decode(resp.body);
       return data;
     } catch (e) {

@@ -12,25 +12,28 @@ class AyudaPage extends StatelessWidget {
       body: Container(
         child: ListView(
           children: [
+            ListTile(
+              title: Text('Teléfono celular'),
+              subtitle:
+                  Text('Llamar al numero 78454525 para cualquier consulta.'),
+            ),
             Divider(),
             ListTile(
               title: Text('Anular pedido de entrega de mas de 24 horas'),
-              subtitle: Text('Los pedidos se pueden anular 5 horas antes de la entrega.'),
+              subtitle: Text(
+                  'Los pedidos se pueden anular 5 horas antes de la entrega.'),
             ),
             Divider(),
             ListTile(
               title: Text('Anular pedido de entrega inmediata'),
-              subtitle: Text('Los pedidos se pueden anular 5 minutos antes de la entrega.'),
+              subtitle: Text(
+                  'Los pedidos se pueden anular en los próximos 3 minutos.'),
             ),
             Divider(),
             ListTile(
-              title: Text('Telefono celular'),
-              subtitle: Text('Llamar al numero 78454525 para cualquier consulta.'),
-            ),
-            Divider(),
-            ListTile(
-              title: Text('Motivos de anulacion de pedidos'),
-              subtitle: Text('EL pedido no esta en las horas laborales o dias.'),
+              title: Text('Motivos de anulación de pedidos'),
+              subtitle:
+                  Text('EL pedido no esta en las horas laborales o dias.'),
             )
           ],
         ),

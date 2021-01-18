@@ -63,51 +63,69 @@ class _HomePageState extends State<HomePage> {
   }
 
   Container _bodyContainer(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = 200.0;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(
-            logoPath,
-            width: 150,
-            height: 150,
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Text(
-            'Bienvenido a nuestra aplicación de pedidos, empieza a repartir',
-            style: styleText,
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: 40,
-          ),
-        ],
+      child: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: height,
+              width: double.infinity,
+              child: CustomPaint(
+                painter: _HeaderPainter(color: Theme.of(context).primaryColor),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Transform.translate(
+                      offset: Offset(width * 0.25 - 40, height * 0.23),
+                      child: Icon(
+                        Icons.moped,
+                        color: Colors.white,
+                        size: 80,
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(-width * 0.25 + 45, -height * 0.09),
+                      child: Icon(
+                        Icons.home,
+                        color: Colors.white,
+                        size: 90,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Bienvenido a la aplicación de pedido',
+                    style: TextStyle(
+                        fontSize: 24,
+                        height: 1.4,
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    'Esta sección se encarga de la entrega de los pedidos, por favor dale una mirada a tus pedidos asignados, gracias.',
+                    style: TextStyle(color: Colors.grey[600], height: 1.4),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
-  }
-
-  void onToken(String token) {
-    final prefs = new PreferenciasUsuario();
-    prefs.token = token;
-    print('token=' + token);
-  }
-
-  void showNotificationDialog(Map message) {
-    showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-              title: Text(message['title']),
-              content: Text(message['body']),
-              actions: [
-                FlatButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text('CERRAR'))
-              ],
-            ));
   }
 
   Widget _sucursalList() {
@@ -125,9 +143,7 @@ class _HomePageState extends State<HomePage> {
             itemCount: sucursales.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
-                  onTap: () => Navigator.of(context).pushNamed(
-                      ProductoPage.routeName,
-                      arguments: sucursales[index]),
+                  onTap: () => goProductPage(sucursales[index]),
                   child: _sucursalBox(sucursales[index]));
             },
           );
@@ -144,18 +160,17 @@ class _HomePageState extends State<HomePage> {
 
   Widget _sucursalBox(SucursalModel sucursal) {
     return Container(
-      padding: EdgeInsets.all(paddingUI),
-      margin: EdgeInsets.only(top: 15, left: paddingUI, right: paddingUI),
+      padding: EdgeInsets.symmetric(vertical: paddingUI),
+      margin: EdgeInsets.symmetric(horizontal: paddingUI),
       decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 3)],
-          borderRadius: BorderRadius.circular(5)),
+          border:
+              Border(bottom: BorderSide(width: 0.5, color: Colors.grey[300]))),
       child: Row(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(5),
             child: FadeInImage(
-              placeholder: AssetImage(pathLoading), 
+              placeholder: AssetImage(pathLoading),
               image: NetworkImage(sucursal.getPathImage()),
               width: 70,
               height: 70,
@@ -177,11 +192,111 @@ class _HomePageState extends State<HomePage> {
                   height: 5,
                 ),
                 Text(sucursal.direccion),
+                if (!sucursal.isAvailable())
+                  Container(
+                    margin: EdgeInsets.only(top: 5),
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Text(
+                      'Cerrado',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).errorColor),
+                    ),
+                  ),
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  void onToken(String token) {
+    final prefs = new PreferenciasUsuario();
+    prefs.token = token;
+    print('token=' + token);
+  }
+
+  void showNotificationDialog(Map message) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text(message['title']),
+              content: Text(message['body']),
+              actions: [
+                FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('CERRAR'))
+              ],
+            ));
+  }
+
+  void goProductPage(SucursalModel sucursal) {
+    if (sucursal.isAvailable())
+      Navigator.of(context).pushNamed(
+        ProductoPage.routeName,
+        arguments: sucursal,
+      );
+    else
+      showCerradoDialog(sucursal);
+  }
+
+  void showCerradoDialog(SucursalModel sucursal) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text('Cerrado'),
+              content:
+                  Text('La sucursal esta cerrada, solo puedes ver el catálogo'),
+              actions: [
+                FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('CERRAR')),
+                FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed(
+                        ProductoPage.routeName,
+                        arguments: sucursal,
+                      );
+                    },
+                    child: Text('CONTINUAR'))
+              ],
+            ));
+  }
+}
+
+class _HeaderPainter extends CustomPainter {
+  Color color;
+
+  _HeaderPainter({this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = new Paint(); // lapiz
+    paint.color = color;
+    paint.style = PaintingStyle.fill;
+    paint.strokeWidth = 3;
+
+    final path = new Path(); // los trazos
+    path.lineTo(0, size.height * 0.70);
+    path.quadraticBezierTo(
+        size.width * 0.25, size.height, size.width * 0.5, size.height * 0.70);
+    path.quadraticBezierTo(
+        size.width * 0.75, size.height * 0.4, size.width, size.height * 0.70);
+    path.lineTo(size.width, 0);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
