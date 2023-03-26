@@ -1,5 +1,5 @@
-// final host = 'https://edg-panaderia.herokuapp.com/api';
-final host = 'http://192.168.0.15:8080/EDG-PanaderiaFinal/public/api';
+final host = 'https://edg-panaderia.herokuapp.com/api';
+// final host = 'http://192.168.0.15:8080/EDG-PanaderiaFinal/public/api';
 
 class Api {
   static final pedidoListar = host + '/movil/pedido';
